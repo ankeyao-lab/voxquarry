@@ -9,7 +9,7 @@ from __future__ import annotations
 from typing import Any
 
 
-BRAND_ASSET_REGISTRY_VERSION = "brand-assets/1.1.0"
+BRAND_ASSET_REGISTRY_VERSION = "brand-assets/1.1.1"
 
 _OFFICIAL_DOMAINS = {
     "ego": "egopowerplus.com",

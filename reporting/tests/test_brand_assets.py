@@ -6,11 +6,10 @@ from reporting.brand_assets import BRAND_ASSET_REGISTRY_VERSION, brand_asset
 
 
 class BrandAssetTests(unittest.TestCase):
-    def test_consumes_verified_chengmu_brand_profile_urls(self) -> None:
+    def test_consumes_public_brand_profile_urls(self) -> None:
         expected_hosts = {
             "CRAFTSMAN": "www.craftsman.com",
             "DEWALT": "www.dewalt.com",
-            "EGO": "egopowerplus.com",
             "Einhell": "www.einhell.com",
             "Flex": "www.flexpowertools.com",
             "Greenworks": "www.greenworkstools.com",
@@ -48,11 +47,13 @@ class BrandAssetTests(unittest.TestCase):
                 self.assertEqual(asset["logo_url"], "")
                 self.assertEqual(asset["logo_source"], "text_wordmark_fallback")
 
-    def test_black_decker_keeps_existing_official_domain_fallback(self) -> None:
-        asset = brand_asset("BLACK+DECKER")
-        self.assertEqual(asset["logo_source"], "official_domain_favicon")
-        self.assertEqual(asset["official_website"], "https://blackanddecker.com")
-        self.assertEqual(asset["logo_url"], "https://blackanddecker.com/favicon.ico")
+    def test_official_domains_use_explicit_favicon_fallback(self) -> None:
+        for brand, domain in (("BLACK+DECKER", "blackanddecker.com"), ("EGO", "egopowerplus.com")):
+            with self.subTest(brand=brand):
+                asset = brand_asset(brand)
+                self.assertEqual(asset["logo_source"], "official_domain_favicon")
+                self.assertEqual(asset["official_website"], "https://" + domain)
+                self.assertEqual(asset["logo_url"], "https://" + domain + "/favicon.ico")
 
 
 if __name__ == "__main__":
