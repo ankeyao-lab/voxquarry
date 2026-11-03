@@ -33,7 +33,7 @@
 
 ## Interactions and accessibility
 
-Verified local sign-in, idempotent demo, product create/edit persistence, source links and linked-report opening, report generation, language switching, topic selection and evidence paging, English Markdown download, Walmart/Home Depot collection form bounds, unconfigured-model state, independent answer language, settings and phone navigation. No live collection was submitted.
+Verified local sign-in, idempotent demo, product create/edit persistence, source links and linked-report opening, report generation, language switching, topic selection, filtered refresh and evidence paging, English Markdown download, Walmart/Home Depot collection form bounds, unconfigured-model state, independent answer language, settings and phone navigation. No live collection was submitted.
 
 The battery topic's 10 distinct reviews produce 15 evidence fragments; the fragment pager is not a review denominator. Regression coverage verifies the distinct identities and neutral mentions. Both languages retain 40 reviews and 25/40 positive ratings.
 
