@@ -10,7 +10,7 @@
     "test:sites": "node --test tests/sites-worker.test.mjs"
   },
   "dependencies": {
-    "@vitejs/plugin-react": "5.0.4",
+    "@vitejs/plugin-react": "6.1.2",
     "lucide-react": "^0.468.0",
     "react": "19.2.0",
     "react-dom": "19.2.0",
