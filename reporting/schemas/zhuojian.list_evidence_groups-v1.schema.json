@@ -1,0 +1,13 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://voxquarry.local/schemas/zhuojian.list_evidence_groups-v1.schema.json",
+  "title": "zhuojian.list_evidence_groups@v1 input",
+  "type": "object",
+  "required": ["report_id"],
+  "properties": {
+    "report_id": {"type": "string", "pattern": "^rpt_[A-Za-z0-9_-]{8,80}$"},
+    "offset": {"type": "integer", "minimum": 0, "default": 0},
+    "limit": {"type": "integer", "minimum": 1, "maximum": 50, "default": 20}
+  },
+  "additionalProperties": false
+}

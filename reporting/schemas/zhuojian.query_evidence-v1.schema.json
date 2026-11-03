@@ -1,0 +1,24 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://voxquarry.local/schemas/zhuojian.query_evidence-v1.schema.json",
+  "title": "zhuojian.query_evidence@v1 input",
+  "type": "object",
+  "required": ["report_id", "evidence_group_id"],
+  "properties": {
+    "report_id": {"type": "string", "pattern": "^rpt_[A-Za-z0-9_-]{8,80}$"},
+    "evidence_group_id": {"type": "string", "minLength": 1, "maxLength": 180},
+    "offset": {"type": "integer", "minimum": 0, "default": 0},
+    "limit": {"type": "integer", "minimum": 1, "maximum": 50, "default": 20},
+    "channel": {"type": "string", "maxLength": 120},
+    "brand": {"type": "string", "maxLength": 160},
+    "model": {"type": "string", "maxLength": 200},
+    "market_region": {
+      "enum": ["North America", "Europe", "Australia", "Other"]
+    },
+    "rating": {"type": "integer", "minimum": 1, "maximum": 5},
+    "polarity": {"type": "string", "maxLength": 80},
+    "evidence_type": {"type": "string", "maxLength": 120},
+    "q": {"type": "string", "maxLength": 200}
+  },
+  "additionalProperties": false
+}

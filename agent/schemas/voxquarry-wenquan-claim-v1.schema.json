@@ -1,0 +1,21 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://voxquarry.local/schemas/voxquarry-wenquan-claim-v1.schema.json",
+  "title": "VoxQuarry Wenquan validated claim v1",
+  "type": "object",
+  "required": ["claim_id", "text", "report_id", "metric_id", "evidence_group_id", "citation_ids"],
+  "properties": {
+    "claim_id": {"type": "string", "pattern": "^clm_[0-9a-f]{24}$"},
+    "text": {"type": "string", "minLength": 1, "maxLength": 2000},
+    "report_id": {"type": "string", "pattern": "^rpt_"},
+    "metric_id": {"type": "string", "minLength": 1},
+    "evidence_group_id": {"type": "string", "minLength": 1},
+    "citation_ids": {
+      "type": "array",
+      "minItems": 2,
+      "items": {"type": "string", "pattern": "^cit_[0-9a-f]{24}$"},
+      "uniqueItems": true
+    }
+  },
+  "additionalProperties": false
+}

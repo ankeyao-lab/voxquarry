@@ -1,0 +1,11 @@
+channel,product_id,product_title,product_url,review_id,source_site,source_product_id,is_syndicated,submission_time,title,is_recommended,user_nickname,review_text,rating,verified_purchaser,where_purchase,age
+ego,p1,Test mower,,r1,example,p1,false,2025-01-03,Quiet and easy,true,,This mower is quiet and easy to push on my small yard.,5,,,65orOver
+ego,p1,Test mower,,r2,example,p1,false,2025-01-05,Battery wish,true,,I wish the battery indicator showed remaining runtime before my half acre is finished.,4,,,55to64
+ego,p1,Test mower,,r3,example,p1,false,2025-02-05,Would not start,false,,It would not start and customer service kept me waiting for parts.,1,,,45to54
+ego,p1,Test mower,,r4,example,p1,false,2025-02-08,Poor cut,false,,The mower leaves stragglers and needs multiple passes in thick grass.,2,,,35to44
+ego,p1,Test mower,,r5,example,p1,false,2025-03-02,Not quiet,true,,It is not quiet but the self propelled speed works well on hills.,4,,,25to34
+ego,p1,Test mower,,r6,example,p1,,2025-03-07,Rating only,true,,,5,,,18to24
+ego,p1,Test mower,,r7,example,p1,true,2025-04-01,Gas replacement,true,,I replaced my gas mower and love the same battery as my other tools.,5,,,
+ego,p1,Test mower,,r8,example,p1,false,2025-04-12,Charger failed,false,,The charger failed and the battery does not last on my large yard.,1,,,
+ego,p1,Test mower,,r9,example,p1,false,2025-05-03,Good bagging,true,,Bagging and mulching work well after rain.,4,,,
+ego,p1,Test mower,,r10,example,p1,false,2025-05-09,App request,true,,Please add a mobile app with maintenance reminders.,3,,,

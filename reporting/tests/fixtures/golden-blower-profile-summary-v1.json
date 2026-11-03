@@ -1,0 +1,79 @@
+{
+  "analysis_version": "ope-context/3.4.4",
+  "aspect_ids": [
+    "airflow_control",
+    "wet_debris",
+    "battery_charger",
+    "charging",
+    "service",
+    "starting",
+    "blowing_power",
+    "dust_control",
+    "noise",
+    "nozzle_attachment",
+    "weight_balance",
+    "reliability",
+    "smart_connectivity"
+  ],
+  "category_profile_id": "blower/1.2.0",
+  "dimension_ids": [
+    "occupation",
+    "operating_responsibility",
+    "purchase_relationship",
+    "life_stage_ability",
+    "experience_path",
+    "property_context",
+    "geography",
+    "work_area",
+    "debris_type",
+    "debris_condition",
+    "cleanup_season",
+    "airflow_workflow",
+    "form_factor",
+    "charging_workflow",
+    "job_completion",
+    "storage",
+    "time_of_day",
+    "weather",
+    "explicit_age",
+    "yard_size",
+    "task_duration",
+    "battery_spec",
+    "battery_capacity",
+    "battery_count"
+  ],
+  "entity_extractor_executions": 450,
+  "evidence_groups": 58,
+  "evidence_reference_slots": 79,
+  "evidence_selection_version": "evidence-diversity/4.1.0",
+  "extractors": 45,
+  "failed_executions": 0,
+  "kano_categories": [
+    "must_be",
+    "performance",
+    "attractive",
+    "unclear"
+  ],
+  "opportunity_ids": [
+    "reliability_recovery",
+    "heavy_debris_control",
+    "attachment_workflow",
+    "precision_airflow",
+    "cleanup_finishability",
+    "fatigue_balance"
+  ],
+  "persona_ids": [
+    "explicit_older_adults"
+  ],
+  "schema_version": "product-insight/v1",
+  "smart_codes": [
+    "A1",
+    "A2",
+    "A3",
+    "A4",
+    "A5",
+    "A6",
+    "A7",
+    "A8"
+  ]
+}

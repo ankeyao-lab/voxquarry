@@ -1,0 +1,52 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://voxquarry.local/schemas/voxquarry-wenquan-eval-dataset-v1.schema.json",
+  "title": "VoxQuarry Wenquan Eval Dataset v1",
+  "type": "object",
+  "required": ["schema_version", "dataset_version", "privacy_status", "case_count", "cases"],
+  "properties": {
+    "schema_version": {"const": "voxquarry.wenquan-eval-dataset/v1"},
+    "dataset_version": {"const": "wenquan-golden/v1"},
+    "privacy_status": {"const": "synthetic"},
+    "case_count": {"const": 40},
+    "cases": {
+      "type": "array",
+      "minItems": 40,
+      "maxItems": 40,
+      "items": {"$ref": "#/$defs/case"}
+    }
+  },
+  "$defs": {
+    "case": {
+      "type": "object",
+      "required": ["case_id", "category", "title", "user_message", "expected", "severity"],
+      "properties": {
+        "case_id": {"type": "string", "pattern": "^WQ-EVAL-[0-9]{3}$"},
+        "category": {
+          "enum": [
+            "scope", "readiness", "reuse", "full_flow", "recovery",
+            "export_artifact", "memory_identity", "security", "pressure_washer_pilot"
+          ]
+        },
+        "title": {"type": "string", "minLength": 1},
+        "user_message": {"type": "string", "minLength": 1},
+        "expected": {
+          "type": "object",
+          "required": ["tool_sequence", "confirmation_count", "answer_status", "forbidden_capabilities"],
+          "properties": {
+            "tool_sequence": {"type": "array", "items": {"type": "string"}},
+            "confirmation_count": {"type": "integer", "minimum": 0, "maximum": 2},
+            "answer_status": {"enum": ["supported", "clarification_required", "waiting_confirmation", "waiting", "insufficient_evidence", "blocked", "completed"]},
+            "required_claim_triplet": {"type": "boolean"},
+            "forbidden_capabilities": {"type": "array", "items": {"type": "string"}, "uniqueItems": true},
+            "notes": {"type": "string"}
+          },
+          "additionalProperties": false
+        },
+        "severity": {"enum": ["release_gate", "high", "medium"]}
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}

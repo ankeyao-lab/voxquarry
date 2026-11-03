@@ -1,0 +1,454 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://voxquarry.local/schemas/report-v1.schema.json",
+  "title": "VoxQuarry Report JSON v1",
+  "type": "object",
+  "required": [
+    "report_id",
+    "title",
+    "schema_version",
+    "analysis_version",
+    "status",
+    "research_plan",
+    "data_snapshot_id",
+    "scope",
+    "samples",
+    "metric_definitions",
+    "metrics",
+    "tables",
+    "charts",
+    "findings",
+    "evidence",
+    "limitations",
+    "sections",
+    "method",
+    "generated_at",
+    "hashes"
+  ],
+  "properties": {
+    "report_id": {
+      "type": "string",
+      "pattern": "^rpt_[0-9a-f]{24}$"
+    },
+    "title": {
+      "type": "string",
+      "minLength": 1
+    },
+    "schema_version": {
+      "const": "report-json/v1"
+    },
+    "analysis_version": {
+      "type": "string"
+    },
+    "status": {
+      "const": "completed"
+    },
+    "research_plan": {
+      "type": "object",
+      "required": [
+        "schema_version",
+        "primary_direction",
+        "analysis_modules",
+        "factors",
+        "config_sha256"
+      ]
+    },
+    "data_snapshot_id": {
+      "type": "string",
+      "pattern": "^snap_[0-9a-f]{24}$"
+    },
+    "scope": {
+      "type": "object",
+      "properties": {
+        "product_form_factors": {
+          "type": "array", "uniqueItems": true,
+          "items": {"enum": ["handheld", "backpack", "wheeled", "stick", "upright", "robot", "unknown"]}
+        },
+        "market_regions": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "enum": ["North America", "Europe", "Australia", "Other"]
+          }
+        },
+        "voltage_platform_keys": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "pattern": "^[^|\\s][^|]*\\|[1-9][0-9]*(?:\\.[0-9]+)?V(?:/[1-9][0-9]*(?:\\.[0-9]+)?V)?$"
+          }
+        },
+        "include_unknown_voltage_platform": {"type": "boolean"},
+        "voltage_platform_ids": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "pattern": "^vpf_[0-9a-f]{20}$"
+          }
+        },
+        "energy_type": {
+          "enum": ["", "all", "corded", "battery", "fuel", "other", "unknown"]
+        },
+        "energy": {
+          "type": "object",
+          "required": ["schema_version", "energy_type", "label"],
+          "properties": {
+            "schema_version": {"const": "voxquarry.task-energy/v1"},
+            "energy_type": {"enum": ["all", "corded", "battery", "fuel", "other", "unknown"]},
+            "label": {"enum": ["全部", "有线", "电池", "燃油", "其他", "未知"]}
+          },
+          "additionalProperties": false
+        },
+        "energy_refs": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": [
+              "job_id", "schema_version", "energy_type", "label",
+              "readiness_status", "evidence_source", "canonical_voltage",
+              "unknown_reason", "contract_status", "product_observation_hash"
+            ],
+            "properties": {
+              "job_id": {"type": "string", "minLength": 1},
+              "schema_version": {"enum": ["voxquarry.task-energy/v1", null]},
+              "energy_type": {"enum": ["corded", "battery", "fuel", "other", "unknown"]},
+              "label": {"enum": ["有线", "电池", "燃油", "其他", "未知"]},
+              "readiness_status": {"enum": ["ready", "metadata_incomplete", null]},
+              "evidence_source": {
+                "oneOf": [
+                  {"type": "string", "minLength": 1},
+                  {"type": "null"}
+                ]
+              },
+              "canonical_voltage": {
+                "oneOf": [
+                  {"type": "string", "pattern": "^[1-9][0-9]*(?:\\.[0-9]+)?V(?:/[1-9][0-9]*(?:\\.[0-9]+)?V)?$"},
+                  {"type": "null"}
+                ]
+              },
+              "unknown_reason": {
+                "enum": ["energy_type_required", "battery_voltage_required", "legacy_null", null]
+              },
+              "contract_status": {"enum": ["verified", "legacy_null"]},
+              "product_observation_hash": {
+                "oneOf": [
+                  {"type": "string", "pattern": "^sha256:[0-9a-f]{64}$"},
+                  {"type": "null"}
+                ]
+              }
+            },
+            "additionalProperties": false
+          }
+        },
+        "energy_selection": {
+          "type": "object",
+          "required": [
+            "schema_version", "source_snapshot", "category_reportable_job_count",
+            "category_energy_job_count", "selected_job_count",
+            "excluded_other_energy_job_count", "selected_governed_job_count",
+            "selected_legacy_null_job_count"
+          ],
+          "properties": {
+            "schema_version": {"const": "voxquarry.reporting-energy-selection/v1"},
+            "source_snapshot": {
+              "type": "object",
+              "required": ["snapshot_id", "schema_version", "content_sha256"],
+              "properties": {
+                "snapshot_id": {
+                  "type": "string",
+                  "pattern": "^prod_v2_[0-9a-f]{24}$"
+                },
+                "schema_version": {
+                  "const": "voxquarry-reporting-snapshot/v2"
+                },
+                "content_sha256": {
+                  "type": "string",
+                  "pattern": "^sha256:[0-9a-f]{64}$"
+                }
+              },
+              "additionalProperties": false
+            },
+            "category_reportable_job_count": {"type": "integer", "minimum": 0},
+            "category_energy_job_count": {"type": "integer", "minimum": 0},
+            "category_energy_task_counts": {
+              "type": "object",
+              "required": ["corded", "battery", "fuel", "other", "unknown"],
+              "properties": {
+                "corded": {"type": "integer", "minimum": 0},
+                "battery": {"type": "integer", "minimum": 0},
+                "fuel": {"type": "integer", "minimum": 0},
+                "other": {"type": "integer", "minimum": 0},
+                "unknown": {"type": "integer", "minimum": 0}
+              },
+              "additionalProperties": false
+            },
+            "category_energy_review_counts": {
+              "type": "object",
+              "required": ["corded", "battery", "fuel", "other", "unknown"],
+              "properties": {
+                "corded": {"type": "integer", "minimum": 0},
+                "battery": {"type": "integer", "minimum": 0},
+                "fuel": {"type": "integer", "minimum": 0},
+                "other": {"type": "integer", "minimum": 0},
+                "unknown": {"type": "integer", "minimum": 0}
+              },
+              "additionalProperties": false
+            },
+            "selected_job_count": {"type": "integer", "minimum": 1},
+            "excluded_other_energy_job_count": {"type": "integer", "minimum": 0},
+            "selected_governed_job_count": {"type": "integer", "minimum": 0},
+            "selected_legacy_null_job_count": {"type": "integer", "minimum": 0}
+          },
+          "additionalProperties": false
+        },
+        "product_master": {
+          "type": "object",
+          "required": [
+            "schema_version", "snapshot_id", "hash_algorithm", "authority",
+            "analysis_policy_version"
+          ],
+          "properties": {
+            "schema_version": {"const": "retail-product-master/v2"},
+            "snapshot_id": {"type": "string", "pattern": "^pms_[0-9a-f]{64}$"},
+            "hash_algorithm": {"const": "sha256-canonical-json/v1"},
+            "authority": {"const": "chengmu"},
+            "analysis_policy_version": {"const": "retail-analysis-eligibility/v1"}
+          },
+          "additionalProperties": false
+        },
+        "voltage_platforms": {
+          "type": "array",
+          "items": {
+            "oneOf": [
+              {
+                "type": "object",
+                "required": [
+                  "schema_version", "platform_key", "brand",
+                  "canonical_voltage", "display_name"
+                ],
+                "properties": {
+                  "schema_version": {"const": "voxquarry.voltage-platform/v1"},
+                  "platform_key": {"type": "string", "pattern": "^[^|\\s][^|]*\\|[1-9][0-9]*(?:\\.[0-9]+)?V(?:/[1-9][0-9]*(?:\\.[0-9]+)?V)?$"},
+                  "brand": {"type": "string", "minLength": 1},
+                  "canonical_voltage": {"type": "string", "pattern": "^[1-9][0-9]*(?:\\.[0-9]+)?V(?:/[1-9][0-9]*(?:\\.[0-9]+)?V)?$"},
+                  "display_name": {"type": "string", "minLength": 1}
+                },
+                "additionalProperties": false
+              },
+              {
+                "type": "object",
+                "required": [
+                  "voltage_platform_id", "brand_id", "brand_name",
+                  "canonical_voltage", "display_name"
+                ],
+                "properties": {
+                  "voltage_platform_id": {"type": "string", "pattern": "^vpf_[0-9a-f]{20}$"},
+                  "brand_id": {"type": "string", "pattern": "^brd_[0-9a-f]{20}$"},
+                  "brand_name": {"type": "string", "minLength": 1},
+                  "canonical_voltage": {"type": "string", "pattern": "^[0-9]+(?:\\.[0-9]+)?V$"},
+                  "display_name": {"type": "string", "minLength": 1}
+                },
+                "additionalProperties": false
+              }
+            ]
+          }
+        },
+        "voltage_platform_refs": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": [
+              "job_id", "schema_version", "status", "platform_key", "brand",
+              "canonical_voltage", "display_name", "evidence_source",
+              "null_reason", "product_observation_hash"
+            ],
+            "properties": {
+              "job_id": {"type": "string", "minLength": 1},
+              "schema_version": {"type": ["string", "null"]},
+              "status": {"enum": ["known", "unknown"]},
+              "platform_key": {"type": ["string", "null"]},
+              "brand": {"type": ["string", "null"]},
+              "canonical_voltage": {"type": ["string", "null"]},
+              "display_name": {"type": ["string", "null"]},
+              "evidence_source": {"type": ["string", "null"]},
+              "null_reason": {"type": ["string", "null"]},
+              "product_observation_hash": {"type": ["string", "null"]}
+            },
+            "additionalProperties": false
+          }
+        },
+        "model_refs": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": [
+              "job_id", "product_master_schema_version",
+              "product_master_snapshot_id", "product_master_model_id",
+              "product_master_entity_version",
+              "product_master_record_snapshot_hash"
+            ],
+            "properties": {
+              "job_id": {"type": "string", "minLength": 1},
+              "product_master_schema_version": {"const": "retail-product-master/v2"},
+              "product_master_snapshot_id": {"type": "string", "pattern": "^pms_[0-9a-f]{64}$"},
+              "product_master_model_id": {"type": "string", "pattern": "^pvr_[0-9a-f]{20}$"},
+              "product_master_entity_version": {"type": "integer", "minimum": 1},
+              "product_master_record_snapshot_hash": {"type": "string", "pattern": "^sha256:[0-9a-f]{64}$"}
+            },
+            "additionalProperties": false
+          }
+        }
+      }
+    },
+    "quality": {
+      "type": "object",
+      "required": [
+        "schema_version",
+        "source_completeness",
+        "limited_source_jobs"
+      ],
+      "properties": {
+        "schema_version": {"const": "report-data-quality/v1"},
+        "source_completeness": {
+          "type": "array",
+          "items": {
+            "$ref": "source-completeness-audit-v1.schema.json"
+          }
+        },
+        "limited_source_jobs": {"type": "integer", "minimum": 0},
+        "non_reportable_exclusions": {
+          "type": "array",
+          "items": {"type": "object"}
+        },
+        "non_reportable_excluded_records": {
+          "type": "integer",
+          "minimum": 0
+        }
+      }
+    },
+    "samples": {
+      "type": "object",
+      "required": [
+        "occurrences",
+        "review_entities",
+        "written_review_entities",
+        "valid_rating_entities"
+      ]
+    },
+    "metric_definitions": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "metric_id",
+          "name",
+          "definition",
+          "unit",
+          "population_unit",
+          "version"
+        ]
+      }
+    },
+    "metrics": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "metric_id",
+          "value",
+          "sample_size",
+          "population_unit",
+          "filters",
+          "evidence_ids",
+          "quality_flags"
+        ]
+      }
+    },
+    "tables": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "table_id",
+          "title",
+          "columns",
+          "rows",
+          "denominator_note",
+          "default_sort"
+        ]
+      }
+    },
+    "charts": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "chart_id",
+          "title",
+          "type",
+          "table_id",
+          "encodings"
+        ]
+      }
+    },
+    "findings": {
+      "type": "array"
+    },
+    "evidence": {
+      "type": "array"
+    },
+    "limitations": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["code", "severity", "message"]
+      }
+    },
+    "sections": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["section_id", "title", "table_refs"]
+      }
+    },
+    "method": {
+      "type": "object",
+      "required": [
+        "llm_used",
+        "core_numbers_source",
+        "factor_extraction",
+        "low_sample_threshold"
+      ],
+      "properties": {
+        "llm_used": {
+          "const": false
+        }
+      }
+    },
+    "generated_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "hashes": {
+      "type": "object",
+      "required": ["data", "config", "core_result"],
+      "properties": {
+        "data": {
+          "type": "string",
+          "pattern": "^sha256:[0-9a-f]{64}$"
+        },
+        "config": {
+          "type": "string",
+          "pattern": "^sha256:[0-9a-f]{64}$"
+        },
+        "core_result": {
+          "type": "string",
+          "pattern": "^sha256:[0-9a-f]{64}$"
+        }
+      }
+    }
+  },
+  "additionalProperties": true
+}

@@ -1,0 +1,155 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://voxquarry.local/schemas/structured-refresh-history-repair-plan-v2.schema.json",
+  "title": "VoxQuarry structured refresh history multi-repair plan v2",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "history_sha256", "observed_at", "repairs"],
+  "properties": {
+    "schema_version": {
+      "const": "voxquarry.structured-refresh-history-repair-plan/v2"
+    },
+    "history_sha256": { "$ref": "#/$defs/sha256" },
+    "observed_at": { "type": "string", "format": "date-time" },
+    "repairs": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "$ref": "#/$defs/repair" }
+    }
+  },
+  "$defs": {
+    "sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "nullableSha256": {
+      "oneOf": [{ "type": "null" }, { "$ref": "#/$defs/sha256" }]
+    },
+    "authority": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "schema_version",
+        "reconstruction_policy",
+        "batch_ids",
+        "job_ids",
+        "source_content_fingerprint",
+        "readiness_record_sha256",
+        "task_record_sha256",
+        "event_record_sha256",
+        "incident_record_sha256",
+        "source_records"
+      ],
+      "properties": {
+        "schema_version": {
+          "const": "voxquarry.structured-refresh-history-repair-authority/v1"
+        },
+        "reconstruction_policy": {
+          "enum": [
+            "voxquarry.authoritative-failed-history-regeneration/v1",
+            "voxquarry.authoritative-failed-history-quarantine/v1"
+          ]
+        },
+        "batch_ids": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": { "type": "string", "pattern": "^acq_[0-9a-f]{24}$" }
+        },
+        "job_ids": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": { "type": "string", "pattern": "^[0-9a-f]{12}$" }
+        },
+        "source_content_fingerprint": { "$ref": "#/$defs/sha256" },
+        "readiness_record_sha256": { "$ref": "#/$defs/sha256" },
+        "task_record_sha256": { "$ref": "#/$defs/sha256" },
+        "event_record_sha256": { "$ref": "#/$defs/sha256" },
+        "incident_record_sha256": { "$ref": "#/$defs/sha256" },
+        "source_records": {
+          "type": "array",
+          "minItems": 4,
+          "maxItems": 4,
+          "items": { "$ref": "#/$defs/sourceRecord" }
+        }
+      }
+    },
+    "sourceRecord": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["kind", "schema_version", "sha256", "payload"],
+      "properties": {
+        "kind": { "enum": ["readiness", "task", "event", "incident"] },
+        "schema_version": { "type": "string", "minLength": 1 },
+        "sha256": { "$ref": "#/$defs/sha256" },
+        "payload": { "type": "object" }
+      }
+    },
+    "repair": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "action",
+        "damaged_line_number",
+        "damaged_line_sha256",
+        "fragment_sha256",
+        "suffix_event_sha256",
+        "previous_line_sha256",
+        "following_line_sha256",
+        "incident_evidence_sha256",
+        "authority"
+      ],
+      "oneOf": [
+        {
+          "properties": {
+            "action": { "const": "regenerate_failed_event" }
+          },
+          "required": [
+            "fragment_classification",
+            "original_trigger",
+            "regenerated_event",
+            "regenerated_event_sha256"
+          ],
+          "not": { "required": ["quarantine_reason"] }
+        },
+        {
+          "properties": {
+            "action": { "const": "quarantine_failed_fragment" }
+          },
+          "required": ["quarantine_reason"],
+          "not": {
+            "anyOf": [
+              { "required": ["fragment_classification"] },
+              { "required": ["original_trigger"] },
+              { "required": ["regenerated_event"] },
+              { "required": ["regenerated_event_sha256"] }
+            ]
+          }
+        }
+      ],
+      "properties": {
+        "action": {
+          "enum": ["regenerate_failed_event", "quarantine_failed_fragment"]
+        },
+        "damaged_line_number": { "type": "integer", "minimum": 1 },
+        "damaged_line_sha256": { "$ref": "#/$defs/sha256" },
+        "fragment_sha256": { "$ref": "#/$defs/sha256" },
+        "suffix_event_sha256": { "$ref": "#/$defs/sha256" },
+        "previous_line_sha256": { "$ref": "#/$defs/nullableSha256" },
+        "following_line_sha256": { "$ref": "#/$defs/nullableSha256" },
+        "fragment_classification": { "const": "failed_event_fragment" },
+        "incident_evidence_sha256": { "$ref": "#/$defs/sha256" },
+        "original_trigger": {
+          "enum": ["event_poll", "daily_fallback", "manual"]
+        },
+        "regenerated_event": { "type": "object" },
+        "regenerated_event_sha256": { "$ref": "#/$defs/sha256" },
+        "quarantine_reason": {
+          "enum": [
+            "authoritative_event_unavailable",
+            "authoritative_event_not_unique"
+          ]
+        },
+        "authority": { "$ref": "#/$defs/authority" }
+      }
+    }
+  }
+}

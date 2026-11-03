@@ -1,0 +1,137 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://voxquarry.local/schemas/zhuojian-tool-envelope-v1.schema.json",
+  "title": "VoxQuarry Zhuojian Agent Tool Envelope v1",
+  "type": "object",
+  "required": [
+    "contract",
+    "tool",
+    "status",
+    "snapshot",
+    "report",
+    "authority",
+    "quality",
+    "limitations",
+    "citations",
+    "page",
+    "error",
+    "data"
+  ],
+  "properties": {
+    "contract": {"const": "zhuojian-agent-tools/v1"},
+    "tool": {"type": "string", "minLength": 1},
+    "status": {"enum": ["ok", "error"]},
+    "snapshot": {"anyOf": [{"$ref": "#/$defs/snapshot"}, {"type": "null"}]},
+    "report": {"anyOf": [{"$ref": "#/$defs/report"}, {"type": "null"}]},
+    "authority": {"anyOf": [{"$ref": "#/$defs/authority"}, {"type": "null"}]},
+    "quality": {"$ref": "#/$defs/quality"},
+    "limitations": {"type": "array", "items": {"$ref": "#/$defs/limitation"}},
+    "citations": {
+      "type": "array",
+      "items": {"$ref": "#/$defs/citation"}
+    },
+    "page": {"anyOf": [{"$ref": "#/$defs/page"}, {"type": "null"}]},
+    "error": {"anyOf": [{"$ref": "#/$defs/error"}, {"type": "null"}]},
+    "data": {}
+  },
+  "$defs": {
+    "snapshot": {
+      "type": "object",
+      "required": ["snapshot_id", "schema_version", "content_sha256"],
+      "properties": {
+        "snapshot_id": {"type": "string"},
+        "schema_version": {"type": "string"},
+        "content_sha256": {"type": ["string", "null"]}
+      },
+      "additionalProperties": false
+    },
+    "report": {
+      "type": "object",
+      "required": ["report_id", "schema_version", "analysis_version", "title", "status", "generated_at"],
+      "properties": {
+        "report_id": {"type": "string"},
+        "schema_version": {"type": "string"},
+        "analysis_version": {"type": "string"},
+        "title": {"type": "string"},
+        "status": {"type": "string"},
+        "generated_at": {"type": "string"}
+      },
+      "additionalProperties": false
+    },
+    "authority": {
+      "type": "object",
+      "required": ["authority_id", "principal_id", "scope_mode", "allowed_report_count", "allow_archived"],
+      "properties": {
+        "authority_id": {"type": "string"},
+        "principal_id": {"type": "string"},
+        "scope_mode": {"enum": ["all_reports", "report_allowlist"]},
+        "allowed_report_count": {"type": ["integer", "null"], "minimum": 0},
+        "allow_archived": {"type": "boolean"}
+      },
+      "additionalProperties": false
+    },
+    "quality": {
+      "type": "object",
+      "required": ["status", "limitation_count", "report_quality"],
+      "properties": {
+        "status": {"enum": ["available", "limited", "not_applicable", "unknown"]},
+        "limitation_count": {"type": "integer", "minimum": 0},
+        "report_quality": {"type": ["object", "null"]}
+      },
+      "additionalProperties": false
+    },
+    "limitation": {
+      "type": "object",
+      "required": ["code", "severity", "message"],
+      "properties": {
+        "code": {"type": "string"},
+        "severity": {"type": "string"},
+        "message": {"type": "string"}
+      },
+      "additionalProperties": false
+    },
+    "citation": {
+      "type": "object",
+      "required": ["contract", "citation_id", "citation_type", "report_id", "snapshot_id", "metric_id", "evidence_group_id", "evidence_id", "stable_uri", "label", "source_url", "quote_sha256"],
+      "properties": {
+        "contract": {"const": "zhuojian-citation/v1"},
+        "citation_id": {"type": "string", "pattern": "^cit_[0-9a-f]{24}$"},
+        "citation_type": {"enum": ["report", "metric", "evidence_group", "evidence"]},
+        "report_id": {"type": "string"},
+        "snapshot_id": {"type": "string"},
+        "metric_id": {"type": ["string", "null"]},
+        "evidence_group_id": {"type": ["string", "null"]},
+        "evidence_id": {"type": ["string", "null"]},
+        "stable_uri": {"type": "string", "pattern": "^voxquarry://zhuojian/"},
+        "label": {"type": "string"},
+        "source_url": {"type": ["string", "null"]},
+        "quote_sha256": {"type": ["string", "null"], "pattern": "^sha256:[0-9a-f]{64}$"}
+      },
+      "additionalProperties": false
+    },
+    "page": {
+      "type": "object",
+      "required": ["offset", "limit", "returned", "total", "next_offset", "has_more"],
+      "properties": {
+        "offset": {"type": "integer", "minimum": 0},
+        "limit": {"type": "integer", "minimum": 1, "maximum": 100},
+        "returned": {"type": "integer", "minimum": 0},
+        "total": {"type": "integer", "minimum": 0},
+        "next_offset": {"type": ["integer", "null"], "minimum": 0},
+        "has_more": {"type": "boolean"}
+      },
+      "additionalProperties": false
+    },
+    "error": {
+      "type": "object",
+      "required": ["code", "message", "retryable"],
+      "properties": {
+        "code": {"type": "string"},
+        "message": {"type": "string"},
+        "retryable": {"type": "boolean"}
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}

@@ -1,0 +1,663 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://voxquarry.local/schemas/voxquarry-wenquan-grounded-answer-v1.schema.json",
+  "title": "VoxQuarry Wenquan Grounded Answer v1",
+  "description": "Successful assistant-message metadata from read-only report Q&A. Text is rendered from saved source facts. This structural contract does not replace runtime checks of report/snapshot identity, claim-to-citation membership, content hashes, or citation validity. Failed, blocked, and cancelled messages must not carry this contract.",
+  "type": "object",
+  "required": [
+    "contract",
+    "request_id",
+    "report_id",
+    "claims",
+    "citations",
+    "limitations",
+    "report",
+    "snapshot",
+    "usage",
+    "model",
+    "model_calls",
+    "duration_ms",
+    "fact_ids"
+  ],
+  "properties": {
+    "contract": {
+      "const": "voxquarry-wenquan-grounded-answer/v1"
+    },
+    "request_id": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9_-]{8,100}$"
+    },
+    "report_id": {
+      "$ref": "#/$defs/reportId"
+    },
+    "claims": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 12,
+      "items": {
+        "$ref": "#/$defs/claim"
+      }
+    },
+    "citations": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 50,
+      "uniqueItems": true,
+      "items": {
+        "$ref": "#/$defs/citation"
+      }
+    },
+    "limitations": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "code",
+          "severity",
+          "message"
+        ],
+        "properties": {
+          "code": {
+            "type": "string"
+          },
+          "severity": {
+            "type": "string"
+          },
+          "message": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "report": {
+      "type": "object",
+      "required": [
+        "report_id",
+        "schema_version",
+        "analysis_version",
+        "title",
+        "status",
+        "generated_at"
+      ],
+      "properties": {
+        "report_id": {
+          "$ref": "#/$defs/reportId"
+        },
+        "schema_version": {
+          "type": "string",
+          "minLength": 1
+        },
+        "analysis_version": {
+          "type": "string",
+          "minLength": 1
+        },
+        "title": {
+          "type": "string",
+          "minLength": 1
+        },
+        "status": {
+          "const": "completed"
+        },
+        "generated_at": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "additionalProperties": false
+    },
+    "snapshot": {
+      "type": "object",
+      "required": [
+        "snapshot_id",
+        "schema_version",
+        "content_sha256"
+      ],
+      "properties": {
+        "snapshot_id": {
+          "$ref": "#/$defs/id"
+        },
+        "schema_version": {
+          "type": "string",
+          "minLength": 1
+        },
+        "content_sha256": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/hash"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "additionalProperties": false
+    },
+    "usage": {
+      "type": "object",
+      "required": [],
+      "properties": {
+        "prompt_tokens": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "completion_tokens": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "total_tokens": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "prompt_tokens_details": {
+          "type": "object",
+          "required": [],
+          "properties": {
+            "cached_tokens": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "audio_tokens": {
+              "type": "integer",
+              "minimum": 0
+            }
+          },
+          "additionalProperties": false
+        },
+        "completion_tokens_details": {
+          "type": "object",
+          "required": [],
+          "properties": {
+            "reasoning_tokens": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "audio_tokens": {
+              "type": "integer",
+              "minimum": 0
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    },
+    "model": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "minLength": 1,
+      "maxLength": 160
+    },
+    "model_calls": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 2
+    },
+    "duration_ms": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "fact_ids": {
+      "type": "array",
+      "maxItems": 6,
+      "uniqueItems": true,
+      "items": {
+        "$ref": "#/$defs/factId"
+      }
+    },
+    "evidence_status": {
+      "const": "unavailable",
+      "description": "The saved report has no readable evidence sidecar; successful claims use other saved report facts."
+    }
+  },
+  "additionalProperties": false,
+  "$defs": {
+    "id": {
+      "type": "string",
+      "pattern": "^[A-Za-z][A-Za-z0-9._:@/-]{0,179}$"
+    },
+    "reportId": {
+      "type": "string",
+      "pattern": "^rpt_[A-Za-z0-9_-]{8,80}$"
+    },
+    "citationId": {
+      "type": "string",
+      "pattern": "^cit_[0-9a-f]{24}$"
+    },
+    "hash": {
+      "type": "string",
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    },
+    "factId": {
+      "type": "string",
+      "pattern": "^(?:scope|quality|metric:[A-Za-z][A-Za-z0-9._:@/-]{0,159}|finding:[A-Za-z][A-Za-z0-9._:@/-]{0,159}|table:[A-Za-z][A-Za-z0-9._:@/-]{0,159}:[0-9]+)$"
+    },
+    "claim": {
+      "type": "object",
+      "required": [
+        "claim_type",
+        "text",
+        "report_id",
+        "snapshot_id",
+        "analysis_version",
+        "source_sha256",
+        "source_pointer",
+        "citation_ids"
+      ],
+      "properties": {
+        "claim_type": {
+          "enum": [
+            "metric",
+            "saved_finding",
+            "saved_table_row",
+            "scope",
+            "data_quality",
+            "evidence"
+          ]
+        },
+        "fact_id": {
+          "$ref": "#/$defs/factId"
+        },
+        "title": {
+          "type": "string",
+          "minLength": 1
+        },
+        "text": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 6500
+        },
+        "report_id": {
+          "$ref": "#/$defs/reportId"
+        },
+        "snapshot_id": {
+          "$ref": "#/$defs/id"
+        },
+        "analysis_version": {
+          "type": "string",
+          "minLength": 1
+        },
+        "source_sha256": {
+          "$ref": "#/$defs/hash"
+        },
+        "source_pointer": {
+          "type": "object"
+        },
+        "citation_ids": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 50,
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/citationId"
+          }
+        }
+      },
+      "additionalProperties": false,
+      "oneOf": [
+        {
+          "required": [
+            "fact_id",
+            "title"
+          ],
+          "properties": {
+            "claim_type": {
+              "const": "metric"
+            },
+            "fact_id": {
+              "type": "string",
+              "pattern": "^metric:[A-Za-z][A-Za-z0-9._:@/-]{0,159}$"
+            },
+            "source_pointer": {
+              "type": "object",
+              "required": [
+                "metric_id"
+              ],
+              "properties": {
+                "metric_id": {
+                  "$ref": "#/$defs/id"
+                }
+              },
+              "additionalProperties": false
+            }
+          }
+        },
+        {
+          "required": [
+            "fact_id",
+            "title"
+          ],
+          "properties": {
+            "claim_type": {
+              "const": "saved_finding"
+            },
+            "fact_id": {
+              "type": "string",
+              "pattern": "^finding:[A-Za-z][A-Za-z0-9._:@/-]{0,159}$"
+            },
+            "source_pointer": {
+              "type": "object",
+              "required": [
+                "finding_id"
+              ],
+              "properties": {
+                "finding_id": {
+                  "$ref": "#/$defs/id"
+                }
+              },
+              "additionalProperties": false
+            }
+          }
+        },
+        {
+          "required": [
+            "fact_id",
+            "title"
+          ],
+          "properties": {
+            "claim_type": {
+              "const": "saved_table_row"
+            },
+            "fact_id": {
+              "type": "string",
+              "pattern": "^table:[A-Za-z][A-Za-z0-9._:@/-]{0,159}:[0-9]+$"
+            },
+            "source_pointer": {
+              "type": "object",
+              "required": [
+                "table_id",
+                "row_index",
+                "row_sha256"
+              ],
+              "properties": {
+                "table_id": {
+                  "$ref": "#/$defs/id"
+                },
+                "row_index": {
+                  "type": "integer",
+                  "minimum": 0
+                },
+                "row_sha256": {
+                  "$ref": "#/$defs/hash"
+                }
+              },
+              "additionalProperties": false
+            }
+          }
+        },
+        {
+          "required": [
+            "fact_id",
+            "title"
+          ],
+          "properties": {
+            "claim_type": {
+              "const": "scope"
+            },
+            "fact_id": {
+              "type": "string",
+              "pattern": "^scope$"
+            },
+            "source_pointer": {
+              "type": "object",
+              "required": [
+                "field"
+              ],
+              "properties": {
+                "field": {
+                  "const": "scope"
+                }
+              },
+              "additionalProperties": false
+            }
+          }
+        },
+        {
+          "required": [
+            "fact_id",
+            "title"
+          ],
+          "properties": {
+            "claim_type": {
+              "const": "data_quality"
+            },
+            "fact_id": {
+              "type": "string",
+              "pattern": "^quality$"
+            },
+            "source_pointer": {
+              "type": "object",
+              "required": [
+                "field"
+              ],
+              "properties": {
+                "field": {
+                  "const": "limitations"
+                }
+              },
+              "additionalProperties": false
+            }
+          }
+        },
+        {
+          "properties": {
+            "claim_type": {
+              "const": "evidence"
+            },
+            "source_pointer": {
+              "type": "object",
+              "required": [
+                "evidence_group_id",
+                "evidence_id"
+              ],
+              "properties": {
+                "evidence_group_id": {
+                  "$ref": "#/$defs/id"
+                },
+                "evidence_id": {
+                  "$ref": "#/$defs/id"
+                }
+              },
+              "additionalProperties": false
+            }
+          },
+          "not": {
+            "anyOf": [
+              {
+                "required": [
+                  "fact_id"
+                ]
+              },
+              {
+                "required": [
+                  "title"
+                ]
+              }
+            ]
+          }
+        }
+      ]
+    },
+    "citation": {
+      "type": "object",
+      "required": [
+        "contract",
+        "citation_id",
+        "citation_type",
+        "report_id",
+        "snapshot_id",
+        "metric_id",
+        "evidence_group_id",
+        "evidence_id",
+        "stable_uri",
+        "label",
+        "source_url",
+        "quote_sha256",
+        "href"
+      ],
+      "properties": {
+        "contract": {
+          "const": "zhuojian-citation/v1"
+        },
+        "citation_id": {
+          "$ref": "#/$defs/citationId"
+        },
+        "citation_type": {
+          "enum": [
+            "report",
+            "metric",
+            "evidence_group",
+            "evidence"
+          ]
+        },
+        "report_id": {
+          "$ref": "#/$defs/reportId"
+        },
+        "snapshot_id": {
+          "$ref": "#/$defs/id"
+        },
+        "metric_id": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/id"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "evidence_group_id": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/id"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "evidence_id": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/id"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "stable_uri": {
+          "type": "string",
+          "pattern": "^voxquarry://zhuojian/reports/rpt_[A-Za-z0-9_-]{8,80}"
+        },
+        "label": {
+          "type": "string"
+        },
+        "source_url": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "quote_sha256": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/hash"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "href": {
+          "type": "string",
+          "pattern": "^/(?:\\?report=rpt_[A-Za-z0-9_-]{8,80}#insights|reporting/api/v1/reports/rpt_[A-Za-z0-9_-]{8,80}/evidence/[A-Za-z0-9%_.~-]+)$",
+          "description": "Local presentation link added after source validation; never a tool target or permission authority."
+        }
+      },
+      "additionalProperties": false,
+      "oneOf": [
+        {
+          "properties": {
+            "citation_type": {
+              "const": "report"
+            },
+            "metric_id": {
+              "type": "null"
+            },
+            "evidence_group_id": {
+              "type": "null"
+            },
+            "evidence_id": {
+              "type": "null"
+            },
+            "quote_sha256": {
+              "type": "null"
+            }
+          }
+        },
+        {
+          "properties": {
+            "citation_type": {
+              "const": "metric"
+            },
+            "metric_id": {
+              "$ref": "#/$defs/id"
+            },
+            "evidence_group_id": {
+              "type": "null"
+            },
+            "evidence_id": {
+              "type": "null"
+            },
+            "quote_sha256": {
+              "type": "null"
+            }
+          }
+        },
+        {
+          "properties": {
+            "citation_type": {
+              "const": "evidence_group"
+            },
+            "metric_id": {
+              "type": "null"
+            },
+            "evidence_group_id": {
+              "$ref": "#/$defs/id"
+            },
+            "evidence_id": {
+              "type": "null"
+            },
+            "quote_sha256": {
+              "type": "null"
+            }
+          }
+        },
+        {
+          "properties": {
+            "citation_type": {
+              "const": "evidence"
+            },
+            "metric_id": {
+              "type": "null"
+            },
+            "evidence_group_id": {
+              "$ref": "#/$defs/id"
+            },
+            "evidence_id": {
+              "$ref": "#/$defs/id"
+            },
+            "quote_sha256": {
+              "$ref": "#/$defs/hash"
+            }
+          }
+        }
+      ]
+    }
+  }
+}

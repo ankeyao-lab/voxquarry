@@ -1,0 +1,443 @@
+{
+  "schema_version": "voxquarry.shared-master-data-bootstrap/v1",
+  "manifest_id": "voxquarry-public-taxonomy-v1",
+  "evidence": [
+    "collector/product_identity.py:TASK_ENERGY_TYPES",
+    "collector/runner.py:CHANNELS,COLLECTION_CHANNELS,MARKET_REGIONS",
+    "collector/store.py:EXTERNAL_IMPORT_CHANNELS",
+    "collector/main.py:CHANNEL_HOSTS"
+  ],
+  "records": {
+    "energy-types": [
+      {
+        "code": "battery",
+        "name": "Battery",
+        "name_zh": "电池",
+        "active": true,
+        "source_mappings": [
+          {
+            "system": "wotu",
+            "source_value": "battery"
+          }
+        ]
+      },
+      {
+        "code": "corded",
+        "name": "Corded",
+        "name_zh": "有线",
+        "active": true,
+        "source_mappings": [
+          {
+            "system": "wotu",
+            "source_value": "corded"
+          }
+        ]
+      },
+      {
+        "code": "fuel",
+        "name": "Fuel",
+        "name_zh": "燃油",
+        "active": true,
+        "source_mappings": [
+          {
+            "system": "wotu",
+            "source_value": "fuel"
+          }
+        ]
+      },
+      {
+        "code": "other",
+        "name": "Other",
+        "name_zh": "其他",
+        "active": false,
+        "definition": "Legacy unresolved classification; inactive for new bindings.",
+        "source_mappings": [
+          {
+            "system": "wotu",
+            "source_value": "other"
+          }
+        ]
+      },
+      {
+        "code": "unknown",
+        "name": "Unknown",
+        "name_zh": "待识别",
+        "active": false,
+        "definition": "Unresolved source value; inactive for new bindings.",
+        "source_mappings": [
+          {
+            "system": "wotu",
+            "source_value": "unknown"
+          }
+        ]
+      }
+    ],
+    "market-regions": [
+      {
+        "code": "north_america",
+        "name": "North America",
+        "name_zh": "北美",
+        "active": true,
+        "sort_order": 10,
+        "source_mappings": [
+          {
+            "system": "wotu",
+            "source_value": "North America"
+          }
+        ]
+      },
+      {
+        "code": "europe",
+        "name": "Europe",
+        "name_zh": "欧洲",
+        "active": true,
+        "sort_order": 20,
+        "source_mappings": [
+          {
+            "system": "wotu",
+            "source_value": "Europe"
+          }
+        ]
+      },
+      {
+        "code": "australia",
+        "name": "Australia",
+        "name_zh": "澳洲",
+        "active": true,
+        "sort_order": 30,
+        "source_mappings": [
+          {
+            "system": "wotu",
+            "source_value": "Australia"
+          }
+        ]
+      },
+      {
+        "code": "other",
+        "name": "Other",
+        "name_zh": "待识别地区",
+        "active": false,
+        "sort_order": 999,
+        "definition": "Legacy unresolved region; inactive for new bindings.",
+        "source_mappings": [
+          {
+            "system": "wotu",
+            "source_value": "Other"
+          }
+        ]
+      }
+    ],
+    "retailers": [
+      {
+        "code": "home_depot",
+        "name": "Home Depot",
+        "official_domain": "homedepot.com",
+        "active": true
+      },
+      {
+        "code": "lowes",
+        "name": "Lowe's",
+        "official_domain": "lowes.com",
+        "active": true
+      },
+      {
+        "code": "ace_hardware",
+        "name": "Ace Hardware",
+        "official_domain": "acehardware.com",
+        "active": true
+      },
+      {
+        "code": "harbor_freight",
+        "name": "Harbor Freight",
+        "official_domain": "harborfreight.com",
+        "active": true
+      },
+      {
+        "code": "tractor_supply",
+        "name": "Tractor Supply",
+        "official_domain": "tractorsupply.com",
+        "active": true
+      },
+      {
+        "code": "walmart",
+        "name": "Walmart",
+        "official_domain": "walmart.com",
+        "active": true
+      },
+      {
+        "code": "amazon",
+        "name": "Amazon",
+        "official_domain": "amazon.com",
+        "active": true
+      }
+    ],
+    "collection-channels": [
+      {
+        "code": "lowes",
+        "name": "Lowe's",
+        "channel_type": "retailer_web",
+        "retailer_id": "rtl_17174028b0c0f1cee80a",
+        "supported_content": [
+          "review"
+        ],
+        "active": true
+      },
+      {
+        "code": "homedepot",
+        "name": "Home Depot",
+        "channel_type": "retailer_web",
+        "retailer_id": "rtl_461aee37caa58a211450",
+        "supported_content": [
+          "review"
+        ],
+        "active": true
+      },
+      {
+        "code": "ace",
+        "name": "Ace Hardware",
+        "channel_type": "retailer_web",
+        "retailer_id": "rtl_5a4ac6d86c3cad2a7037",
+        "supported_content": [
+          "review"
+        ],
+        "active": true
+      },
+      {
+        "code": "ego",
+        "name": "EGO Official",
+        "channel_type": "brand_official",
+        "brand_id": "brd_a55e71bab387c8dea1d2",
+        "supported_content": [
+          "review"
+        ],
+        "active": true
+      },
+      {
+        "code": "ryobi",
+        "name": "RYOBI Official",
+        "channel_type": "brand_official",
+        "brand_id": "brd_885316555fa2f8e414f9",
+        "supported_content": [
+          "review"
+        ],
+        "active": true
+      },
+      {
+        "code": "milwaukee",
+        "name": "Milwaukee Official",
+        "channel_type": "brand_official",
+        "brand_id": "brd_0b8f9249967be39e1322",
+        "supported_content": [
+          "review"
+        ],
+        "active": true
+      },
+      {
+        "code": "dewalt",
+        "name": "DEWALT Official",
+        "channel_type": "brand_official",
+        "brand_id": "brd_fba18cf288773d4b6f4f",
+        "supported_content": [
+          "review"
+        ],
+        "active": true
+      },
+      {
+        "code": "einhell",
+        "name": "Einhell Official",
+        "channel_type": "brand_official",
+        "brand_id": "brd_1a9efe0c3cbc98e2ee62",
+        "supported_content": [
+          "review"
+        ],
+        "active": true
+      },
+      {
+        "code": "harborfreight",
+        "name": "Harbor Freight",
+        "channel_type": "retailer_web",
+        "retailer_id": "rtl_79920f52f70de2e296d3",
+        "supported_content": [
+          "review"
+        ],
+        "active": true
+      },
+      {
+        "code": "tractorsupply",
+        "name": "Tractor Supply",
+        "channel_type": "retailer_web",
+        "retailer_id": "rtl_85ed8acb889f8e3ef1f5",
+        "supported_content": [
+          "review"
+        ],
+        "active": true
+      },
+      {
+        "code": "amazon_reviews_2023",
+        "name": "Amazon Reviews 2023",
+        "channel_type": "historical_import",
+        "retailer_id": "rtl_23f67109ccb97ffb3621",
+        "supported_content": [
+          "review"
+        ],
+        "active": true
+      },
+      {
+        "code": "amazon_live",
+        "name": "Amazon Live Import",
+        "channel_type": "file",
+        "retailer_id": "rtl_23f67109ccb97ffb3621",
+        "supported_content": [
+          "review"
+        ],
+        "active": true
+      },
+      {
+        "code": "skil",
+        "name": "SKIL Official",
+        "channel_type": "brand_official",
+        "brand_id": "brd_77b98cd4e5c795ef42d6",
+        "supported_content": [
+          "review"
+        ],
+        "active": true
+      },
+      {
+        "code": "walmart",
+        "name": "Walmart",
+        "channel_type": "retailer_web",
+        "retailer_id": "rtl_cddfb0e40d4f3f1c3db2",
+        "supported_content": [
+          "review"
+        ],
+        "active": true
+      },
+      {
+        "code": "stihl",
+        "name": "STIHL Official",
+        "channel_type": "brand_official",
+        "brand_id": "brd_41883c7efc0988a716a1",
+        "supported_content": [
+          "review"
+        ],
+        "active": true
+      },
+      {
+        "code": "husqvarna",
+        "name": "Husqvarna Official",
+        "channel_type": "brand_official",
+        "brand_id": "brd_2e4d52a755de45ff0d7d",
+        "supported_content": [
+          "review"
+        ],
+        "active": true
+      },
+      {
+        "code": "toro",
+        "name": "Toro Official",
+        "channel_type": "brand_official",
+        "brand_id": "brd_98e275b5bbd862df35fe",
+        "supported_content": [
+          "review"
+        ],
+        "active": true
+      },
+      {
+        "code": "johndeere",
+        "name": "John Deere Official",
+        "channel_type": "brand_official",
+        "brand_id": "brd_5e2eecb8f2a8451c02a4",
+        "supported_content": [
+          "review"
+        ],
+        "active": true
+      },
+      {
+        "code": "exmark",
+        "name": "Exmark Official",
+        "channel_type": "brand_official",
+        "brand_id": "brd_2e56bb85d5bde8dff975",
+        "supported_content": [
+          "review"
+        ],
+        "active": true
+      },
+      {
+        "code": "greenworks",
+        "name": "Greenworks Official",
+        "channel_type": "brand_official",
+        "brand_id": "brd_16990680d38874f4a1f2",
+        "supported_content": [
+          "review"
+        ],
+        "active": true
+      }
+    ]
+  },
+  "legacy_overrides": {
+    "brands": {
+      "Unbranded": {
+        "action": "import_inactive",
+        "reason": "Placeholder is not a canonical brand."
+      },
+      "1500W": {
+        "action": "unresolved",
+        "reason": "Production review identified this as a suspected specification value, not an approved brand."
+      },
+      "210CC": {
+        "action": "unresolved",
+        "reason": "Production review identified this as a suspected specification value, not an approved brand."
+      },
+      "288VF": {
+        "action": "unresolved",
+        "reason": "Production review identified this as a suspected specification value, not an approved brand."
+      },
+      "3600PSI": {
+        "action": "unresolved",
+        "reason": "Production review identified this as a suspected specification value, not an approved brand."
+      },
+      "Cordless": {
+        "action": "unresolved",
+        "reason": "Production review identified this as a suspected energy descriptor, not an approved brand."
+      },
+      "Electric": {
+        "action": "unresolved",
+        "reason": "Production review identified this as a suspected energy descriptor, not an approved brand."
+      }
+    },
+    "categories": {
+      "Unknown Category": {
+        "action": "import_inactive",
+        "reason": "Unresolved placeholder is inactive for new bindings."
+      }
+    }
+  },
+  "unresolved": [
+    {
+      "scope": "chengmu.energy_type",
+      "values": [
+        "Gas",
+        "AC",
+        "DC"
+      ],
+      "reason": "Energy and voltage are independent; no mechanical mapping is authorized."
+    },
+    {
+      "scope": "chengmu.market_region",
+      "values": [
+        "Asia"
+      ],
+      "reason": "Not present in the current Wotu governed runtime region set."
+    },
+    {
+      "scope": "voltage-platforms",
+      "values": [],
+      "reason": "Capability is implemented; concrete platform values require reviewed shared-master records."
+    },
+    {
+      "scope": "dimensions,units,product-lifecycle-statuses,currencies",
+      "values": [],
+      "reason": "P1 capabilities are implemented but values remain empty until an approved shared-authority manifest is supplied."
+    }
+  ]
+}

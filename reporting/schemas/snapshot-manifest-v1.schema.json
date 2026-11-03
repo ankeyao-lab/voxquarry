@@ -1,0 +1,76 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://voxquarry.local/schemas/snapshot-manifest-v1.schema.json",
+  "title": "VoxQuarry Immutable Snapshot Manifest v1",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "snapshot_id",
+    "created_at",
+    "analysis_input_version",
+    "parser_version",
+    "normalization_version",
+    "selection_policy_version",
+    "job_ids",
+    "scope",
+    "record_counts",
+    "quality_summary",
+    "inputs",
+    "artifacts",
+    "hashes"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "snapshot-manifest/v1"
+    },
+    "snapshot_id": {
+      "type": "string",
+      "pattern": "^snap_[0-9a-f]{24}$"
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "job_ids": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "type": "string"
+      }
+    },
+    "record_counts": {
+      "type": "object",
+      "required": [
+        "occurrences",
+        "unique_entities",
+        "written_reviews"
+      ],
+      "properties": {
+        "occurrences": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "unique_entities": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "written_reviews": {
+          "type": "integer",
+          "minimum": 0
+        }
+      }
+    },
+    "inputs": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["path", "sha256", "kind"]
+      }
+    },
+    "hashes": {
+      "type": "object",
+      "required": ["input_manifest", "logical_content"]
+    }
+  },
+  "additionalProperties": true
+}

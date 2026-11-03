@@ -1,0 +1,56 @@
+{
+  "schema_version": "retail-product-master/v2",
+  "snapshot_id": "pms_1bc9c639a870456d11d60c3e3084a0f50165cb40eb085119ebeb73c0fca56938",
+  "snapshot_generated_at": "2026-08-14T01:00:00+00:00",
+  "hash_algorithm": "sha256-canonical-json/v1",
+  "authority": "chengmu",
+  "scope": {
+    "review_status": ["approved", "published"],
+    "category_code": "wet_dry_vacuum",
+    "model_ids": [],
+    "voltage_platform_ids": []
+  },
+  "ordering": "category.code, brand.canonical_name(casefold), model_number(casefold), model_id",
+  "pagination": {
+    "mode": "complete",
+    "total_records": 1
+  },
+  "records": [
+    {
+      "model_id": "pvr_84a652f682227528adc1",
+      "entity_version": 2,
+      "product_kind": "single_product",
+      "category": {
+        "category_id": "cat_wet_dry_vacuum",
+        "code": "wet_dry_vacuum",
+        "name": "Wet/Dry Vacuum",
+        "name_zh": "干湿两用吸尘器"
+      },
+      "brand": {
+        "brand_id": "brd_b8204d319dc0125cad19",
+        "canonical_name": "RYOBI"
+      },
+      "model_number": "PCL733B",
+      "product_name": "18V ONE+ 6 Gal. Wet/Dry Vacuum",
+      "energy_type": "DC",
+      "voltage_platform": {
+        "voltage_platform_id": "vpf_4412bee74375a6014f9a",
+        "brand_id": "brd_b8204d319dc0125cad19",
+        "canonical_voltage": "18V",
+        "voltage_value": 18.0,
+        "voltage_unit": "V",
+        "identity_version": "brand-voltage/v1"
+      },
+      "voltage_platform_null_reason": null,
+      "bundle": null,
+      "analysis_eligibility": {
+        "eligible": true,
+        "reason": null,
+        "policy_version": "retail-analysis-eligibility/v1"
+      },
+      "review_status": "approved",
+      "reviewed_at": "2026-08-14T01:00:00+00:00",
+      "record_snapshot_hash": "sha256:25b9e4224104d8135f31ef04b913f58e5a1418c3b094e6382e0ba0c3ecf8b3a1"
+    }
+  ]
+}

@@ -1,0 +1,740 @@
+{
+  "schema_version": "voxquarry.wenquan.grounding-cases/v1",
+  "description": "脱敏人工可判样例；英文评论和数字均为人工构造，不来自真实用户。good_finding与bad_finding都使用合法来源，差异在证据解释。expected_issue与good/bad标签仅供评分，不能传入被测复核模型。",
+  "evaluation_notes": [
+    "每次只给模型question、sources和匿名finding；随机化good/bad顺序。",
+    "两组same_text_different_stars应保持相同功能解释。",
+    "同时统计bad被放过与good被误拒；不能只用拒绝全部坏例评价质量。",
+    "先运行validate_findings；结构拒绝与语义复核结果分开计数。"
+  ],
+  "cases": [
+    {
+      "case_id": "feature_complaint_2_stars",
+      "question": "这条评论对切割和自走操作分别说了什么？",
+      "expected_issue": "不能由整机2星把原文明确肯定的切割效果解释为切割差；自走误触才是这里的抱怨。",
+      "metamorphic_pair": "same_text_different_stars",
+      "sources": {
+        "S1": {
+          "kind": "review",
+          "record_id": "occ-rating-2",
+          "text": "{\"record_id\":\"occ-rating-2\",\"review_occurrence_id\":\"occ-rating-2\",\"review_entity_id\":\"occ-rating-2\",\"business_key_status\":\"complete\",\"rating\":2,\"review_title\":\"Synthetic acceptance fixture\",\"review_text\":\"The mower cuts well. The self-propel button engages accidentally when I turn near the fence.\"}",
+          "quote_text": "The mower cuts well. The self-propel button engages accidentally when I turn near the fence."
+        }
+      },
+      "bad_finding": {
+        "finding_id": "F1",
+        "kind": "experience",
+        "statement": "这位用户认为切割效果很差，自走也不可靠。",
+        "context": "评价对象是当前割草机。",
+        "evidence": [
+          {
+            "source_id": "S1",
+            "quote": "The mower cuts well. The self-propel button engages accidentally when I turn near the fence."
+          }
+        ]
+      },
+      "good_finding": {
+        "finding_id": "F1",
+        "kind": "experience",
+        "statement": "用户肯定切割效果，但反映靠近围栏转弯时自走按钮会误触。",
+        "context": "当前机器；切割与按钮操作是两种不同体验。",
+        "evidence": [
+          {
+            "source_id": "S1",
+            "quote": "The mower cuts well. The self-propel button engages accidentally when I turn near the fence."
+          }
+        ]
+      }
+    },
+    {
+      "case_id": "feature_complaint_5_stars",
+      "question": "这条评论对切割和自走操作分别说了什么？",
+      "expected_issue": "不能由整机5星否定原文明确描述的自走误触；整机评分不替代功能态度。",
+      "metamorphic_pair": "same_text_different_stars",
+      "sources": {
+        "S1": {
+          "kind": "review",
+          "record_id": "occ-rating-5",
+          "text": "{\"record_id\":\"occ-rating-5\",\"review_occurrence_id\":\"occ-rating-5\",\"review_entity_id\":\"occ-rating-5\",\"business_key_status\":\"complete\",\"rating\":5,\"review_title\":\"Synthetic acceptance fixture\",\"review_text\":\"The mower cuts well. The self-propel button engages accidentally when I turn near the fence.\"}",
+          "quote_text": "The mower cuts well. The self-propel button engages accidentally when I turn near the fence."
+        }
+      },
+      "bad_finding": {
+        "finding_id": "F1",
+        "kind": "experience",
+        "statement": "这位用户给了5星，说明自走控制可靠，没有相关抱怨。",
+        "context": "评价对象是当前割草机。",
+        "evidence": [
+          {
+            "source_id": "S1",
+            "quote": "The mower cuts well. The self-propel button engages accidentally when I turn near the fence."
+          }
+        ]
+      },
+      "good_finding": {
+        "finding_id": "F1",
+        "kind": "experience",
+        "statement": "用户肯定切割效果，但反映靠近围栏转弯时自走按钮会误触。",
+        "context": "当前机器；切割与按钮操作是两种不同体验。",
+        "evidence": [
+          {
+            "source_id": "S1",
+            "quote": "The mower cuts well. The self-propel button engages accidentally when I turn near the fence."
+          }
+        ]
+      }
+    },
+    {
+      "case_id": "same_review_repeated_collection",
+      "question": "有几条独立评论反映折叠时释放按钮卡住？",
+      "expected_issue": "两个出现记录的review_entity_id相同，只能算一条独立评论，不能把重复采集当成两位用户。",
+      "sources": {
+        "S1": {
+          "kind": "review",
+          "record_id": "occ-duplicate-1",
+          "text": "{\"record_id\":\"occ-duplicate-1\",\"review_occurrence_id\":\"occ-duplicate-1\",\"review_entity_id\":\"entity-duplicate\",\"business_key_status\":\"complete\",\"rating\":3,\"review_title\":\"Synthetic acceptance fixture\",\"review_text\":\"The handle release stuck once when I folded the mower for storage.\"}",
+          "quote_text": "The handle release stuck once when I folded the mower for storage."
+        },
+        "S2": {
+          "kind": "review",
+          "record_id": "occ-duplicate-2",
+          "text": "{\"record_id\":\"occ-duplicate-2\",\"review_occurrence_id\":\"occ-duplicate-2\",\"review_entity_id\":\"entity-duplicate\",\"business_key_status\":\"complete\",\"rating\":3,\"review_title\":\"Synthetic acceptance fixture\",\"review_text\":\"The handle release stuck once when I folded the mower for storage.\"}",
+          "quote_text": "The handle release stuck once when I folded the mower for storage."
+        }
+      },
+      "bad_finding": {
+        "finding_id": "F1",
+        "kind": "statistic",
+        "statement": "两位用户都遇到折叠时释放按钮卡住。",
+        "context": "这两条采集记录均命中同一体验。",
+        "evidence": [
+          {
+            "source_id": "S1",
+            "quote": "The handle release stuck once when I folded the mower for storage."
+          },
+          {
+            "source_id": "S2",
+            "quote": "The handle release stuck once when I folded the mower for storage."
+          }
+        ]
+      },
+      "good_finding": {
+        "finding_id": "F1",
+        "kind": "statistic",
+        "statement": "只有一条独立评论反映折叠时释放按钮卡住一次。",
+        "context": "两条出现记录属于同一个review_entity_id，应去重。",
+        "evidence": [
+          {
+            "source_id": "S1",
+            "quote": "The handle release stuck once when I folded the mower for storage."
+          },
+          {
+            "source_id": "S2",
+            "quote": "The handle release stuck once when I folded the mower for storage."
+          }
+        ]
+      }
+    },
+    {
+      "case_id": "two_year_failure_is_not_early_failure",
+      "question": "这台机器是在使用早期就坏了吗？",
+      "expected_issue": "原文先正常使用两年，不能归纳成到手即坏或早期失效。",
+      "sources": {
+        "S1": {
+          "kind": "review",
+          "record_id": "occ-two-years",
+          "text": "{\"record_id\":\"occ-two-years\",\"review_occurrence_id\":\"occ-two-years\",\"review_entity_id\":\"occ-two-years\",\"business_key_status\":\"complete\",\"rating\":1,\"review_title\":\"Synthetic acceptance fixture\",\"review_text\":\"The mower worked for two years. Yesterday the motor stopped halfway through the lawn and would not restart.\"}",
+          "quote_text": "The mower worked for two years. Yesterday the motor stopped halfway through the lawn and would not restart."
+        }
+      },
+      "bad_finding": {
+        "finding_id": "F1",
+        "kind": "experience",
+        "statement": "这位用户反映机器使用早期便出现电机故障。",
+        "context": "割草途中停机且无法重新启动。",
+        "evidence": [
+          {
+            "source_id": "S1",
+            "quote": "The mower worked for two years. Yesterday the motor stopped halfway through the lawn and would not restart."
+          }
+        ]
+      },
+      "good_finding": {
+        "finding_id": "F1",
+        "kind": "experience",
+        "statement": "这位用户反映正常使用两年后，电机在割草途中停机且无法重启。",
+        "context": "不是到手即坏，也不是原文所说的早期失效。",
+        "evidence": [
+          {
+            "source_id": "S1",
+            "quote": "The mower worked for two years. Yesterday the motor stopped halfway through the lawn and would not restart."
+          }
+        ]
+      }
+    },
+    {
+      "case_id": "user_airflow_hypothesis_is_not_proven_cause",
+      "question": "漏割是不是由底盘气流导致的？",
+      "expected_issue": "用户仅提出未测试的气流猜测，不能写成已确认的工程原因。",
+      "sources": {
+        "S1": {
+          "kind": "review",
+          "record_id": "occ-airflow",
+          "text": "{\"record_id\":\"occ-airflow\",\"review_occurrence_id\":\"occ-airflow\",\"review_entity_id\":\"occ-airflow\",\"business_key_status\":\"complete\",\"rating\":2,\"review_title\":\"Synthetic acceptance fixture\",\"review_text\":\"It leaves narrow strips of uncut grass. I suspect the airflow under the deck pushes the grass flat, but I have not tested that.\"}",
+          "quote_text": "It leaves narrow strips of uncut grass. I suspect the airflow under the deck pushes the grass flat, but I have not tested that."
+        }
+      },
+      "bad_finding": {
+        "finding_id": "F1",
+        "kind": "interpretation",
+        "statement": "底盘气流会压倒草叶，已确认这是窄条漏割的原因。",
+        "context": "用户描述存在窄条未割草。",
+        "evidence": [
+          {
+            "source_id": "S1",
+            "quote": "It leaves narrow strips of uncut grass. I suspect the airflow under the deck pushes the grass flat, but I have not tested that."
+          }
+        ]
+      },
+      "good_finding": {
+        "finding_id": "F1",
+        "kind": "hypothesis",
+        "statement": "用户报告窄条漏割，并怀疑底盘气流压倒草叶；这条评论没有验证原因。",
+        "context": "漏割是用户经历，气流解释是其尚未测试的猜测。",
+        "evidence": [
+          {
+            "source_id": "S1",
+            "quote": "It leaves narrow strips of uncut grass. I suspect the airflow under the deck pushes the grass flat, but I have not tested that."
+          }
+        ]
+      }
+    },
+    {
+      "case_id": "grass_types_must_not_be_collapsed",
+      "question": "这条评论说明什么切割场景的问题？",
+      "expected_issue": "原文明确区分百慕大草与圣奥古斯丁草，未给草厚度，也不是两种草都表现差。",
+      "sources": {
+        "S1": {
+          "kind": "review",
+          "record_id": "occ-grass-types",
+          "text": "{\"record_id\":\"occ-grass-types\",\"review_occurrence_id\":\"occ-grass-types\",\"review_entity_id\":\"occ-grass-types\",\"business_key_status\":\"complete\",\"rating\":3,\"review_title\":\"Synthetic acceptance fixture\",\"review_text\":\"It cuts my Bermuda grass cleanly. On the patch of St. Augustine beside the shed it leaves several blades standing, even though both patches are dry.\"}",
+          "quote_text": "It cuts my Bermuda grass cleanly. On the patch of St. Augustine beside the shed it leaves several blades standing, even though both patches are dry."
+        }
+      },
+      "bad_finding": {
+        "finding_id": "F1",
+        "kind": "interpretation",
+        "statement": "这台割草机面对厚草普遍切不干净。",
+        "context": "两处草地均为干燥状态。",
+        "evidence": [
+          {
+            "source_id": "S1",
+            "quote": "It cuts my Bermuda grass cleanly. On the patch of St. Augustine beside the shed it leaves several blades standing, even though both patches are dry."
+          }
+        ]
+      },
+      "good_finding": {
+        "finding_id": "F1",
+        "kind": "experience",
+        "statement": "用户说百慕大草割得干净，但棚屋旁的圣奥古斯丁草会留下几根未割草叶。",
+        "context": "两处均干燥；评论没有说明草的厚度，不能据此概括全部厚草表现。",
+        "evidence": [
+          {
+            "source_id": "S1",
+            "quote": "It cuts my Bermuda grass cleanly. On the patch of St. Augustine beside the shed it leaves several blades standing, even though both patches are dry."
+          }
+        ]
+      }
+    },
+    {
+      "case_id": "distinct_yard_areas_and_conditions",
+      "question": "开启自走后的续航问题分别发生在多大的草坪？",
+      "expected_issue": "1/5英亩和1/4英亩属于不同评论，不能把两例都说成1/4英亩，也不能补写关闭自走后的对照结果。",
+      "sources": {
+        "S1": {
+          "kind": "review",
+          "record_id": "occ-yard-a",
+          "text": "{\"record_id\":\"occ-yard-a\",\"review_occurrence_id\":\"occ-yard-a\",\"review_entity_id\":\"occ-yard-a\",\"business_key_status\":\"complete\",\"rating\":2,\"review_title\":\"Synthetic acceptance fixture\",\"review_text\":\"With self-propel on, one charge did not finish my 1/5 acre lawn. The grass was dry and I used blade speed 2.\"}",
+          "quote_text": "With self-propel on, one charge did not finish my 1/5 acre lawn. The grass was dry and I used blade speed 2."
+        },
+        "S2": {
+          "kind": "review",
+          "record_id": "occ-yard-b",
+          "text": "{\"record_id\":\"occ-yard-b\",\"review_occurrence_id\":\"occ-yard-b\",\"review_entity_id\":\"occ-yard-b\",\"business_key_status\":\"complete\",\"rating\":3,\"review_title\":\"Synthetic acceptance fixture\",\"review_text\":\"My 1/4 acre yard needs two batteries when I use self-propel. I have not tried mowing it with self-propel turned off.\"}",
+          "quote_text": "My 1/4 acre yard needs two batteries when I use self-propel. I have not tried mowing it with self-propel turned off."
+        }
+      },
+      "bad_finding": {
+        "finding_id": "F1",
+        "kind": "interpretation",
+        "statement": "两位用户都是在1/4英亩干燥草坪开自走时，一块电池不够用；关闭自走即可完成。",
+        "context": "两条评论都讨论开启自走的续航。",
+        "evidence": [
+          {
+            "source_id": "S1",
+            "quote": "With self-propel on, one charge did not finish my 1/5 acre lawn. The grass was dry and I used blade speed 2."
+          },
+          {
+            "source_id": "S2",
+            "quote": "My 1/4 acre yard needs two batteries when I use self-propel. I have not tried mowing it with self-propel turned off."
+          }
+        ]
+      },
+      "good_finding": {
+        "finding_id": "F1",
+        "kind": "interpretation",
+        "statement": "一位用户的1/5英亩干燥草坪在自走开启、刀速2时一充未完成；另一位用户说1/4英亩草坪开自走需要两块电池。",
+        "context": "两个面积属于不同案例；第二位没有试过关闭自走，不能推断关闭后的续航。",
+        "evidence": [
+          {
+            "source_id": "S1",
+            "quote": "With self-propel on, one charge did not finish my 1/5 acre lawn. The grass was dry and I used blade speed 2."
+          },
+          {
+            "source_id": "S2",
+            "quote": "My 1/4 acre yard needs two batteries when I use self-propel. I have not tried mowing it with self-propel turned off."
+          }
+        ]
+      }
+    },
+    {
+      "case_id": "startup_and_release_are_different_phases",
+      "question": "自走启动延迟和松开按钮后的转弯困难有什么关系？",
+      "expected_issue": "两位用户反馈的是不同阶段，且各自给出相反条件；不能把启动延迟当成松开后阻力的已知原因。",
+      "sources": {
+        "S1": {
+          "kind": "review",
+          "record_id": "occ-start",
+          "text": "{\"record_id\":\"occ-start\",\"review_occurrence_id\":\"occ-start\",\"review_entity_id\":\"occ-start\",\"business_key_status\":\"complete\",\"rating\":3,\"review_title\":\"Synthetic acceptance fixture\",\"review_text\":\"After I press self-propel, it waits about two seconds and then starts moving. Releasing the button stops the drive promptly.\"}",
+          "quote_text": "After I press self-propel, it waits about two seconds and then starts moving. Releasing the button stops the drive promptly."
+        },
+        "S2": {
+          "kind": "review",
+          "record_id": "occ-release",
+          "text": "{\"record_id\":\"occ-release\",\"review_occurrence_id\":\"occ-release\",\"review_entity_id\":\"occ-release\",\"business_key_status\":\"complete\",\"rating\":2,\"review_title\":\"Synthetic acceptance fixture\",\"review_text\":\"Starting the drive feels immediate on mine. After I release the button to turn, the rear wheels remain hard to roll backward.\"}",
+          "quote_text": "Starting the drive feels immediate on mine. After I release the button to turn, the rear wheels remain hard to roll backward."
+        }
+      },
+      "bad_finding": {
+        "finding_id": "F1",
+        "kind": "interpretation",
+        "statement": "自走约两秒的启动延迟导致松开按钮后后轮仍锁住，因此用户必须提前松开按钮。",
+        "context": "两条评论涉及同一自走系统。",
+        "evidence": [
+          {
+            "source_id": "S1",
+            "quote": "After I press self-propel, it waits about two seconds and then starts moving. Releasing the button stops the drive promptly."
+          },
+          {
+            "source_id": "S2",
+            "quote": "Starting the drive feels immediate on mine. After I release the button to turn, the rear wheels remain hard to roll backward."
+          }
+        ]
+      },
+      "good_finding": {
+        "finding_id": "F1",
+        "kind": "interpretation",
+        "statement": "目前是两种不同反馈：一位用户启动等待约两秒，但松开便停止驱动；另一位启动及时，却在松开转弯时难以向后滚动车轮。",
+        "context": "这些评论不能建立启动延迟与松开后阻力之间的因果关系。",
+        "evidence": [
+          {
+            "source_id": "S1",
+            "quote": "After I press self-propel, it waits about two seconds and then starts moving. Releasing the button stops the drive promptly."
+          },
+          {
+            "source_id": "S2",
+            "quote": "Starting the drive feels immediate on mine. After I release the button to turn, the rear wheels remain hard to roll backward."
+          }
+        ]
+      }
+    },
+    {
+      "case_id": "multiple_reports_are_not_test_reproduction",
+      "question": "能不能说漏割问题已经可复现？",
+      "expected_issue": "两条用户经历不能充当受控实测，不同草地条件也不能证明同一机制可重复复现。",
+      "sources": {
+        "S1": {
+          "kind": "review",
+          "record_id": "occ-missed-a",
+          "text": "{\"record_id\":\"occ-missed-a\",\"review_occurrence_id\":\"occ-missed-a\",\"review_entity_id\":\"occ-missed-a\",\"business_key_status\":\"complete\",\"rating\":2,\"review_title\":\"Synthetic acceptance fixture\",\"review_text\":\"Yesterday it left a stripe uncut on my dry lawn. I drove over the stripe a second time.\"}",
+          "quote_text": "Yesterday it left a stripe uncut on my dry lawn. I drove over the stripe a second time."
+        },
+        "S2": {
+          "kind": "review",
+          "record_id": "occ-missed-b",
+          "text": "{\"record_id\":\"occ-missed-b\",\"review_occurrence_id\":\"occ-missed-b\",\"review_entity_id\":\"occ-missed-b\",\"business_key_status\":\"complete\",\"rating\":3,\"review_title\":\"Synthetic acceptance fixture\",\"review_text\":\"Last weekend I found an uncut strip in a damp corner of the yard. Another pass removed it.\"}",
+          "quote_text": "Last weekend I found an uncut strip in a damp corner of the yard. Another pass removed it."
+        }
+      },
+      "bad_finding": {
+        "finding_id": "F1",
+        "kind": "interpretation",
+        "statement": "漏割已经在不同用户之间稳定复现，是一个可复现的故障。",
+        "context": "已有两条不同用户评论。",
+        "evidence": [
+          {
+            "source_id": "S1",
+            "quote": "Yesterday it left a stripe uncut on my dry lawn. I drove over the stripe a second time."
+          },
+          {
+            "source_id": "S2",
+            "quote": "Last weekend I found an uncut strip in a damp corner of the yard. Another pass removed it."
+          }
+        ]
+      },
+      "good_finding": {
+        "finding_id": "F1",
+        "kind": "interpretation",
+        "statement": "两条不同评论都报告了漏割后需要再割一遍。",
+        "context": "一处为干草坪，一处为潮湿角落；这里只有用户描述，没有复现实验记录。",
+        "evidence": [
+          {
+            "source_id": "S1",
+            "quote": "Yesterday it left a stripe uncut on my dry lawn. I drove over the stripe a second time."
+          },
+          {
+            "source_id": "S2",
+            "quote": "Last weekend I found an uncut strip in a damp corner of the yard. Another pass removed it."
+          }
+        ]
+      }
+    },
+    {
+      "case_id": "keyword_intersection_is_not_complaint_count",
+      "question": "同时命中自走和转向关键词的两条评论，能算两条操控投诉吗？",
+      "expected_issue": "交集数只证明drive与wheel词面命中；关键词不是转向体验或投诉分类，已有原文还是正向反馈。",
+      "sources": {
+        "S1": {
+          "kind": "analysis",
+          "text": "{\"query\":{\"population\":\"entities\",\"term_groups\":[{\"label\":\"drive\",\"terms\":[\"drive\"]},{\"label\":\"turning_hint\",\"terms\":[\"wheel\"]}],\"match_mode\":\"word\"},\"population_count\":4,\"base_match_count\":4,\"group_match_counts\":[{\"label\":\"drive\",\"count\":3},{\"label\":\"turning_hint\",\"count\":2}],\"intersection_count\":2,\"search_semantics\":\"标题或正文词面匹配；组内OR、组间AND，不是语义分类。\",\"summary\":{\"count\":2,\"valid_rating_count\":2,\"positive_rating_count\":2,\"negative_rating_count\":0}}"
+        },
+        "S2": {
+          "kind": "review",
+          "record_id": "occ-keywords",
+          "text": "{\"record_id\":\"occ-keywords\",\"review_occurrence_id\":\"occ-keywords\",\"review_entity_id\":\"occ-keywords\",\"business_key_status\":\"complete\",\"rating\":5,\"review_title\":\"Synthetic acceptance fixture\",\"review_text\":\"Rear wheel drive is helpful on my slope. I am happy with the mower.\"}",
+          "quote_text": "Rear wheel drive is helpful on my slope. I am happy with the mower."
+        }
+      },
+      "bad_finding": {
+        "finding_id": "F1",
+        "kind": "statistic",
+        "statement": "有两位用户投诉自走与转向之间存在操控问题。",
+        "context": "关键词统计的交集数量为2。",
+        "evidence": [
+          {
+            "source_id": "S1",
+            "pointer": "/intersection_count"
+          },
+          {
+            "source_id": "S2",
+            "quote": "Rear wheel drive is helpful on my slope. I am happy with the mower."
+          }
+        ]
+      },
+      "good_finding": {
+        "finding_id": "F1",
+        "kind": "statistic",
+        "statement": "有两条评论同时命中drive和wheel，但这不是两条操控投诉。",
+        "context": "已读原文之一是在肯定后轮驱动对坡地的帮助，不能把wheel自动理解为转向问题。",
+        "evidence": [
+          {
+            "source_id": "S1",
+            "pointer": "/intersection_count"
+          },
+          {
+            "source_id": "S2",
+            "quote": "Rear wheel drive is helpful on my slope. I am happy with the mower."
+          }
+        ]
+      }
+    },
+    {
+      "case_id": "impact_based_priority_without_risk_rate",
+      "question": "戴手套操作时，有什么值得产品经理优先检查？",
+      "expected_issue": "可以根据误触后撞围栏的后果建议优先核查；没有不戴手套的对照，不能声称戴手套群体更容易或多数都会误触。",
+      "sources": {
+        "S1": {
+          "kind": "review",
+          "record_id": "occ-gloves",
+          "text": "{\"record_id\":\"occ-gloves\",\"review_occurrence_id\":\"occ-gloves\",\"review_entity_id\":\"occ-gloves\",\"business_key_status\":\"complete\",\"rating\":2,\"review_title\":\"Synthetic acceptance fixture\",\"review_text\":\"While wearing thick gloves I pressed the drive control by accident and the mower bumped the wooden fence. I was not injured.\"}",
+          "quote_text": "While wearing thick gloves I pressed the drive control by accident and the mower bumped the wooden fence. I was not injured."
+        }
+      },
+      "bad_finding": {
+        "finding_id": "F1",
+        "kind": "recommendation",
+        "statement": "戴手套的用户更容易误触自走，多数会因此撞到障碍物，应优先修复这个高发问题。",
+        "context": "有一位用户描述戴厚手套时意外按到自走控制。",
+        "evidence": [
+          {
+            "source_id": "S1",
+            "quote": "While wearing thick gloves I pressed the drive control by accident and the mower bumped the wooden fence. I was not injured."
+          }
+        ]
+      },
+      "good_finding": {
+        "finding_id": "F1",
+        "kind": "recommendation",
+        "statement": "建议优先检查戴厚手套时自走控制的误触，因为已有用户描述误触后撞到围栏。",
+        "context": "这是根据已报告后果提出的检查建议；该用户未受伤，没有群体比较或发生率统计。",
+        "evidence": [
+          {
+            "source_id": "S1",
+            "quote": "While wearing thick gloves I pressed the drive control by accident and the mower bumped the wooden fence. I was not injured."
+          }
+        ]
+      }
+    },
+    {
+      "case_id": "report_positive_share_is_whole_product_rating",
+      "question": "报告中动力90%的好评占比，能说明90%的用户认可动力吗？",
+      "expected_issue": "positive_share分子是提及动力且给整机4–5星的评论数，分母是提及动力且评分有效的评论数，不是对动力的赞扬比例。",
+      "sources": {
+        "S1": {
+          "kind": "report",
+          "text": "{\"section\":\"/tables/0\",\"content\":{\"table_id\":\"attribute_performance\",\"columns\":[{\"field\":\"positive_share\",\"label\":\"好评占比\"}],\"rows\":[{\"factor_id\":\"power\",\"label\":\"动力\",\"mention_count\":10,\"rated_mentions\":10,\"positive_count\":9,\"positive_share\":0.9,\"negative_count\":1,\"negative_share\":0.1,\"net_rating_polarity\":0.8}]}}"
+        }
+      },
+      "bad_finding": {
+        "finding_id": "F1",
+        "kind": "statistic",
+        "statement": "90%的用户认可这台机器的动力，是其最受认可的优势。",
+        "context": "报告动力行positive_share为0.9。",
+        "evidence": [
+          {
+            "source_id": "S1",
+            "pointer": "/content/rows/0"
+          }
+        ]
+      },
+      "good_finding": {
+        "finding_id": "F1",
+        "kind": "statistic",
+        "statement": "提到动力且评分有效的10条评论中，9条给整机4–5星；这项数字不能确定有多少人在赞扬动力。",
+        "context": "positive_share是整机星级比例，表列名称“好评占比”不能作为功能态度证据。",
+        "evidence": [
+          {
+            "source_id": "S1",
+            "pointer": "/content/rows/0"
+          }
+        ]
+      }
+    },
+    {
+      "case_id": "mixed_statistics_runtime_polarization",
+      "question": "报告中续航表现有什么值得关注？",
+      "expected_issue": "136条主题提及中的121条整机高星与一条续航抱怨，不能推出续航态度两极分布；正确数字和免责声明都不能使两极分化这一判断成立。",
+      "sources": {
+        "S1": {
+          "kind": "report",
+          "text": "{\"section\": \"/tables/0\", \"content\": {\"table_id\": \"attribute_performance\", \"rows\": [{\"factor_id\": \"runtime\", \"label\": \"续航与电池容量\", \"mention_count\": 136, \"rated_mentions\": 136, \"positive_count\": 121, \"positive_share\": 0.8897, \"negative_count\": 6, \"negative_share\": 0.0441}]}}"
+        },
+        "S2": {
+          "kind": "review",
+          "record_id": "occ-runtime-polarization",
+          "text": "{\"record_id\": \"occ-runtime-polarization\", \"review_occurrence_id\": \"occ-runtime-polarization\", \"review_entity_id\": \"occ-runtime-polarization\", \"business_key_status\": \"complete\", \"rating\": 1, \"review_title\": \"Synthetic acceptance fixture\", \"review_text\": \"The battery lasted about 50 minutes on my quarter-acre corner lot. I still had about ten minutes of mowing left, so I stopped to recharge. I had alternated medium and high blade speed and pushed manually for half of that time.\"}",
+          "quote_text": "The battery lasted about 50 minutes on my quarter-acre corner lot. I still had about ten minutes of mowing left, so I stopped to recharge. I had alternated medium and high blade speed and pushed manually for half of that time."
+        }
+      },
+      "bad_finding": {
+        "finding_id": "F1",
+        "kind": "interpretation",
+        "statement": "续航主题共有136条提及，其中121条给整机4–5星，体现出整机评分较高的背景；与此相对，一位用户在1/4英亩转角地块使用约50分钟后还剩十分钟作业，需要停下充电。综合这两部分，续航评价呈两极分化，值得结合典型场景研究预期差距。该用户使用中高刀速交替，并有半程手推，不能只凭这一例判断宣传是否准确。",
+        "context": "两项来源属于同一份报告和对应评论。",
+        "evidence": [
+          {
+            "source_id": "S1",
+            "pointer": "/content/rows/0"
+          },
+          {
+            "source_id": "S2",
+            "quote": "The battery lasted about 50 minutes on my quarter-acre corner lot. I still had about ten minutes of mowing left, so I stopped to recharge. I had alternated medium and high blade speed and pushed manually for half of that time."
+          }
+        ]
+      },
+      "good_finding": {
+        "finding_id": "F1",
+        "kind": "interpretation",
+        "statement": "提及续航的136条评论中，121条给整机高星；一位用户反映约50分钟后还需中断充电，未完成草坪。",
+        "context": "该用户为1/4英亩转角地块，中高刀速交替且半程手推；需另读原文判断其他用户的续航体验。",
+        "evidence": [
+          {
+            "source_id": "S1",
+            "pointer": "/content/rows/0"
+          },
+          {
+            "source_id": "S2",
+            "quote": "The battery lasted about 50 minutes on my quarter-acre corner lot. I still had about ten minutes of mowing left, so I stopped to recharge. I had alternated medium and high blade speed and pushed manually for half of that time."
+          }
+        ]
+      }
+    },
+    {
+      "case_id": "different_symptoms_do_not_prove_independent_mechanisms",
+      "question": "自走的几个问题应该如何区分？",
+      "expected_issue": "三条评论足以区分操作阶段与体验，但不能由不同症状断言工程机制独立、排除共同原因。",
+      "sources": {
+        "S1": {
+          "kind": "review",
+          "record_id": "occ-symptom-turn",
+          "text": "{\"record_id\": \"occ-symptom-turn\", \"review_occurrence_id\": \"occ-symptom-turn\", \"review_entity_id\": \"occ-symptom-turn\", \"business_key_status\": \"complete\", \"rating\": 4, \"review_title\": \"Synthetic acceptance fixture\", \"review_text\": \"Starting self-propel feels immediate. Sometimes the rear wheel resists rolling when I turn at the end of a row.\"}",
+          "quote_text": "Starting self-propel feels immediate. Sometimes the rear wheel resists rolling when I turn at the end of a row."
+        },
+        "S2": {
+          "kind": "review",
+          "record_id": "occ-symptom-start",
+          "text": "{\"record_id\": \"occ-symptom-start\", \"review_occurrence_id\": \"occ-symptom-start\", \"review_entity_id\": \"occ-symptom-start\", \"business_key_status\": \"complete\", \"rating\": 4, \"review_title\": \"Synthetic acceptance fixture\", \"review_text\": \"After pressing the drive button I wait about two seconds before it starts moving. It stops driving promptly when I release the button.\"}",
+          "quote_text": "After pressing the drive button I wait about two seconds before it starts moving. It stops driving promptly when I release the button."
+        },
+        "S3": {
+          "kind": "review",
+          "record_id": "occ-symptom-wheels",
+          "text": "{\"record_id\": \"occ-symptom-wheels\", \"review_occurrence_id\": \"occ-symptom-wheels\", \"review_entity_id\": \"occ-symptom-wheels\", \"business_key_status\": \"complete\", \"rating\": 5, \"review_title\": \"Synthetic acceptance fixture\", \"review_text\": \"The plastic wheels make a 180-degree turn harder while I use self-propel. Straight sections are comfortable to mow.\"}",
+          "quote_text": "The plastic wheels make a 180-degree turn harder while I use self-propel. Straight sections are comfortable to mow."
+        }
+      },
+      "bad_finding": {
+        "finding_id": "F1",
+        "kind": "interpretation",
+        "statement": "三位用户的描述可以分别整理：一位启动及时，却在行末转弯时感到后轮阻力；另一位启动等待约两秒，松开按钮后停止及时；第三位觉得塑料轮在自走状态下做180度转弯费力，长直道则顺畅。这三个问题的工程机制彼此独立，应分别交给对应设计环节处理，无需再检查是否有共同原因。",
+        "context": "三位用户分别给整机4星、4星和5星，具体症状确实不同。",
+        "evidence": [
+          {
+            "source_id": "S1",
+            "quote": "Starting self-propel feels immediate. Sometimes the rear wheel resists rolling when I turn at the end of a row."
+          },
+          {
+            "source_id": "S2",
+            "quote": "After pressing the drive button I wait about two seconds before it starts moving. It stops driving promptly when I release the button."
+          },
+          {
+            "source_id": "S3",
+            "quote": "The plastic wheels make a 180-degree turn harder while I use self-propel. Straight sections are comfortable to mow."
+          }
+        ]
+      },
+      "good_finding": {
+        "finding_id": "F1",
+        "kind": "interpretation",
+        "statement": "已读评论涉及三种体验：行末转弯的后轮阻力、启动等待约两秒、塑料轮在自走转弯时费力，建议分别检查。",
+        "context": "启动等待的用户说松开即停止；第三位说长直道顺畅。评论没有提供拆机或测试结论。",
+        "evidence": [
+          {
+            "source_id": "S1",
+            "quote": "Starting self-propel feels immediate. Sometimes the rear wheel resists rolling when I turn at the end of a row."
+          },
+          {
+            "source_id": "S2",
+            "quote": "After pressing the drive button I wait about two seconds before it starts moving. It stops driving promptly when I release the button."
+          },
+          {
+            "source_id": "S3",
+            "quote": "The plastic wheels make a 180-degree turn harder while I use self-propel. Straight sections are comfortable to mow."
+          }
+        ]
+      }
+    },
+    {
+      "case_id": "control_identity_speed_dial_drive_button_safety_bar",
+      "question": "转弯时的意外前进和停刀，分别是什么操作触发的？",
+      "expected_issue": "速度旋钮被意外调到最高速、拇指仍压驱动按钮、换握姿松开刀片安全杆是三种部件与触发关系；不能都归到驱动按钮位置或说松开驱动按钮直接停刀。",
+      "sources": {
+        "S1": {
+          "kind": "review",
+          "record_id": "occ-control-dial",
+          "text": "{\"record_id\": \"occ-control-dial\", \"review_occurrence_id\": \"occ-control-dial\", \"review_entity_id\": \"occ-control-dial\", \"business_key_status\": \"complete\", \"rating\": 1, \"review_title\": \"Synthetic acceptance fixture\", \"review_text\": \"I turned the speed dial in the middle of the handle to OFF. While pulling the mower toward me with its front raised, I unknowingly rotated that dial to the highest speed. When the wheels touched the ground it almost pulled me off my feet.\"}",
+          "quote_text": "I turned the speed dial in the middle of the handle to OFF. While pulling the mower toward me with its front raised, I unknowingly rotated that dial to the highest speed. When the wheels touched the ground it almost pulled me off my feet."
+        },
+        "S2": {
+          "kind": "review",
+          "record_id": "occ-control-button",
+          "text": "{\"record_id\": \"occ-control-button\", \"review_occurrence_id\": \"occ-control-button\", \"review_entity_id\": \"occ-control-button\", \"business_key_status\": \"complete\", \"rating\": 3, \"review_title\": \"Synthetic acceptance fixture\", \"review_text\": \"I stopped to turn near a shrub but one thumb was still pressing the drive button. The mower kept moving and cut down part of the shrub.\"}",
+          "quote_text": "I stopped to turn near a shrub but one thumb was still pressing the drive button. The mower kept moving and cut down part of the shrub."
+        },
+        "S3": {
+          "kind": "review",
+          "record_id": "occ-control-bar",
+          "text": "{\"record_id\": \"occ-control-bar\", \"review_occurrence_id\": \"occ-control-bar\", \"review_entity_id\": \"occ-control-bar\", \"business_key_status\": \"complete\", \"rating\": 4, \"review_title\": \"Synthetic acceptance fixture\", \"review_text\": \"When I shift my grip to avoid touching the drive buttons, I sometimes also release the blade safety bar. The blade stops and I have to restart it.\"}",
+          "quote_text": "When I shift my grip to avoid touching the drive buttons, I sometimes also release the blade safety bar. The blade stops and I have to restart it."
+        }
+      },
+      "bad_finding": {
+        "finding_id": "F1",
+        "kind": "interpretation",
+        "statement": "转弯与倒拉时，几条评论都反映操作不够顺手：有人放下前轮后机器突然前进、险些被拉倒；有人在灌木旁停下准备转弯，机器却继续走并割坏灌木；还有人改变握姿后需要重新启动刀片。这些经历显示驱动按钮的共同影响：误压同一按钮会把速度调至最高，松开它又会直接切断刀片。因此意外前进和停刀都可以归到Touch Drive按钮的位置问题。",
+        "context": "这些是三位用户各自描述的操作后果，没有统计发生率。",
+        "evidence": [
+          {
+            "source_id": "S1",
+            "quote": "I turned the speed dial in the middle of the handle to OFF. While pulling the mower toward me with its front raised, I unknowingly rotated that dial to the highest speed. When the wheels touched the ground it almost pulled me off my feet."
+          },
+          {
+            "source_id": "S2",
+            "quote": "I stopped to turn near a shrub but one thumb was still pressing the drive button. The mower kept moving and cut down part of the shrub."
+          },
+          {
+            "source_id": "S3",
+            "quote": "When I shift my grip to avoid touching the drive buttons, I sometimes also release the blade safety bar. The blade stops and I have to restart it."
+          }
+        ]
+      },
+      "good_finding": {
+        "finding_id": "F1",
+        "kind": "interpretation",
+        "statement": "有三种不同触发：速度旋钮被意外调高后前冲；拇指未松开驱动按钮撞到灌木；换握姿时松开刀片安全杆导致停刀。",
+        "context": "分别来自三条评论；险些被拉倒发生在调速旋钮案例，不是驱动按钮案例。",
+        "evidence": [
+          {
+            "source_id": "S1",
+            "quote": "I turned the speed dial in the middle of the handle to OFF. While pulling the mower toward me with its front raised, I unknowingly rotated that dial to the highest speed. When the wheels touched the ground it almost pulled me off my feet."
+          },
+          {
+            "source_id": "S2",
+            "quote": "I stopped to turn near a shrub but one thumb was still pressing the drive button. The mower kept moving and cut down part of the shrub."
+          },
+          {
+            "source_id": "S3",
+            "quote": "When I shift my grip to avoid touching the drive buttons, I sometimes also release the blade safety bar. The blade stops and I have to restart it."
+          }
+        ]
+      }
+    },
+    {
+      "case_id": "runtime_conditions_and_might_are_preserved",
+      "question": "这位用户的50分钟续航是在什么条件下出现的，能推断75分钟适用条件吗？",
+      "expected_issue": "必须保留中高刀速交替且半程手推，不能概括为全程自走续航；用户未经尝试的might设想不能变成75分钟的必要条件，也不能把五天修剪一次改成确定草高阈值。",
+      "sources": {
+        "S1": {
+          "kind": "review",
+          "record_id": "occ-runtime-conditions",
+          "text": "{\"record_id\": \"occ-runtime-conditions\", \"review_occurrence_id\": \"occ-runtime-conditions\", \"review_entity_id\": \"occ-runtime-conditions\", \"business_key_status\": \"complete\", \"rating\": 1, \"review_title\": \"Synthetic acceptance fixture\", \"review_text\": \"On my 1/4 acre corner lot, I alternated medium and high blade speed and pushed manually for half the job to save power. The battery lasted about 50 minutes and I still had ten minutes of mowing left. I might get 75 minutes if I walked very slowly, cut the grass every five days and had a yard of 0.15 acre or less. I have not tried those conditions.\"}",
+          "quote_text": "On my 1/4 acre corner lot, I alternated medium and high blade speed and pushed manually for half the job to save power. The battery lasted about 50 minutes and I still had ten minutes of mowing left. I might get 75 minutes if I walked very slowly, cut the grass every five days and had a yard of 0.15 acre or less. I have not tried those conditions."
+        }
+      },
+      "bad_finding": {
+        "finding_id": "F1",
+        "kind": "interpretation",
+        "statement": "这位用户的地块为1/4英亩且有转角，中高刀速交替，约50分钟后电量耗尽，剩十分钟作业必须中断充电；可见该地块开启自走的实际续航约为50分钟。用户还给出了达到75分钟所需的条件：步行足够慢、草不超过五天生长量、地块不大于0.15英亩，只有满足这些前提才能达到该时长。应在讨论续航时把这些面积和时间一起说明。",
+        "context": "所有面积和时间数字均出自这一条评论。",
+        "evidence": [
+          {
+            "source_id": "S1",
+            "quote": "On my 1/4 acre corner lot, I alternated medium and high blade speed and pushed manually for half the job to save power. The battery lasted about 50 minutes and I still had ten minutes of mowing left. I might get 75 minutes if I walked very slowly, cut the grass every five days and had a yard of 0.15 acre or less. I have not tried those conditions."
+          }
+        ]
+      },
+      "good_finding": {
+        "finding_id": "F1",
+        "kind": "experience",
+        "statement": "该用户在1/4英亩转角地块、中高刀速交替且半程手推时，约50分钟后需充电，仍剩十分钟作业。",
+        "context": "其对75分钟的设想是慢走、每五天割一次且地块不大于0.15英亩，但本人没有试过，不能当作已验证条件。",
+        "evidence": [
+          {
+            "source_id": "S1",
+            "quote": "On my 1/4 acre corner lot, I alternated medium and high blade speed and pushed manually for half the job to save power. The battery lasted about 50 minutes and I still had ten minutes of mowing left. I might get 75 minutes if I walked very slowly, cut the grass every five days and had a yard of 0.15 acre or less. I have not tried those conditions."
+          }
+        ]
+      }
+    }
+  ]
+}

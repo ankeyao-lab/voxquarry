@@ -1,0 +1,33 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://voxquarry.local/schemas/zhuojian.get_report_section-v1.schema.json",
+  "title": "zhuojian.get_report_section@v1 input",
+  "type": "object",
+  "required": [
+    "report_id"
+  ],
+  "properties": {
+    "report_id": {
+      "type": "string",
+      "pattern": "^rpt_[A-Za-z0-9_-]{8,80}$"
+    },
+    "section": {
+      "type": "string",
+      "maxLength": 1000,
+      "default": "index",
+      "description": "index returns all top keys and child descriptors. Otherwise RFC 6901 JSON pointer; arrays are paginated, object children can be read by pointer. Empty pointer reads the root."
+    },
+    "offset": {
+      "type": "integer",
+      "minimum": 0,
+      "default": 0
+    },
+    "limit": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 100,
+      "default": 100
+    }
+  },
+  "additionalProperties": false
+}

@@ -1,0 +1,40 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://voxquarry.local/schemas/zhuojian-citation-v1.schema.json",
+  "title": "VoxQuarry Zhuojian Citation v1",
+  "type": "object",
+  "required": [
+    "contract",
+    "citation_id",
+    "citation_type",
+    "report_id",
+    "snapshot_id",
+    "metric_id",
+    "evidence_group_id",
+    "evidence_id",
+    "stable_uri",
+    "label",
+    "source_url",
+    "quote_sha256"
+  ],
+  "properties": {
+    "contract": {"const": "zhuojian-citation/v1"},
+    "citation_id": {"type": "string", "pattern": "^cit_[0-9a-f]{24}$"},
+    "citation_type": {
+      "enum": ["report", "metric", "evidence_group", "evidence"]
+    },
+    "report_id": {"type": "string"},
+    "snapshot_id": {"type": "string"},
+    "metric_id": {"type": ["string", "null"]},
+    "evidence_group_id": {"type": ["string", "null"]},
+    "evidence_id": {"type": ["string", "null"]},
+    "stable_uri": {"type": "string", "pattern": "^voxquarry://zhuojian/"},
+    "label": {"type": "string"},
+    "source_url": {"type": ["string", "null"]},
+    "quote_sha256": {
+      "type": ["string", "null"],
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    }
+  },
+  "additionalProperties": false
+}

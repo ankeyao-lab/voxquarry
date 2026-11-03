@@ -1,0 +1,59 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://voxquarry.local/schemas/report-display-name-event-v1.schema.json",
+  "title": "VoxQuarry report display name event v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "report_id",
+    "previous_version",
+    "previous_display_name",
+    "original_title_sha256",
+    "operation",
+    "custom_display_name",
+    "display_name",
+    "actor",
+    "occurred_at",
+    "version"
+  ],
+  "properties": {
+    "schema_version": { "const": "report-display-name-event/v1" },
+    "report_id": { "type": "string", "pattern": "^rpt_[0-9a-f]{24}$" },
+    "previous_version": { "$ref": "#/$defs/sha256" },
+    "previous_display_name": { "type": "string", "minLength": 1 },
+    "original_title_sha256": { "$ref": "#/$defs/sha256" },
+    "operation": { "enum": ["rename", "clear"] },
+    "custom_display_name": {
+      "type": ["string", "null"],
+      "minLength": 1,
+      "maxLength": 100
+    },
+    "display_name": { "type": "string", "minLength": 1 },
+    "actor": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["authority_id", "principal_id", "request_id"],
+      "properties": {
+        "authority_id": { "type": "string", "minLength": 1, "maxLength": 128 },
+        "principal_id": { "type": "string", "minLength": 1, "maxLength": 128 },
+        "request_id": { "type": "string", "minLength": 1, "maxLength": 128 }
+      }
+    },
+    "occurred_at": { "type": "string", "format": "date-time" },
+    "version": { "$ref": "#/$defs/sha256" }
+  },
+  "allOf": [
+    {
+      "if": { "properties": { "operation": { "const": "clear" } } },
+      "then": { "properties": { "custom_display_name": { "type": "null" } } },
+      "else": { "properties": { "custom_display_name": { "type": "string" } } }
+    }
+  ],
+  "$defs": {
+    "sha256": {
+      "type": "string",
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    }
+  }
+}

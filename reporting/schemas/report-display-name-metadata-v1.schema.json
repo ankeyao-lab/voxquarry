@@ -1,0 +1,32 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://voxquarry.local/schemas/report-display-name-metadata-v1.schema.json",
+  "title": "VoxQuarry report display name metadata v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "report_id",
+    "display_name",
+    "original_title",
+    "custom_display_name",
+    "version",
+    "updated_at"
+  ],
+  "properties": {
+    "schema_version": { "const": "report-display-name-metadata/v1" },
+    "report_id": { "type": "string", "pattern": "^rpt_[0-9a-f]{24}$" },
+    "display_name": { "type": "string", "minLength": 1 },
+    "original_title": { "type": "string", "minLength": 1 },
+    "custom_display_name": {
+      "type": ["string", "null"],
+      "minLength": 1,
+      "maxLength": 100
+    },
+    "version": {
+      "type": "string",
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    },
+    "updated_at": { "type": ["string", "null"], "format": "date-time" }
+  }
+}

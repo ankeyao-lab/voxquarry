@@ -1,0 +1,77 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://voxquarry.local/schemas/zhuojian-research-source-v1.schema.json",
+  "title": "VoxQuarry frozen report research source v1",
+  "type": "object",
+  "properties": {
+    "contract": {
+      "const": "zhuojian-research-source/v1"
+    },
+    "source_id": {
+      "type": "string",
+      "pattern": "^rsrc_[0-9a-f]{24}$"
+    },
+    "source_type": {
+      "enum": [
+        "report_section",
+        "review",
+        "review_aggregate"
+      ]
+    },
+    "report_id": {
+      "type": "string",
+      "pattern": "^rpt_[A-Za-z0-9_-]{8,80}$"
+    },
+    "snapshot_id": {
+      "type": "string"
+    },
+    "analysis_version": {
+      "type": "string"
+    },
+    "report_sha256": {
+      "type": "string",
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    },
+    "scope_sha256": {
+      "type": "string",
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    },
+    "fact_file_sha256": {
+      "anyOf": [
+        {
+          "type": "string",
+          "pattern": "^sha256:[0-9a-f]{64}$"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "content_sha256": {
+      "type": "string",
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    },
+    "selector": {
+      "type": "object"
+    },
+    "stable_uri": {
+      "type": "string",
+      "pattern": "^voxquarry://zhuojian/reports/"
+    }
+  },
+  "additionalProperties": false,
+  "required": [
+    "contract",
+    "source_id",
+    "source_type",
+    "report_id",
+    "snapshot_id",
+    "analysis_version",
+    "report_sha256",
+    "scope_sha256",
+    "fact_file_sha256",
+    "content_sha256",
+    "selector",
+    "stable_uri"
+  ]
+}

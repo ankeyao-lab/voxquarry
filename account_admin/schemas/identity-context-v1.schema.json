@@ -1,0 +1,40 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://voxquarry.local/schemas/identity-context-v1.schema.json",
+  "title": "VoxQuarry browser/user identity context v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "auth_source",
+    "non_production",
+    "principal_id",
+    "employee_id",
+    "display_name",
+    "roles",
+    "session_id",
+    "request_id",
+    "issued_at",
+    "expires_at",
+    "policy_version"
+  ],
+  "properties": {
+    "schema_version": {"const": "identity-context/v1"},
+    "auth_source": {"enum": ["local_account", "local_fixture", "ad"]},
+    "non_production": {"const": true},
+    "principal_id": {"type": "string", "pattern": "^prn_[a-z0-9_]{6,80}$"},
+    "employee_id": {"type": "string", "minLength": 1, "maxLength": 128},
+    "display_name": {"type": "string", "minLength": 1, "maxLength": 160},
+    "roles": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {"enum": ["admin", "user"]}
+    },
+    "session_id": {"type": "string", "pattern": "^ses_[a-f0-9]{32}$"},
+    "request_id": {"type": "string", "pattern": "^req_[a-f0-9]{24,64}$"},
+    "issued_at": {"type": "string", "format": "date-time"},
+    "expires_at": {"type": "string", "format": "date-time"},
+    "policy_version": {"const": "account-admin-local-dev/1.1.0"}
+  }
+}

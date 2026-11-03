@@ -1,0 +1,15 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://voxquarry.local/schemas/wenquan-owner-scope-v1.schema.json",
+  "title": "Wenquan owner and scope binding v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "resource_type", "resource_id", "owner_principal_id", "scope"],
+  "properties": {
+    "schema_version": {"const": "wenquan-owner-scope/v1"},
+    "resource_type": {"enum": ["session", "message", "memory", "decision", "tool_call"]},
+    "resource_id": {"type": "string", "minLength": 1, "maxLength": 160},
+    "owner_principal_id": {"type": "string", "pattern": "^prn_[a-z0-9_]{6,80}$"},
+    "scope": {"type": "string", "pattern": "^principal:prn_[a-z0-9_]{6,80}$"}
+  }
+}

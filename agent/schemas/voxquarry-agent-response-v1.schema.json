@@ -1,0 +1,33 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://voxquarry.local/schemas/voxquarry-agent-response-v1.schema.json",
+  "title": "VoxQuarry Wenquan Agent Response v1",
+  "type": "object",
+  "required": ["contract", "request_id", "status", "data", "citations", "limitations", "error", "audit_id"],
+  "properties": {
+    "contract": {"const": "voxquarry-agent-response/v1"},
+    "request_id": {"type": "string", "pattern": "^req_[0-9a-f]{24}$"},
+    "status": {"enum": ["ok", "error"]},
+    "data": {},
+    "citations": {"type": "array", "items": {"type": "object"}},
+    "limitations": {"type": "array", "items": {"type": "object"}},
+    "error": {
+      "oneOf": [
+        {"type": "null"},
+        {
+          "type": "object",
+          "required": ["code", "message", "retryable", "safe_next_step"],
+          "properties": {
+            "code": {"type": "string"},
+            "message": {"type": "string"},
+            "retryable": {"type": "boolean"},
+            "safe_next_step": {"type": ["string", "null"]}
+          },
+          "additionalProperties": false
+        }
+      ]
+    },
+    "audit_id": {"type": ["string", "null"], "pattern": "^aud_[0-9a-f]{24}$"}
+  },
+  "additionalProperties": false
+}

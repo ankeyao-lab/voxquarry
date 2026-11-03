@@ -1,0 +1,111 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://voxquarry.local/schemas/snapshot-manifest-v2.schema.json",
+  "title": "VoxQuarry Immutable Snapshot Manifest v2",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "content_hash",
+    "snapshot_id",
+    "created_at",
+    "analysis_input_version",
+    "parser_version",
+    "normalization_version",
+    "selection_policy_version",
+    "job_ids",
+    "filters",
+    "scope",
+    "record_counts",
+    "quality_summary",
+    "inputs",
+    "artifacts",
+    "hashes"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "snapshot-manifest/v2"
+    },
+    "content_hash": {
+      "type": "string",
+      "pattern": "^sha256:[0-9a-f]{64}$",
+      "description": "Covers normalized filters, selected jobs, input artifact hashes and final logical Review Fact content."
+    },
+    "snapshot_id": {
+      "type": "string",
+      "pattern": "^snap_[0-9a-f]{24}$"
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "job_ids": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {"type": "string"}
+    },
+    "filters": {
+      "type": "object",
+      "required": ["job_ids", "market_regions"],
+      "properties": {
+        "job_ids": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {"type": "string"}
+        },
+        "market_regions": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "enum": ["North America", "Europe", "Australia", "Other"]
+          }
+        }
+      }
+    },
+    "record_counts": {
+      "type": "object",
+      "required": [
+        "occurrences",
+        "unique_entities",
+        "written_reviews",
+        "eligible_valid_text",
+        "raw_records",
+        "legacy_contract_records",
+        "missing_contract_records"
+      ],
+      "properties": {
+        "occurrences": {"type": "integer", "minimum": 0},
+        "unique_entities": {"type": "integer", "minimum": 0},
+        "written_reviews": {"type": "integer", "minimum": 0},
+        "eligible_valid_text": {
+          "type": ["integer", "null"],
+          "minimum": 0
+        },
+        "raw_records": {"type": "integer", "minimum": 0},
+        "legacy_contract_records": {"type": "integer", "minimum": 0},
+        "missing_contract_records": {"type": "integer", "minimum": 0}
+      }
+    },
+    "quality_summary": {
+      "type": "object",
+      "description": "Per-region record_count is source-unique before report row filters; written_review_count is eligible CSV text rows; eligible_valid_text_count is the final filtered analysis population.",
+      "required": [
+        "market_contract_mode",
+        "market_region_summary",
+        "legacy_contract_record_count",
+        "missing_contract_record_count"
+      ]
+    },
+    "inputs": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["path", "sha256", "kind"]
+      }
+    },
+    "hashes": {
+      "type": "object",
+      "required": ["input_manifest", "logical_content"]
+    }
+  },
+  "additionalProperties": true
+}

@@ -1,0 +1,27 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://voxquarry.local/schemas/wenquan-identity-context-v1.schema.json",
+  "title": "Wenquan trusted identity adapter input",
+  "type": "object",
+  "required": [
+    "contract", "actor_id", "owner_user_id", "scope_id", "authority_id",
+    "roles", "allowed_report_ids", "allow_archived_reports", "mode"
+  ],
+  "properties": {
+    "contract": {"const": "identity-context/v1"},
+    "actor_id": {"type": "string", "minLength": 1, "maxLength": 160},
+    "owner_user_id": {"type": "string", "minLength": 1, "maxLength": 160},
+    "scope_id": {"type": "string", "minLength": 1, "maxLength": 160},
+    "authority_id": {"type": "string", "minLength": 1, "maxLength": 160},
+    "roles": {"type": "array", "items": {"type": "string"}, "uniqueItems": true},
+    "allowed_report_ids": {
+      "oneOf": [
+        {"const": "*"},
+        {"type": "array", "items": {"type": "string", "pattern": "^rpt_"}, "uniqueItems": true}
+      ]
+    },
+    "allow_archived_reports": {"type": "boolean"},
+    "mode": {"enum": ["authenticated", "synthetic"]}
+  },
+  "additionalProperties": false
+}

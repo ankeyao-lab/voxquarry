@@ -1,0 +1,12 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://voxquarry.local/schemas/zhuojian.get_metric-v1.schema.json",
+  "title": "zhuojian.get_metric@v1 input",
+  "type": "object",
+  "required": ["report_id", "metric_id"],
+  "properties": {
+    "report_id": {"type": "string", "pattern": "^rpt_[A-Za-z0-9_-]{8,80}$"},
+    "metric_id": {"type": "string", "minLength": 1, "maxLength": 160}
+  },
+  "additionalProperties": false
+}

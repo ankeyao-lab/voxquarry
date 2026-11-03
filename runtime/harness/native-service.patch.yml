@@ -1,0 +1,13 @@
+# Execution-side SDK mounts official local providers; never runs an Agent.
+- id: fs-sandbox
+  disabled: true
+- id: session-telemetry-otel
+  disabled: true
+- insert:
+    - id: voxquarry-local-fs
+      name: '@deepseek-ai/dsh-fs-local'
+      config:
+        cwd: /workspace
+        diffBasisMaxBytes: 1048576
+    - id: voxquarry-native-service
+      name: /opt/voxquarry/native-service.mjs

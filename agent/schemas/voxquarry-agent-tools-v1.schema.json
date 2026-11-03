@@ -1,0 +1,46 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://voxquarry.local/schemas/voxquarry-agent-tools-v1.schema.json",
+  "title": "VoxQuarry Wenquan Tool Registry v1",
+  "type": "object",
+  "required": ["contract", "catalog_version", "tools", "model_visible_tool_count", "forbidden_capabilities"],
+  "properties": {
+    "contract": {"const": "voxquarry-agent-tools/v1"},
+    "catalog_version": {"type": "string", "minLength": 1},
+    "tools": {
+      "type": "array",
+      "items": {"$ref": "#/$defs/tool"}
+    },
+    "model_visible_tool_count": {"type": "integer", "minimum": 0},
+    "forbidden_capabilities": {
+      "type": "array",
+      "items": {"type": "string"},
+      "uniqueItems": true
+    }
+  },
+  "$defs": {
+    "tool": {
+      "type": "object",
+      "required": [
+        "name", "owner", "effect", "dependency", "dependency_status",
+        "input_schema_sha256", "response_contract", "confirmation",
+        "timeout_ms", "max_response_bytes"
+      ],
+      "properties": {
+        "name": {"type": "string", "pattern": "^zhuojian\\.[a-z_]+@v1$"},
+        "owner": {"const": "zhuojian-reporting"},
+        "effect": {"const": "read_only"},
+        "dependency": {"const": "zhuojian-agent-tools/v1"},
+        "dependency_status": {"enum": ["ready", "unavailable", "synthetic_test_only"]},
+        "input_schema_sha256": {"type": "string", "pattern": "^sha256:[0-9a-f]{64}$"},
+        "response_contract": {"const": "zhuojian-agent-tools/v1"},
+        "confirmation": {"const": "none"},
+        "timeout_ms": {"type": "integer", "minimum": 1, "maximum": 60000},
+        "max_response_bytes": {"type": "integer", "minimum": 1, "maximum": 5000000},
+        "input_schema": {"type": "object"}
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}

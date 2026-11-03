@@ -1,0 +1,59 @@
+{
+  "schema_version": "wenquan-eval-scenarios/v1",
+  "suite_id": "single-product-link-report-v1",
+  "purpose": "用户在一个AI 研究对话中给产品链接，采集网评并获得有原文依据、可下载的分析报告。",
+  "evaluation_policy": {
+    "synthetic_is_live_acceptance": false,
+    "model_completed_is_content_pass": false,
+    "provider_or_collection_calls_require_explicit_live_mode": true,
+    "content_review": "独立核对实际报告正文、引用完整原文、采集结果和下载文件，不能由同一次模型自评代替。",
+    "sample_basis": "去重后的合规有效正文评论实体；正式报告门槛沿用当前分析报告定义。"
+  },
+  "cases": [
+    {
+      "id": "link-collected-report",
+      "question": "采集这个产品链接的网评，给我一份分析报告。",
+      "fixture": "一个受支持渠道的公开产品链接；已有采集可复用，或采集后取得符合正式报告样本门槛的评论。",
+      "expected": ["核对链接实际产品；默认不要求用户先选报告", "直接取得采集数据并分析，不能只返回任务编号", "按对应品类章节提供有证据的结论，说明优缺点排序依据", "在当前对话保存可下载Markdown；聊天用简要中文及引用说明主要发现", "没有真正创建正式分析报告报告时，不宣称已创建"]
+    },
+    {
+      "id": "link-small-sample-md-pdf",
+      "question": "采集这个产品的网评，按分析报告格式分析，并提供MD和PDF下载。",
+      "fixture": "采集成功，但有效正文为1至499条；原文明确支持部分画像、场景、优缺点或改进机会。",
+      "expected": ["继续生成研究简报，不因未达到正式报告门槛拒答", "读取对应品类定义并复用现有脚本，核对命中评论的完整原文", "尽可能提供有支持的章节；缺证据时省略或简述不能判断，不凑Kano、画像或Top10", "准确写明实际样本量，单条经历不能推断普遍发生率", "MD/PDF均实际存在、可下载、引用编号与原文对应，PDF中文及跨页表格可读"]
+    },
+    {
+      "id": "link-no-review-body",
+      "question": "这个产品有哪些优缺点？采集后给我一份报告。",
+      "fixture": "取得产品资料和评分，但没有任何可用评论正文。",
+      "expected": ["可以交付产品资料、评分与采集结果的下载文件", "不把评分、搜索摘要或产品宣传伪装成用户体验", "清楚说明目前无法判断哪些体验问题，不生成虚构网评结论"]
+    },
+    {
+      "id": "link-partial-or-unsupported",
+      "question": "采集这个链接的网评并给出分析。",
+      "fixture": "最新attempt部分成功、失败、渠道仅支持导入或不受支持；可能仍有旧completed状态。",
+      "expected": ["以真实attempt与工件校验说明取得哪些评论，不把旧completed当作本次成功", "有可用正文则分析实际取得部分并说明会影响结论的缺口", "无法自动采集时给明确可执行的导入方式，不承诺自动完成", "不偷偷启用Firecrawl或重复发起同一采集"]
+    },
+    {
+      "id": "link-wait-resume",
+      "question": "采集这个产品并生成报告，完成后直接放在这里。",
+      "fixture": "采集持续超过一次模型运行；刷新或重启后采集完成。",
+      "expected": ["展示真实采集和分析进度，等待期间释放沙箱", "在原用户、原会话、原问题继续，不要求重新输入或关联数据", "恢复使用累计时间和费用额度，不重复创建采集", "报告结束后仍可刷新并下载文件；取消只取消本研究的等待"]
+    },
+    {
+      "id": "link-report-private-download",
+      "question": "把刚才的分析保存为PDF，表格保留。",
+      "fixture": "同一用户已有研究结果；另一普通用户及管理员也已登录。",
+      "expected": ["复用当前用户已保存的原文，保留引用关系", "聊天正常显示Markdown表格、列表、代码；小屏宽表可横向浏览", "只在所属会话展示文件，刷新和登出切换账号不残留卡片", "其他用户及管理员不能下载此用户的私有MD/PDF；数据采集与分析报告共享数据仍可读取"]
+    }
+  ],
+  "automated_evidence": [
+    "agent/tests/test_research_report_export.py",
+    "reporting/tests/test_dataset_analysis.py",
+    "reporting/tests/test_research_definition.py",
+    "operations/local-development/wenquan-harness/test_report_render.py",
+    "agent/frontend/presentation.test.cjs",
+    "agent/frontend/app.browser-check.cjs"
+  ],
+  "live_acceptance": "待实际模型、实际下载及登录用户路径验证；场景文件与合成测试本身不表示通过。"
+}

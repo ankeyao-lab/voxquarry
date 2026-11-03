@@ -1,0 +1,69 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://voxquarry.local/schemas/source-completeness-audit-v1.schema.json",
+  "title": "VoxQuarry Source Completeness Audit v1",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "job_id",
+    "collection_status",
+    "validation_status",
+    "validation_schema_version",
+    "import_schema_version",
+    "declared_source_total",
+    "collected_source_unique_reviews",
+    "missing_review_count",
+    "source_reconciled",
+    "stop_reason",
+    "is_limited_source"
+  ],
+  "properties": {
+    "schema_version": {"const": "source-completeness-audit/v1"},
+    "job_id": {"type": "string", "minLength": 1},
+    "collection_status": {"enum": ["completed", "partial_success"]},
+    "validation_status": {
+      "enum": ["COMPLETE", "COMPLETE_FALLBACK_SOURCE", "PARTIAL_SUCCESS"]
+    },
+    "validation_schema_version": {"type": ["string", "null"]},
+    "import_schema_version": {"type": ["string", "null"]},
+    "declared_source_total": {"type": "integer", "minimum": 0},
+    "collected_source_unique_reviews": {"type": "integer", "minimum": 0},
+    "missing_review_count": {"type": "integer", "minimum": 0},
+    "source_reconciled": {"type": "boolean"},
+    "stop_reason": {"type": ["string", "null"]},
+    "is_limited_source": {"type": "boolean"}
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {"is_limited_source": {"const": true}},
+        "required": ["is_limited_source"]
+      },
+      "then": {
+        "properties": {
+          "collection_status": {"const": "partial_success"},
+          "validation_status": {"const": "PARTIAL_SUCCESS"},
+          "validation_schema_version": {
+            "const": "voxquarry.external-review-import-validation/v1"
+          },
+          "import_schema_version": {"enum": ["voxquarry.review-import/v1", "voxquarry.review-import/v2"]},
+          "source_reconciled": {"const": false},
+          "stop_reason": {"const": "external_import_declared_incomplete"},
+          "missing_review_count": {"type": "integer", "minimum": 1}
+        }
+      },
+      "else": {
+        "properties": {
+          "collection_status": {"const": "completed"},
+          "validation_status": {
+            "enum": ["COMPLETE", "COMPLETE_FALLBACK_SOURCE"]
+          },
+          "source_reconciled": {"const": true},
+          "stop_reason": {"type": "null"},
+          "missing_review_count": {"const": 0}
+        }
+      }
+    }
+  ],
+  "additionalProperties": false
+}

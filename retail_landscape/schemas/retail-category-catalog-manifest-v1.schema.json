@@ -1,0 +1,61 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://voxquarry.local/schemas/retail-category-catalog-manifest-v1.schema.json",
+  "title": "VoxQuarry Wotu Category Catalog Manifest v1",
+  "description": "Immutable operations-approved input to the controlled Chengmu category registry importer. The manifest is stored outside Git. Category identity is derived once from governed Wotu master_categories facts and then persisted; optional non-identity source_metadata is content-hashed and retained for lineage.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version", "manifest_id", "manifest_content_hash", "source_system",
+    "source_type", "source_reference", "source_snapshot_hash", "observed_at",
+    "approved_by", "approved_at", "expected_category_count", "categories"
+  ],
+  "properties": {
+    "schema_version": {"const": "voxquarry.category-catalog-manifest/v1"},
+    "manifest_id": {"type": "string", "pattern": "^ccm_[0-9a-f]{64}$"},
+    "manifest_content_hash": {"type": "string", "pattern": "^sha256:[0-9a-f]{64}$"},
+    "source_system": {"const": "wotu"},
+    "source_type": {"const": "wotu_master_categories_snapshot"},
+    "source_reference": {"type": "string", "minLength": 1},
+    "source_snapshot_hash": {"type": "string", "pattern": "^sha256:[0-9a-f]{64}$"},
+    "observed_at": {"type": "string", "format": "date-time"},
+    "approved_by": {"type": "string", "minLength": 1},
+    "approved_at": {"type": "string", "format": "date-time"},
+    "expected_category_count": {"type": "integer", "minimum": 1},
+    "categories": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "source_category_id", "source_name", "source_created_at",
+          "source_updated_at", "aliases"
+        ],
+        "properties": {
+          "source_category_id": {"type": "string", "minLength": 1},
+          "source_name": {"type": "string", "minLength": 1},
+          "source_created_at": {"type": "string", "format": "date-time"},
+          "source_updated_at": {"type": "string", "format": "date-time"},
+          "canonical_code": {
+            "description": "Optional approved override. When absent, unseen categories receive the persisted category-registry/v1 code wotu_<deterministic ASCII slug>; a collision rejects the whole import.",
+            "type": "string",
+            "pattern": "^[a-z0-9]+(?:_[a-z0-9]+)*$"
+          },
+          "category_id": {"type": "string", "pattern": "^cat_[a-z0-9_]+$"},
+          "canonical_name": {"type": "string", "minLength": 1},
+          "name_zh": {"type": ["string", "null"]},
+          "aliases": {
+            "type": "array",
+            "items": {"type": "string", "minLength": 1},
+            "uniqueItems": true
+          },
+          "source_metadata": {
+            "description": "Optional immutable source-row evidence retained verbatim for audit. It never participates in category matching or stable-ID derivation, but is covered by the manifest content hash.",
+            "type": "object"
+          }
+        }
+      }
+    }
+  }
+}

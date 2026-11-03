@@ -1,0 +1,56 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://voxquarry.local/schemas/voxquarry-wenquan-semantic-plan-v1.schema.json",
+  "title": "VoxQuarry Wenquan Semantic Plan v1",
+  "type": "object",
+  "required": [
+    "contract", "planner_version", "prompt_version", "policy_version",
+    "intent_code", "tool_sequence", "answer_status", "confirmation_count",
+    "claim_triplet_required", "gate_tags", "fact_authority",
+    "permission_authority"
+  ],
+  "properties": {
+    "contract": {"const": "voxquarry-wenquan-semantic-plan/v1"},
+    "planner_version": {"const": "wenquan-semantic-planner/2.0.0"},
+    "prompt_version": {"const": "wenquan-semantic-intent-taxonomy/2.0.0"},
+    "policy_version": {"const": "wenquan-governed-plan-policy/2.0.0"},
+    "intent_code": {"type": "string", "pattern": "^[a-z][a-z0-9_]{2,79}$"},
+    "tool_sequence": {
+      "type": "array",
+      "maxItems": 8,
+      "items": {
+        "enum": [
+          "zhuojian.list_reports@v1",
+          "zhuojian.get_report@v1",
+          "zhuojian.get_metric@v1",
+          "zhuojian.list_evidence_groups@v1",
+          "zhuojian.query_evidence@v1",
+          "zhuojian.get_data_quality@v1",
+          "zhuojian.citation_validator@v1"
+        ]
+      }
+    },
+    "answer_status": {
+      "enum": [
+        "supported", "insufficient_evidence", "clarification_required",
+        "waiting_confirmation", "completed", "blocked"
+      ]
+    },
+    "confirmation_count": {"type": "integer", "minimum": 0, "maximum": 2},
+    "claim_triplet_required": {"type": "boolean"},
+    "gate_tags": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "enum": [
+          "claim_citation", "confirmation", "core_number_source",
+          "cross_user", "failure_stop", "idempotency", "permission",
+          "security"
+        ]
+      }
+    },
+    "fact_authority": {"const": "versioned_voxquarry_tools_only"},
+    "permission_authority": {"const": "trusted_gateway_only"}
+  },
+  "additionalProperties": false
+}

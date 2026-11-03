@@ -1,0 +1,33 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://voxquarry.local/schemas/service-auth-v1.schema.json",
+  "title": "VoxQuarry service-to-service identity v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "auth_source",
+    "non_production",
+    "service_principal_id",
+    "audience",
+    "scope",
+    "request_id",
+    "correlation_id",
+    "issued_at",
+    "expires_at",
+    "policy_version"
+  ],
+  "properties": {
+    "schema_version": {"const": "service-auth/v1"},
+    "auth_source": {"const": "local_fixture"},
+    "non_production": {"const": true},
+    "service_principal_id": {"type": "string", "pattern": "^svc_[a-z0-9_]{6,80}$"},
+    "audience": {"type": "string", "minLength": 3, "maxLength": 128},
+    "scope": {"const": "radar.proposal.submit"},
+    "request_id": {"type": "string", "pattern": "^req_[a-f0-9]{24,64}$"},
+    "correlation_id": {"type": "string", "pattern": "^corr_[a-f0-9]{24,64}$"},
+    "issued_at": {"type": "string", "format": "date-time"},
+    "expires_at": {"type": "string", "format": "date-time"},
+    "policy_version": {"const": "account-admin-local-dev/1.1.0"}
+  }
+}

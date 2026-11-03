@@ -1,0 +1,44 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://voxquarry.local/schemas/structured-refresh-diagnostics-v1.schema.json",
+  "title": "VoxQuarry structured refresh diagnostics v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "generated_at",
+    "history_parse_status",
+    "history_error",
+    "history_sha256",
+    "history_record_count",
+    "last_history_event_at",
+    "state_parse_status",
+    "state_error",
+    "last_successful_refresh_at",
+    "pending_ready_batch_count",
+    "oldest_pending_ready_at",
+    "pending_ready_delay_seconds",
+    "scheduler_error"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "voxquarry.structured-refresh-diagnostics/v1"
+    },
+    "generated_at": { "type": "string", "format": "date-time" },
+    "history_parse_status": { "enum": ["ok", "invalid"] },
+    "history_error": { "type": ["string", "null"] },
+    "history_sha256": {
+      "type": ["string", "null"],
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "history_record_count": { "type": ["integer", "null"], "minimum": 0 },
+    "last_history_event_at": { "type": ["string", "null"], "format": "date-time" },
+    "state_parse_status": { "enum": ["ok", "invalid"] },
+    "state_error": { "type": ["string", "null"] },
+    "last_successful_refresh_at": { "type": ["string", "null"], "format": "date-time" },
+    "pending_ready_batch_count": { "type": "integer", "minimum": 0 },
+    "oldest_pending_ready_at": { "type": ["string", "null"], "format": "date-time" },
+    "pending_ready_delay_seconds": { "type": ["integer", "null"], "minimum": 0 },
+    "scheduler_error": { "type": ["string", "null"] }
+  }
+}

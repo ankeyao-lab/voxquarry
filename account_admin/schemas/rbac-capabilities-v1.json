@@ -1,0 +1,43 @@
+{
+  "schema_version": "rbac-capabilities/v1",
+  "policy_version": "account-admin-local-dev/1.1.0",
+  "default_role": "user",
+  "roles": {
+    "user": [
+      "platform.read",
+      "collect.command",
+      "report.command",
+      "retail.command",
+      "retail.review",
+      "chat.session.own",
+      "chat.usage.own"
+    ],
+    "admin": [
+      "platform.read",
+      "collect.command",
+      "report.command",
+      "retail.command",
+      "retail.review",
+      "chat.session.own",
+      "chat.usage.own",
+      "chat.governance.read",
+      "master_data.manage",
+      "admin.manage_users",
+      "admin.read_audit",
+      "admin.revoke_sessions"
+    ]
+  },
+  "constraints": {
+    "shared_data_modules": [
+      "wotu",
+      "zhuojian",
+      "chengmu"
+    ],
+    "chengmu_review_requires_actor_audit": true,
+    "admin_navigation_requires": "admin.manage_users",
+    "master_data_write_requires": "master_data.manage",
+    "wenquan_content": "owner_only",
+    "admin_can_read_other_wenquan_content": false,
+    "wenquan_admin_governance_view": "aggregate_only"
+  }
+}

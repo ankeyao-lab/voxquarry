@@ -1,0 +1,18 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://voxquarry.local/schemas/product-form-v1.schema.json",
+  "title": "VoxQuarry observed product form v1",
+  "description": "Evidence-backed task/product observation for report scope. Chengmu remains the authority for approved product model attributes.",
+  "type": "object",
+  "required": ["schema_version", "value", "label", "status", "evidence_source", "source_category"],
+  "properties": {
+    "schema_version": {"const": "voxquarry.product-form/v1"},
+    "value": {"enum": ["handheld", "backpack", "wheeled", "stick", "upright", "robot", "unknown"]},
+    "label": {"type": "string", "minLength": 1},
+    "status": {"enum": ["known", "unknown"]},
+    "evidence_source": {"type": "string", "minLength": 1},
+    "source_category": {"type": "string"}
+  },
+  "allOf": [{"if": {"properties": {"value": {"const": "unknown"}}}, "then": {"properties": {"status": {"const": "unknown"}}}, "else": {"properties": {"status": {"const": "known"}, "evidence_source": {"not": {"const": "unspecified"}}}}}],
+  "additionalProperties": false
+}

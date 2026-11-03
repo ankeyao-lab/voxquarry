@@ -1,0 +1,29 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://voxquarry.local/schemas/local-account-v1.schema.json",
+  "title": "VoxQuarry non-production local account v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "principal_id",
+    "username",
+    "employee_id",
+    "display_name",
+    "roles",
+    "status",
+    "auth_source",
+    "non_production"
+  ],
+  "properties": {
+    "schema_version": {"const": "local-account/v1"},
+    "principal_id": {"type": "string", "pattern": "^prn_local_[a-f0-9]{32}$"},
+    "username": {"type": "string", "minLength": 1, "maxLength": 64},
+    "employee_id": {"type": "string", "minLength": 1, "maxLength": 64},
+    "display_name": {"type": "string", "minLength": 1, "maxLength": 128},
+    "roles": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"enum": ["admin", "user"]}},
+    "status": {"enum": ["active", "disabled"]},
+    "auth_source": {"enum": ["local_account", "ad"]},
+    "non_production": {"const": true}
+  }
+}

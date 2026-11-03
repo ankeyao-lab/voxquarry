@@ -1,0 +1,214 @@
+{
+  "schema_version": "wenquan-eval-scenarios/v1",
+  "suite_id": "research-speed-recovery-v1",
+  "purpose": "基本质量、显著缩时与自动恢复，8088真实新会话陪跑",
+  "policy": {
+    "model": "deepseek-v4.1-flash",
+    "effort": "default (low); high retained for explicit deeper follow-up",
+    "parallel_research": 1,
+    "fresh_session_first_six": true,
+    "manual_resume": false,
+    "targets_are_not_timeouts": true,
+    "quality": "逐项人工核对答案和引用；任何核心范围/事实错误不通过，模型自称完成不算验收",
+    "timing": "同时记录从提交到交付的墙钟、实际执行、排队/资料/恢复等待和模型调用数；对比历史基线时说明版本差异",
+    "reliability": "七题不能推定长期成功率；单列基础故障和自动恢复"
+  },
+  "reference_sha256": {
+    "ego-persona.json": "cc12585592a8faebd84c301feeaa14c8a6633104756543cb249113d538c99cee",
+    "greenworks-persona.json": "4df7ea1f547ee3412c1f554dcab6472a3e60766ecb73b998101707a64b311a98",
+    "index.json": "352c37323177af56212a7ac760f459f5b80aea43e33dd3a8b9b66ed3d07150d4",
+    "milwaukee-persona.json": "93583e58d01d3db02ab6c6389a344fcaed6e30157fed5c2e2dde6747cd3760c7",
+    "ope-brand-comparison.json": "bd030f89f03f3cd4c5c08009d682c2bdef9c1a64bffe25ddef9941b864f26f96",
+    "ryobi-persona.json": "54c471666e6658c233539fa5326bc789e92b5dae967d8cf9fa760fa22fc3bbb6"
+  },
+  "cases": [
+    {
+      "id": "craftsman-link",
+      "question": "分析这个网评：https://www.lowes.com/pd/CRAFTSMAN-9000-Lumen-LED-Portable-Work-Light/1000696612",
+      "active_seconds_target": 300,
+      "expected": [
+        "识别单个商品与关联SKU范围",
+        "复用已有采集及分析报告原子分析",
+        "有依据的优缺点与使用场景",
+        "不把规则命中当真实抱怨频率"
+      ]
+    },
+    {
+      "id": "ego-snt2100",
+      "question": "EGO SNT2100这个产品的 pros and cons 分别有哪些？分别看 Top 10. 用户最满意和最不满意的场景是什么？用户典型的购买决策是怎么做出的？",
+      "active_seconds_target": 600,
+      "expected": [
+        "复用已存在分析报告报告",
+        "说明联合评论范围及Top10排序口径",
+        "优缺点分开，覆盖场景与决策",
+        "不把雪重混同机器重，不把评论提及当实际故障率"
+      ]
+    },
+    {
+      "id": "ryobi-18v-mower",
+      "question": "Ryobi 18v 平台walk behind mower 产品力如何？用户认可哪些？不认可哪些？如何能做的更好？这类产品的用户画像是什么？系统性的分析一下。",
+      "active_seconds_target": 600,
+      "expected": [
+        "复用已存在分析报告报告",
+        "18V与40V明确区分",
+        "不同区域样本不混算",
+        "覆盖产品判断、认可/不认可、改进与画像"
+      ]
+    },
+    {
+      "id": "ego-groups",
+      "question": "EGO用户群有哪些？分别什么特点？",
+      "active_seconds_target": 180,
+      "expected": [
+        "优先现成品牌报告",
+        "关键群体及差异覆盖",
+        "未知群保留未知",
+        "计数和占比同分母，评论群不当客户市场份额"
+      ]
+    },
+    {
+      "id": "brand-comparison",
+      "question": "EGO、Ryobi、Milwaukee、Greenworks 的用户群有哪些异同？",
+      "active_seconds_target": 300,
+      "expected": [
+        "使用最新四品牌报告",
+        "按任务、使用强度、平台资产、动机比较",
+        "不直接横比异口径占比",
+        "报告未单列群体不等于不存在，不编造年龄/职业共性"
+      ]
+    },
+    {
+      "id": "brand-voices",
+      "question": "如果问EGO、Ryobi、Milwaukee、Greenworks品牌的用户他们最想要的产品或功能是什么，模仿他们的口吻回答。",
+      "active_seconds_target": 180,
+      "expected": [
+        "明确为模拟表达而非受访者原话",
+        "四品牌及人群差异具体",
+        "诉求有报告依据",
+        "不宣称实测最想要功能排名"
+      ]
+    },
+    {
+      "id": "bounded-revision",
+      "question": "把刚才的内容整理成一页可下载的 Markdown，保留关键结论和引用。",
+      "active_seconds_target": 60,
+      "expected": [
+        "在上一题原session继续",
+        "复用已有结果和来源",
+        "只生成一次文件并可下载",
+        "不重复采集或整题研究"
+      ]
+    }
+  ],
+  "fault_cases": [
+    {
+      "id": "model-stream-loss",
+      "expected": "断流后原run自动接续，已读来源、文件、累计预算保留，不重复已完成工具"
+    },
+    {
+      "id": "manager-brief-loss",
+      "expected": "读取状态短暂断线可恢复，清理未确认时不启动下一次attempt"
+    },
+    {
+      "id": "service-restart",
+      "expected": "当前执行在恢复后自动入队，旧blocked/cancelled研究不被复活，账号重新验证"
+    },
+    {
+      "id": "queue-and-cancel",
+      "expected": "两个session只允许一项实际研究；另一个排队时可读历史、查看报告；取消优先于自动接续"
+    },
+    {
+      "id": "browser-brief-loss",
+      "expected": "页面轮询失败自动重连，不显示研究已失败、不重复发送问题"
+    },
+    {
+      "id": "native-final-citation-error",
+      "expected": "原生最终回答的引用错误自动返回同一会话修正一次；错误内容不发布，不重做研究，不放宽引用或跨用户权限校验"
+    }
+  ],
+  "automated_evidence": [
+    "agent/tests/test_research_recovery.py",
+    "agent/tests/test_research_authorization.py",
+    "agent/tests/test_harness_research.py",
+    "agent/frontend/composer.test.cjs",
+    "agent/frontend/recovery.browser-check.cjs",
+    "operations/local-development/wenquan-harness/native_sdk_smoke.py"
+  ],
+  "homepage_cases": [
+    {
+      "id": "homepage-1",
+      "label": "从燃油换成EGO，用户最看重什么、最失望什么？",
+      "question": "基于EGO用户研究，分析从燃油工具转向电池工具的购买动机、典型使用场景，以及购买后满意和失望的体验。不同用户群如何取舍，哪些需求尚未被满足？",
+      "web_enabled": false,
+      "expected": [
+        "覆盖问题且引用可核查",
+        "品牌/渠道/分母准确",
+        "发生底稿争议时核查并保留不能判定部分",
+        "模拟表达不冒充原话",
+        "EGO分群数量与占比使用同一工具类或含配件分母，不拼接相邻卡片"
+      ]
+    },
+    {
+      "id": "homepage-2",
+      "label": "Ryobi的割草、清洗和户外生活产品，哪些需求值得优先投入？",
+      "question": "比较Ryobi草坪作业、清洗保洁、户外生活产品的用户需求、认可点与痛点，提出值得优先验证的改进机会，并说明受益人群和证据。",
+      "web_enabled": false,
+      "expected": [
+        "覆盖问题且引用可核查",
+        "品牌/渠道/分母准确",
+        "发生底稿争议时核查并保留不能判定部分",
+        "模拟表达不冒充原话"
+      ]
+    },
+    {
+      "id": "homepage-3",
+      "label": "Milwaukee M18的电池、充电器与户外工具，用户满意和不满意什么？",
+      "question": "在Milwaukee现有OPE及场地电器研究范围内，分析M18电池、充电器与户外核心工具的体验差异。哪些场景容易出现问题，哪些用户最受影响，优先改善什么？",
+      "web_enabled": false,
+      "expected": [
+        "覆盖问题且引用可核查",
+        "品牌/渠道/分母准确",
+        "发生底稿争议时核查并保留不能判定部分",
+        "模拟表达不冒充原话"
+      ]
+    },
+    {
+      "id": "homepage-4",
+      "label": "Greenworks差评集中在哪些产品和场景，优先改什么？",
+      "question": "分析Greenworks差评和受挫体验集中在哪些产品、使用场景及售后环节，比较不同渠道的证据，并提出有依据的产品与服务改进建议。",
+      "web_enabled": false,
+      "expected": [
+        "覆盖问题且引用可核查",
+        "品牌/渠道/分母准确",
+        "发生底稿争议时核查并保留不能判定部分",
+        "模拟表达不冒充原话"
+      ]
+    },
+    {
+      "id": "homepage-5",
+      "label": "EGO、Ryobi、Milwaukee、Greenworks，分别赢得了什么样的用户？",
+      "question": "比较EGO、Ryobi、Milwaukee、Greenworks的典型用户群：他们做什么任务、已有怎样的电池平台、为何选择品牌、最在意什么。解释共性与差异，以及各品牌适合的产品定位。",
+      "web_enabled": false,
+      "expected": [
+        "覆盖问题且引用可核查",
+        "品牌/渠道/分母准确",
+        "发生底稿争议时核查并保留不能判定部分",
+        "模拟表达不冒充原话",
+        "优先使用ope-brand-comparison"
+      ]
+    },
+    {
+      "id": "homepage-6",
+      "label": "EGO、Ryobi、Milwaukee、Greenworks用户最想要哪些新产品或功能？",
+      "question": "基于EGO、Ryobi、Milwaukee、Greenworks不同用户群的需求和痛点，提出值得验证的新产品或功能机会，并模仿典型用户口吻说出“为什么我想要”。区分证据、产品建议和模拟表达。",
+      "web_enabled": false,
+      "expected": [
+        "覆盖问题且引用可核查",
+        "品牌/渠道/分母准确",
+        "发生底稿争议时核查并保留不能判定部分",
+        "模拟表达不冒充原话",
+        "优先使用ope-brand-comparison"
+      ]
+    }
+  ]
+}

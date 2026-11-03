@@ -1,0 +1,46 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://voxquarry.local/schemas/report-display-name-failure-v1.schema.json",
+  "title": "VoxQuarry report display name failure v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "failure_id",
+    "report_id",
+    "outcome",
+    "code",
+    "expected_version",
+    "current_version",
+    "requested_display_name_sha256",
+    "actor",
+    "occurred_at"
+  ],
+  "properties": {
+    "schema_version": { "const": "report-display-name-failure/v1" },
+    "failure_id": { "type": "string", "pattern": "^rdnf_[0-9a-f]{24}$" },
+    "report_id": { "type": "string", "pattern": "^rpt_[0-9a-f]{24}$" },
+    "outcome": { "const": "rejected" },
+    "code": { "enum": ["invalid_display_name", "display_name_conflict"] },
+    "expected_version": { "$ref": "#/$defs/sha256" },
+    "current_version": { "$ref": "#/$defs/sha256" },
+    "requested_display_name_sha256": { "$ref": "#/$defs/sha256" },
+    "actor": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["authority_id", "principal_id", "request_id"],
+      "properties": {
+        "authority_id": { "type": "string", "minLength": 1, "maxLength": 128 },
+        "principal_id": { "type": "string", "minLength": 1, "maxLength": 128 },
+        "request_id": { "type": "string", "minLength": 1, "maxLength": 128 }
+      }
+    },
+    "occurred_at": { "type": "string", "format": "date-time" }
+  },
+  "$defs": {
+    "sha256": {
+      "type": "string",
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    }
+  }
+}

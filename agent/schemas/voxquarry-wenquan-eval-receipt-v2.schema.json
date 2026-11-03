@@ -1,0 +1,269 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://voxquarry.local/schemas/voxquarry-wenquan-eval-receipt-v2.schema.json",
+  "title": "VoxQuarry Wenquan E2 Semantic Planner Evaluation Receipt v2",
+  "type": "object",
+  "required": [
+    "schema_version", "receipt_version", "evaluation_scope", "work_order",
+    "dispatch", "scope_sha256", "control_plane_seq", "implementation_ref",
+    "implementation_parent", "repeat_count", "seed", "inputs", "provider_config",
+    "summary", "metrics", "blockers", "attempts", "hash_scope", "receipt_sha256"
+  ],
+  "properties": {
+    "schema_version": {"const": "voxquarry.wenquan-eval-receipt/v2"},
+    "receipt_version": {"const": "wenquan-e2-semantic-receipt/2.0.0"},
+    "evaluation_scope": {"const": "synthetic_e2_semantic_planner"},
+    "work_order": {"const": "VQ-SEMANTIC-EVAL-V1"},
+    "dispatch": {"const": "VQ-SEMANTIC-DISPATCH-V1"},
+    "scope_sha256": {"const": "sha256:f361da42f5f2d17d3f159c7f63d9c7ff50c3f072523ad96c0762e90275dd4adf"},
+    "control_plane_seq": {"const": 352},
+    "implementation_ref": {"type": "string", "pattern": "^[0-9a-f]{40}$"},
+    "implementation_parent": {"type": "string", "pattern": "^[0-9a-f]{40}$"},
+    "repeat_count": {"type": "integer", "minimum": 3},
+    "seed": {"type": "integer", "minimum": 0},
+    "inputs": {
+      "type": "object",
+      "required": [
+        "dataset_version", "dataset_sha256", "case_count", "registry_catalog_version",
+        "registry_sha256", "runner_version", "runner_sha256", "planner_version",
+        "planner_sha256", "prompt_version", "prompt_sha256", "policy_version",
+        "policy_sha256", "provider_config_sha256"
+      ],
+      "properties": {
+        "dataset_version": {"const": "wenquan-golden/v1"},
+        "dataset_sha256": {"$ref": "#/$defs/hash"},
+        "case_count": {"const": 40},
+        "registry_catalog_version": {"const": "wenquan-r1-core/1.0.0"},
+        "registry_sha256": {"$ref": "#/$defs/hash"},
+        "runner_version": {"const": "wenquan-e2-runner/2.0.0"},
+        "runner_sha256": {"$ref": "#/$defs/hash"},
+        "planner_version": {"const": "wenquan-semantic-planner/2.0.0"},
+        "planner_sha256": {"$ref": "#/$defs/hash"},
+        "prompt_version": {"const": "wenquan-semantic-intent-taxonomy/2.0.0"},
+        "prompt_sha256": {"$ref": "#/$defs/hash"},
+        "policy_version": {"const": "wenquan-governed-plan-policy/2.0.0"},
+        "policy_sha256": {"$ref": "#/$defs/hash"},
+        "provider_config_sha256": {"$ref": "#/$defs/hash"}
+      },
+      "additionalProperties": false
+    },
+    "provider_config": {
+      "type": "object",
+      "required": [
+        "provider", "api_compatibility", "endpoint_sha256", "model",
+        "enable_thinking", "temperature", "max_tokens", "response_format",
+        "real_candidate_llm"
+      ],
+      "properties": {
+        "provider": {"type": "string", "minLength": 1, "maxLength": 80},
+        "api_compatibility": {"const": "openai-chat-completions"},
+        "endpoint_sha256": {"$ref": "#/$defs/hash"},
+        "model": {"type": "string", "minLength": 1, "maxLength": 160},
+        "enable_thinking": {"type": "boolean"},
+        "temperature": {"const": 0},
+        "max_tokens": {"enum": [1024, 4096]},
+        "response_format": {"const": "json_object"},
+        "real_candidate_llm": {"type": "boolean"}
+      },
+      "additionalProperties": false
+    },
+    "summary": {
+      "type": "object",
+      "required": [
+        "case_count", "attempt_count", "passed_attempts", "failed_attempts",
+        "blocked_attempts", "error_attempts", "overall_status", "usage",
+        "latency", "cost"
+      ],
+      "properties": {
+        "case_count": {"const": 40},
+        "attempt_count": {"type": "integer", "minimum": 120},
+        "passed_attempts": {"type": "integer", "minimum": 0},
+        "failed_attempts": {"type": "integer", "minimum": 0},
+        "blocked_attempts": {"type": "integer", "minimum": 0},
+        "error_attempts": {"type": "integer", "minimum": 0},
+        "overall_status": {"enum": ["passed", "blocked", "failed"]},
+        "usage": {
+          "type": "object",
+          "required": ["prompt_tokens", "completion_tokens", "total_tokens", "missing_usage_attempts"],
+          "properties": {
+            "prompt_tokens": {"type": "integer", "minimum": 0},
+            "completion_tokens": {"type": "integer", "minimum": 0},
+            "total_tokens": {"type": "integer", "minimum": 0},
+            "missing_usage_attempts": {"type": "integer", "minimum": 0}
+          },
+          "additionalProperties": false
+        },
+        "latency": {
+          "type": "object",
+          "required": ["total_ms", "minimum_ms", "maximum_ms", "mean_ms", "first_token_ms"],
+          "properties": {
+            "total_ms": {"type": "integer", "minimum": 0},
+            "minimum_ms": {"type": "integer", "minimum": 0},
+            "maximum_ms": {"type": "integer", "minimum": 0},
+            "mean_ms": {"type": "number", "minimum": 0},
+            "first_token_ms": {"type": "null"}
+          },
+          "additionalProperties": false
+        },
+        "cost": {
+          "type": "object",
+          "required": ["currency", "estimated_total", "status", "reason"],
+          "properties": {
+            "currency": {"const": "CNY"},
+            "estimated_total": {"type": "null"},
+            "status": {"const": "unavailable"},
+            "reason": {"const": "provider_pricing_not_versioned_in_scope"}
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    },
+    "metrics": {
+      "type": "object",
+      "required": [
+        "deterministic_contract_accuracy", "semantic_tool_sequence_accuracy",
+        "answer_status_accuracy",
+        "confirmation_gate_accuracy", "claim_citation_gate_accuracy",
+        "permission_gate_accuracy", "security_boundary_accuracy",
+        "forbidden_capability_accuracy", "cross_user_isolation_accuracy",
+        "core_number_source_accuracy", "idempotency_accuracy",
+        "tool_citation_failure_stop_accuracy"
+      ],
+      "additionalProperties": {"$ref": "#/$defs/metric"}
+    },
+    "blockers": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["code", "status", "attempt_ids"],
+        "properties": {
+          "code": {"type": "string", "minLength": 1},
+          "status": {"enum": ["blocked", "failed", "error"]},
+          "attempt_ids": {"type": "array", "items": {"type": "string"}, "uniqueItems": true}
+        },
+        "additionalProperties": false
+      }
+    },
+    "attempts": {
+      "type": "array",
+      "minItems": 120,
+      "items": {"$ref": "#/$defs/attempt"}
+    },
+    "hash_scope": {"const": "canonical_json_without_receipt_sha256/v1"},
+    "receipt_sha256": {"$ref": "#/$defs/hash"}
+  },
+  "$defs": {
+    "hash": {"type": "string", "pattern": "^sha256:[0-9a-f]{64}$"},
+    "metric": {
+      "type": "object",
+      "required": ["numerator", "denominator", "accuracy", "threshold", "operator", "passed"],
+      "properties": {
+        "numerator": {"type": "integer", "minimum": 0},
+        "denominator": {"type": "integer", "minimum": 1},
+        "accuracy": {"type": "number", "minimum": 0, "maximum": 1},
+        "threshold": {"type": "number", "minimum": 0, "maximum": 1},
+        "operator": {"enum": ["gt", "gte"]},
+        "passed": {"type": "boolean"}
+      },
+      "additionalProperties": false
+    },
+    "expectation": {
+      "type": "object",
+      "required": [
+        "tool_sequence", "confirmation_count", "answer_status",
+        "required_claim_triplet", "forbidden_capabilities"
+      ],
+      "properties": {
+        "tool_sequence": {"type": "array", "items": {"type": "string"}},
+        "confirmation_count": {"type": "integer", "minimum": 0, "maximum": 2},
+        "answer_status": {"type": "string"},
+        "required_claim_triplet": {"type": "boolean"},
+        "forbidden_capabilities": {"type": "array", "items": {"type": "string"}, "uniqueItems": true}
+      },
+      "additionalProperties": false
+    },
+    "actual": {
+      "type": "object",
+      "required": [
+        "intent_code", "tool_sequence", "confirmation_count", "answer_status",
+        "claim_triplet_present", "forbidden_capabilities_observed",
+        "request_sha256", "classification_sha256", "provider_response_id_sha256",
+        "latency_ms", "usage", "error_code"
+      ],
+      "properties": {
+        "intent_code": {"type": ["string", "null"]},
+        "tool_sequence": {"type": "array", "items": {"type": "string"}},
+        "confirmation_count": {"type": "integer", "minimum": 0, "maximum": 2},
+        "answer_status": {"type": "string"},
+        "claim_triplet_present": {"type": "boolean"},
+        "forbidden_capabilities_observed": {"type": "array", "items": {"type": "string"}, "uniqueItems": true},
+        "request_sha256": {"type": ["string", "null"], "pattern": "^sha256:[0-9a-f]{64}$"},
+        "classification_sha256": {"type": ["string", "null"], "pattern": "^sha256:[0-9a-f]{64}$"},
+        "provider_response_id_sha256": {"type": ["string", "null"], "pattern": "^sha256:[0-9a-f]{64}$"},
+        "latency_ms": {"type": "integer", "minimum": 0},
+        "usage": {
+          "type": "object",
+          "required": ["prompt_tokens", "completion_tokens", "total_tokens"],
+          "properties": {
+            "prompt_tokens": {"type": ["integer", "null"], "minimum": 0},
+            "completion_tokens": {"type": ["integer", "null"], "minimum": 0},
+            "total_tokens": {"type": ["integer", "null"], "minimum": 0}
+          },
+          "additionalProperties": false
+        },
+        "error_code": {"type": ["string", "null"]}
+      },
+      "additionalProperties": false
+    },
+    "checks": {
+      "type": "object",
+      "required": [
+        "tool_sequence_exact", "confirmation_exact", "answer_status_exact",
+        "claim_triplet_satisfied", "forbidden_capabilities_absent",
+        "deterministic_policy_valid", "permission_enforced", "security_enforced",
+        "cross_user_isolated", "core_number_sourced", "idempotent",
+        "tool_citation_failure_stopped"
+      ],
+      "properties": {
+        "tool_sequence_exact": {"type": "boolean"},
+        "confirmation_exact": {"type": "boolean"},
+        "answer_status_exact": {"type": "boolean"},
+        "claim_triplet_satisfied": {"type": "boolean"},
+        "forbidden_capabilities_absent": {"type": "boolean"},
+        "deterministic_policy_valid": {"type": "boolean"},
+        "permission_enforced": {"type": "boolean"},
+        "security_enforced": {"type": "boolean"},
+        "cross_user_isolated": {"type": "boolean"},
+        "core_number_sourced": {"type": "boolean"},
+        "idempotent": {"type": "boolean"},
+        "tool_citation_failure_stopped": {"type": "boolean"}
+      },
+      "additionalProperties": false
+    },
+    "attempt": {
+      "type": "object",
+      "required": [
+        "attempt_id", "case_id", "category", "repetition", "seed",
+        "evaluation_layer", "execution_mode", "status", "blocker_code",
+        "expected", "actual", "checks"
+      ],
+      "properties": {
+        "attempt_id": {"type": "string", "pattern": "^WQ-EVAL-[0-9]{3}-R[0-9]+$"},
+        "case_id": {"type": "string", "pattern": "^WQ-EVAL-[0-9]{3}$"},
+        "category": {"type": "string"},
+        "repetition": {"type": "integer", "minimum": 1},
+        "seed": {"type": "integer", "minimum": 0},
+        "evaluation_layer": {"const": "E2"},
+        "execution_mode": {"const": "candidate_llm_with_synthetic_governed_gates"},
+        "status": {"enum": ["passed", "failed", "blocked", "error"]},
+        "blocker_code": {"type": ["string", "null"]},
+        "expected": {"$ref": "#/$defs/expectation"},
+        "actual": {"$ref": "#/$defs/actual"},
+        "checks": {"$ref": "#/$defs/checks"}
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}

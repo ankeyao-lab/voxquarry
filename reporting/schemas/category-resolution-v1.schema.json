@@ -1,0 +1,52 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://voxquarry.local/schemas/category-resolution-v1.schema.json",
+  "title": "VoxQuarry Reporting category resolution audit v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "source_category",
+    "normalized_source_category",
+    "category_id",
+    "canonical_category",
+    "match_type"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "voxquarry.reporting-category-resolution/v1"
+    },
+    "source_category": {"type": "string"},
+    "normalized_source_category": {"type": "string"},
+    "category_id": {"type": ["string", "null"]},
+    "canonical_category": {"type": ["string", "null"]},
+    "match_type": {
+      "enum": [
+        "category_id",
+        "canonical_name",
+        "controlled_alias",
+        "unresolved"
+      ]
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {"match_type": {"const": "unresolved"}},
+        "required": ["match_type"]
+      },
+      "then": {
+        "properties": {
+          "category_id": {"type": "null"},
+          "canonical_category": {"type": "null"}
+        }
+      },
+      "else": {
+        "properties": {
+          "category_id": {"type": "string", "minLength": 1},
+          "canonical_category": {"type": "string", "minLength": 1}
+        }
+      }
+    }
+  ]
+}

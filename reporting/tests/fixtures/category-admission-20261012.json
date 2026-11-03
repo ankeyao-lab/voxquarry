@@ -1,0 +1,542 @@
+{
+  "schema_version": "voxquarry.category-admission-audit/v1",
+  "collector_commit": "9bfb409699a660f0e382eaf20d95d28e09f5ae64",
+  "captured_at": "2026-10-12T08:18:26Z",
+  "grain": "read-only source category aggregates; legacy rows are preliminary before snapshot conversion; no review text or product identities",
+  "categories": [
+    {
+      "category": "Air Compressor",
+      "deduplicated_reviews": 4933,
+      "deduplicated_text_reviews": 4009,
+      "legacy_jobs": 0
+    },
+    {
+      "category": "Ash Vacuum",
+      "deduplicated_reviews": 678,
+      "deduplicated_text_reviews": 425,
+      "legacy_jobs": 0
+    },
+    {
+      "category": "Auger",
+      "deduplicated_reviews": 2170,
+      "deduplicated_text_reviews": 1924,
+      "legacy_jobs": 1
+    },
+    {
+      "category": "Backpack Sprayer",
+      "deduplicated_reviews": 11589,
+      "deduplicated_text_reviews": 9613,
+      "legacy_jobs": 1
+    },
+    {
+      "category": "Battery Pack",
+      "deduplicated_reviews": 79426,
+      "deduplicated_text_reviews": 50077,
+      "legacy_jobs": 0
+    },
+    {
+      "category": "Camera/Tracker",
+      "deduplicated_reviews": 957,
+      "deduplicated_text_reviews": 292,
+      "legacy_jobs": 0
+    },
+    {
+      "category": "Caulking Gun",
+      "deduplicated_reviews": 943,
+      "deduplicated_text_reviews": 927,
+      "legacy_jobs": 0
+    },
+    {
+      "category": "Chain Saw",
+      "deduplicated_reviews": 90290,
+      "deduplicated_text_reviews": 54909,
+      "legacy_jobs": 19
+    },
+    {
+      "category": "Charger",
+      "deduplicated_reviews": 27507,
+      "deduplicated_text_reviews": 13836,
+      "legacy_jobs": 0
+    },
+    {
+      "category": "Cooler",
+      "deduplicated_reviews": 11216,
+      "deduplicated_text_reviews": 7587,
+      "legacy_jobs": 0
+    },
+    {
+      "category": "Cordless Stick Vacuum",
+      "deduplicated_reviews": 13825,
+      "deduplicated_text_reviews": 12571,
+      "legacy_jobs": 8
+    },
+    {
+      "category": "Cultivator",
+      "deduplicated_reviews": 6965,
+      "deduplicated_text_reviews": 6063,
+      "legacy_jobs": 0
+    },
+    {
+      "category": "Drain Cleaner",
+      "deduplicated_reviews": 682,
+      "deduplicated_text_reviews": 671,
+      "legacy_jobs": 0
+    },
+    {
+      "category": "Drill",
+      "deduplicated_reviews": 23355,
+      "deduplicated_text_reviews": 21948,
+      "legacy_jobs": 0
+    },
+    {
+      "category": "Edger",
+      "deduplicated_reviews": 8318,
+      "deduplicated_text_reviews": 7502,
+      "legacy_jobs": 0
+    },
+    {
+      "category": "Fan",
+      "deduplicated_reviews": 17848,
+      "deduplicated_text_reviews": 17070,
+      "legacy_jobs": 5
+    },
+    {
+      "category": "Generator",
+      "deduplicated_reviews": 19091,
+      "deduplicated_text_reviews": 18778,
+      "legacy_jobs": 0
+    },
+    {
+      "category": "Glue Gun",
+      "deduplicated_reviews": 2472,
+      "deduplicated_text_reviews": 2441,
+      "legacy_jobs": 0
+    },
+    {
+      "category": "Grass Shrub/Shear",
+      "deduplicated_reviews": 4184,
+      "deduplicated_text_reviews": 4143,
+      "legacy_jobs": 0
+    },
+    {
+      "category": "Grease Gun",
+      "deduplicated_reviews": 775,
+      "deduplicated_text_reviews": 733,
+      "legacy_jobs": 0
+    },
+    {
+      "category": "Grinder",
+      "deduplicated_reviews": 8567,
+      "deduplicated_text_reviews": 8094,
+      "legacy_jobs": 0
+    },
+    {
+      "category": "Hand Tool",
+      "deduplicated_reviews": 906,
+      "deduplicated_text_reviews": 906,
+      "legacy_jobs": 0
+    },
+    {
+      "category": "Handheld Sprayer",
+      "deduplicated_reviews": 19970,
+      "deduplicated_text_reviews": 17059,
+      "legacy_jobs": 0
+    },
+    {
+      "category": "Handheld Spreader",
+      "deduplicated_reviews": 2781,
+      "deduplicated_text_reviews": 1972,
+      "legacy_jobs": 0
+    },
+    {
+      "category": "Handheld Vacuum",
+      "deduplicated_reviews": 51878,
+      "deduplicated_text_reviews": 48130,
+      "legacy_jobs": 6
+    },
+    {
+      "category": "Hard Floor Cleaner",
+      "deduplicated_reviews": 5460,
+      "deduplicated_text_reviews": 5284,
+      "legacy_jobs": 1
+    },
+    {
+      "category": "Heat Gun",
+      "deduplicated_reviews": 579,
+      "deduplicated_text_reviews": 565,
+      "legacy_jobs": 0
+    },
+    {
+      "category": "Heater",
+      "deduplicated_reviews": 10135,
+      "deduplicated_text_reviews": 8458,
+      "legacy_jobs": 0
+    },
+    {
+      "category": "Hedge Trimmer",
+      "deduplicated_reviews": 72903,
+      "deduplicated_text_reviews": 44336,
+      "legacy_jobs": 38
+    },
+    {
+      "category": "Hose Reel",
+      "deduplicated_reviews": 710,
+      "deduplicated_text_reviews": 387,
+      "legacy_jobs": 0
+    },
+    {
+      "category": "Impact Driver",
+      "deduplicated_reviews": 11156,
+      "deduplicated_text_reviews": 10575,
+      "legacy_jobs": 0
+    },
+    {
+      "category": "Impact Wrench",
+      "deduplicated_reviews": 18112,
+      "deduplicated_text_reviews": 16891,
+      "legacy_jobs": 0
+    },
+    {
+      "category": "Inflator",
+      "deduplicated_reviews": 25243,
+      "deduplicated_text_reviews": 24056,
+      "legacy_jobs": 15
+    },
+    {
+      "category": "LED Lighting",
+      "deduplicated_reviews": 9120,
+      "deduplicated_text_reviews": 7719,
+      "legacy_jobs": 5
+    },
+    {
+      "category": "Leaf Blower/Vacuum",
+      "deduplicated_reviews": 285251,
+      "deduplicated_text_reviews": 127042,
+      "legacy_jobs": 33
+    },
+    {
+      "category": "Light",
+      "deduplicated_reviews": 16944,
+      "deduplicated_text_reviews": 16685,
+      "legacy_jobs": 2
+    },
+    {
+      "category": "Light Bulb",
+      "deduplicated_reviews": 14710,
+      "deduplicated_text_reviews": 14676,
+      "legacy_jobs": 9
+    },
+    {
+      "category": "Log Splitter",
+      "deduplicated_reviews": 2151,
+      "deduplicated_text_reviews": 1851,
+      "legacy_jobs": 0
+    },
+    {
+      "category": "Measuring/Inspection Tool",
+      "deduplicated_reviews": 709,
+      "deduplicated_text_reviews": 697,
+      "legacy_jobs": 0
+    },
+    {
+      "category": "Misting Fan",
+      "deduplicated_reviews": 16779,
+      "deduplicated_text_reviews": 12073,
+      "legacy_jobs": 5
+    },
+    {
+      "category": "Mulcher",
+      "deduplicated_reviews": 6449,
+      "deduplicated_text_reviews": 6171,
+      "legacy_jobs": 0
+    },
+    {
+      "category": "Multi Head",
+      "deduplicated_reviews": 5791,
+      "deduplicated_text_reviews": 4281,
+      "legacy_jobs": 2
+    },
+    {
+      "category": "Multi Tool",
+      "deduplicated_reviews": 5345,
+      "deduplicated_text_reviews": 5032,
+      "legacy_jobs": 0
+    },
+    {
+      "category": "Nailer",
+      "deduplicated_reviews": 12819,
+      "deduplicated_text_reviews": 12392,
+      "legacy_jobs": 0
+    },
+    {
+      "category": "OPE Accessory",
+      "deduplicated_reviews": 28014,
+      "deduplicated_text_reviews": 21850,
+      "legacy_jobs": 5
+    },
+    {
+      "category": "OPE Combo Kit",
+      "deduplicated_reviews": 15529,
+      "deduplicated_text_reviews": 12426,
+      "legacy_jobs": 1
+    },
+    {
+      "category": "Outdoor Cleaner",
+      "deduplicated_reviews": 1757,
+      "deduplicated_text_reviews": 1756,
+      "legacy_jobs": 2
+    },
+    {
+      "category": "Patio Cleaner",
+      "deduplicated_reviews": 13655,
+      "deduplicated_text_reviews": 13655,
+      "legacy_jobs": 0
+    },
+    {
+      "category": "Planer",
+      "deduplicated_reviews": 885,
+      "deduplicated_text_reviews": 869,
+      "legacy_jobs": 0
+    },
+    {
+      "category": "Plumbing Tool",
+      "deduplicated_reviews": 552,
+      "deduplicated_text_reviews": 533,
+      "legacy_jobs": 0
+    },
+    {
+      "category": "Polishers",
+      "deduplicated_reviews": 1315,
+      "deduplicated_text_reviews": 1265,
+      "legacy_jobs": 0
+    },
+    {
+      "category": "Pool Vacuum",
+      "deduplicated_reviews": 8400,
+      "deduplicated_text_reviews": 8261,
+      "legacy_jobs": 0
+    },
+    {
+      "category": "Power Cleaner",
+      "deduplicated_reviews": 15226,
+      "deduplicated_text_reviews": 15176,
+      "legacy_jobs": 2
+    },
+    {
+      "category": "Power Scrubber",
+      "deduplicated_reviews": 5458,
+      "deduplicated_text_reviews": 5446,
+      "legacy_jobs": 1
+    },
+    {
+      "category": "Power Station/Inverter",
+      "deduplicated_reviews": 15488,
+      "deduplicated_text_reviews": 13351,
+      "legacy_jobs": 7
+    },
+    {
+      "category": "Power Tool Combo Kit",
+      "deduplicated_reviews": 15084,
+      "deduplicated_text_reviews": 14449,
+      "legacy_jobs": 0
+    },
+    {
+      "category": "Powered Cutter",
+      "deduplicated_reviews": 6179,
+      "deduplicated_text_reviews": 5994,
+      "legacy_jobs": 0
+    },
+    {
+      "category": "Powered Ratchet",
+      "deduplicated_reviews": 5270,
+      "deduplicated_text_reviews": 4985,
+      "legacy_jobs": 0
+    },
+    {
+      "category": "Powered Screwdriver",
+      "deduplicated_reviews": 4744,
+      "deduplicated_text_reviews": 4570,
+      "legacy_jobs": 0
+    },
+    {
+      "category": "Pressure Washer",
+      "deduplicated_reviews": 521162,
+      "deduplicated_text_reviews": 505731,
+      "legacy_jobs": 6
+    },
+    {
+      "category": "Pressure Washer Accessory",
+      "deduplicated_reviews": 3583,
+      "deduplicated_text_reviews": 3470,
+      "legacy_jobs": 0
+    },
+    {
+      "category": "Pruner",
+      "deduplicated_reviews": 13976,
+      "deduplicated_text_reviews": 11554,
+      "legacy_jobs": 1
+    },
+    {
+      "category": "Pump",
+      "deduplicated_reviews": 6175,
+      "deduplicated_text_reviews": 6055,
+      "legacy_jobs": 0
+    },
+    {
+      "category": "Radio/Speaker",
+      "deduplicated_reviews": 7699,
+      "deduplicated_text_reviews": 7554,
+      "legacy_jobs": 1
+    },
+    {
+      "category": "Raker",
+      "deduplicated_reviews": 1391,
+      "deduplicated_text_reviews": 1391,
+      "legacy_jobs": 0
+    },
+    {
+      "category": "Riding Lawnmower",
+      "deduplicated_reviews": 19034,
+      "deduplicated_text_reviews": 12734,
+      "legacy_jobs": 18
+    },
+    {
+      "category": "Rotary Tool",
+      "deduplicated_reviews": 2074,
+      "deduplicated_text_reviews": 2035,
+      "legacy_jobs": 0
+    },
+    {
+      "category": "Router",
+      "deduplicated_reviews": 2674,
+      "deduplicated_text_reviews": 2585,
+      "legacy_jobs": 0
+    },
+    {
+      "category": "Safety Equipment",
+      "deduplicated_reviews": 646,
+      "deduplicated_text_reviews": 646,
+      "legacy_jobs": 0
+    },
+    {
+      "category": "Sander",
+      "deduplicated_reviews": 6833,
+      "deduplicated_text_reviews": 6691,
+      "legacy_jobs": 0
+    },
+    {
+      "category": "Saw",
+      "deduplicated_reviews": 35548,
+      "deduplicated_text_reviews": 34031,
+      "legacy_jobs": 0
+    },
+    {
+      "category": "Scarifier",
+      "deduplicated_reviews": 4612,
+      "deduplicated_text_reviews": 4516,
+      "legacy_jobs": 0
+    },
+    {
+      "category": "Seeder",
+      "deduplicated_reviews": 2103,
+      "deduplicated_text_reviews": 1974,
+      "legacy_jobs": 0
+    },
+    {
+      "category": "Shredder",
+      "deduplicated_reviews": 1224,
+      "deduplicated_text_reviews": 1223,
+      "legacy_jobs": 0
+    },
+    {
+      "category": "Snow Blower",
+      "deduplicated_reviews": 34190,
+      "deduplicated_text_reviews": 21015,
+      "legacy_jobs": 30
+    },
+    {
+      "category": "Snow Shovel",
+      "deduplicated_reviews": 5071,
+      "deduplicated_text_reviews": 4479,
+      "legacy_jobs": 1
+    },
+    {
+      "category": "Soldering Tool",
+      "deduplicated_reviews": 586,
+      "deduplicated_text_reviews": 585,
+      "legacy_jobs": 0
+    },
+    {
+      "category": "Spot Cleaner",
+      "deduplicated_reviews": 1030,
+      "deduplicated_text_reviews": 954,
+      "legacy_jobs": 0
+    },
+    {
+      "category": "Sprayer",
+      "deduplicated_reviews": 2986,
+      "deduplicated_text_reviews": 2985,
+      "legacy_jobs": 0
+    },
+    {
+      "category": "Stapler",
+      "deduplicated_reviews": 2303,
+      "deduplicated_text_reviews": 2229,
+      "legacy_jobs": 0
+    },
+    {
+      "category": "String Trimmer",
+      "deduplicated_reviews": 219528,
+      "deduplicated_text_reviews": 114535,
+      "legacy_jobs": 25
+    },
+    {
+      "category": "Tiller/Cultivator",
+      "deduplicated_reviews": 7176,
+      "deduplicated_text_reviews": 6544,
+      "legacy_jobs": 0
+    },
+    {
+      "category": "Tool Accessory",
+      "deduplicated_reviews": 16806,
+      "deduplicated_text_reviews": 16660,
+      "legacy_jobs": 0
+    },
+    {
+      "category": "Tool Storage",
+      "deduplicated_reviews": 3370,
+      "deduplicated_text_reviews": 3240,
+      "legacy_jobs": 0
+    },
+    {
+      "category": "Upright Vacuum",
+      "deduplicated_reviews": 9782,
+      "deduplicated_text_reviews": 9698,
+      "legacy_jobs": 1
+    },
+    {
+      "category": "Vacuum Accessory",
+      "deduplicated_reviews": 8405,
+      "deduplicated_text_reviews": 8397,
+      "legacy_jobs": 1
+    },
+    {
+      "category": "Walk behind Lawnmower",
+      "deduplicated_reviews": 297527,
+      "deduplicated_text_reviews": 134766,
+      "legacy_jobs": 36
+    },
+    {
+      "category": "Weed Remover",
+      "deduplicated_reviews": 9212,
+      "deduplicated_text_reviews": 9162,
+      "legacy_jobs": 0
+    },
+    {
+      "category": "Wet/Dry Vacuum",
+      "deduplicated_reviews": 25297,
+      "deduplicated_text_reviews": 22969,
+      "legacy_jobs": 15
+    }
+  ]
+}

@@ -1,0 +1,73 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://voxquarry.local/schemas/brand-persona-v2.schema.json",
+  "title": "VoxQuarry Brand Persona Workbench v2",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "method_version",
+    "cache_version",
+    "snapshot_id",
+    "analysis_id",
+    "content_hash",
+    "scope",
+    "sample",
+    "sample_composition",
+    "data_quality",
+    "executive_readout",
+    "dimensions",
+    "decision_drivers",
+    "experience_systems",
+    "lifecycle_stages",
+    "cross_category_signals",
+    "cooccurrence_signals",
+    "temporal_trends",
+    "failure_chains",
+    "comparison_lenses",
+    "task_context",
+    "claim_pool",
+    "personas",
+    "execution_ledger",
+    "quality",
+    "persona_narrative"
+  ],
+  "properties": {
+    "schema_version": {"const": "brand-persona-workbench/v2"},
+    "method_version": {"const": "brand-persona-deterministic/2.2.0"},
+    "cache_version": {"type": "string", "minLength": 1},
+    "snapshot_id": {"type": "string", "minLength": 1},
+    "analysis_id": {"type": "string", "pattern": "^bpa_[0-9a-f]{24}$"},
+    "content_hash": {"type": "string", "pattern": "^sha256:[0-9a-f]{64}$"},
+    "scope": {"type": "object"},
+    "sample": {"type": "object"},
+    "sample_composition": {"type": "object"},
+    "data_quality": {"type": "object"},
+    "executive_readout": {"type": "array", "items": {"type": "object"}},
+    "dimensions": {"type": "array", "items": {"type": "object"}},
+    "decision_drivers": {"type": "array", "items": {"type": "object"}},
+    "experience_systems": {"type": "array", "items": {"type": "object"}},
+    "lifecycle_stages": {"type": "array", "items": {"type": "object"}},
+    "cross_category_signals": {"type": "array", "items": {"type": "object"}},
+    "cooccurrence_signals": {"type": "array", "items": {"type": "object"}},
+    "temporal_trends": {"type": "object"},
+    "failure_chains": {"type": "array", "items": {"type": "object"}},
+    "comparison_lenses": {"type": "array", "items": {"type": "object"}},
+    "task_context": {"type": "array", "items": {"type": "object"}},
+    "claim_pool": {"type": "array", "items": {"type": "object"}},
+    "personas": {"type": "array", "maxItems": 6, "items": {"type": "object"}},
+    "execution_ledger": {
+      "type": "object",
+      "required": ["schema_version", "extractor_version", "extractor_count", "completed_extractors", "failed_extractors", "expected_entity_executions", "completed_entity_executions", "extractors"]
+    },
+    "quality": {"type": "object"},
+    "persona_narrative": {
+      "type": "object",
+      "required": ["status", "schema_version", "policy_version", "llm_used"],
+      "properties": {
+        "schema_version": {"const": "brand-persona-narrative/v2"},
+        "policy_version": {"const": "persona-claim-lock/2.0.0"},
+        "llm_used": {"type": "boolean"}
+      }
+    }
+  }
+}

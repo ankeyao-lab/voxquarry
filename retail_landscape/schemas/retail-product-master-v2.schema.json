@@ -1,0 +1,337 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://voxquarry.local/schemas/retail-product-master-v2.schema.json",
+  "title": "VoxQuarry Chengmu Product Master Projection v2",
+  "description": "Approved-only, content-addressed product master projection. schema_version describes structure; snapshot_id describes one immutable content set. Evidence properties remain nullable in this reusable shape; completeness is enforced by the Chengmu approved/published review gate, not by globally narrowing the evidence type.",
+  "x-voxquarry-hash": {
+    "algorithm": "sha256-canonical-json/v1",
+    "encoding": "UTF-8",
+    "object_keys": "ascending Unicode code point",
+    "strings": "JSON escaping with ensure_ascii=false",
+    "arrays": "preserve contract order",
+    "numbers": "finite non-exponent decimal, remove insignificant trailing zeros; 18 and 18.0 are equal",
+    "record_snapshot_hash": "sha256:<hex>(canonical_json(record excluding record_snapshot_hash))",
+    "snapshot_id": "pms_<hex>(canonical_json({schema_version,authority,scope,records}))"
+  },
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "snapshot_id",
+    "snapshot_generated_at",
+    "hash_algorithm",
+    "authority",
+    "scope",
+    "ordering",
+    "pagination",
+    "records"
+  ],
+  "properties": {
+    "schema_version": {"const": "retail-product-master/v2"},
+    "snapshot_id": {"type": "string", "pattern": "^pms_[0-9a-f]{64}$"},
+    "snapshot_generated_at": {"type": ["string", "null"], "format": "date-time"},
+    "hash_algorithm": {"const": "sha256-canonical-json/v1"},
+    "authority": {"const": "chengmu"},
+    "scope": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["review_status", "category_code", "model_ids", "voltage_platform_ids"],
+      "properties": {
+        "review_status": {
+          "type": "array",
+          "prefixItems": [{"const": "approved"}, {"const": "published"}],
+          "items": false,
+          "minItems": 2,
+          "maxItems": 2
+        },
+        "category_code": {"type": ["string", "null"]},
+        "model_ids": {
+          "type": "array",
+          "items": {"type": "string", "pattern": "^pvr_[0-9a-f]{20}$"},
+          "uniqueItems": true
+        },
+        "voltage_platform_ids": {
+          "type": "array",
+          "items": {"type": "string", "pattern": "^vpf_[0-9a-f]{20}$"},
+          "uniqueItems": true
+        }
+      }
+    },
+    "ordering": {
+      "const": "category.code, brand.canonical_name(casefold), model_number(casefold), model_id"
+    },
+    "pagination": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["mode", "total_records"],
+      "properties": {
+        "mode": {"const": "complete"},
+        "total_records": {"type": "integer", "minimum": 0}
+      }
+    },
+    "records": {
+      "type": "array",
+      "items": {"$ref": "#/$defs/productRecord"}
+    }
+  },
+  "$defs": {
+    "errorResponse": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["error"],
+      "properties": {
+        "error": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["code", "message"],
+          "properties": {
+            "code": {"enum": ["category_not_found", "master_identity_not_found"]},
+            "message": {"type": "string"},
+            "category_code": {"type": ["string", "null"]},
+            "field": {"enum": ["model_id", "voltage_platform_id"]}
+          }
+        }
+      }
+    },
+    "productRecord": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "model_id", "entity_version", "product_kind", "category", "brand",
+        "model_number", "product_name", "energy_type", "voltage_platform",
+        "voltage_platform_null_reason", "bundle", "analysis_eligibility",
+        "review_status", "reviewed_at", "record_snapshot_hash"
+      ],
+      "properties": {
+        "model_id": {"type": "string", "pattern": "^pvr_[0-9a-f]{20}$"},
+        "entity_version": {"type": "integer", "minimum": 1},
+        "product_kind": {"enum": ["single_product", "bundle"]},
+        "category": {"$ref": "#/$defs/category"},
+        "brand": {"$ref": "#/$defs/brand"},
+        "model_number": {"type": "string", "minLength": 1},
+        "product_name": {"type": ["string", "null"]},
+        "energy_type": {"enum": ["Gas", "AC", "DC", null]},
+        "voltage_platform": {
+          "oneOf": [{"$ref": "#/$defs/voltagePlatform"}, {"type": "null"}]
+        },
+        "voltage_platform_null_reason": {
+          "enum": ["not_dc", "brand_unresolved", "voltage_unverified", null]
+        },
+        "bundle": {
+          "oneOf": [{"$ref": "#/$defs/bundle"}, {"type": "null"}]
+        },
+        "analysis_eligibility": {"$ref": "#/$defs/analysisEligibility"},
+        "review_status": {"enum": ["approved", "published"]},
+        "reviewed_at": {"type": ["string", "null"], "format": "date-time"},
+        "record_snapshot_hash": {"type": "string", "pattern": "^sha256:[0-9a-f]{64}$"}
+      },
+      "allOf": [
+        {
+          "if": {"properties": {"product_kind": {"const": "single_product"}}},
+          "then": {
+            "properties": {
+              "bundle": {"type": "null"},
+              "analysis_eligibility": {
+                "properties": {
+                  "eligible": {"const": true},
+                  "reason": {"type": "null"}
+                }
+              }
+            }
+          },
+          "else": {"properties": {"bundle": {"$ref": "#/$defs/bundle"}}}
+        },
+        {
+          "if": {"properties": {"voltage_platform": {"type": "null"}}},
+          "then": {
+            "properties": {
+              "voltage_platform_null_reason": {
+                "enum": ["not_dc", "brand_unresolved", "voltage_unverified"]
+              }
+            }
+          },
+          "else": {"properties": {"voltage_platform_null_reason": {"type": "null"}}}
+        },
+        {
+          "if": {"properties": {"energy_type": {"enum": ["Gas", "AC", null]}}},
+          "then": {
+            "properties": {
+              "voltage_platform": {"type": "null"},
+              "voltage_platform_null_reason": {"const": "not_dc"}
+            }
+          }
+        },
+        {
+          "if": {"properties": {"category": {"properties": {"code": {"const": "cross_category_bundle"}}}}},
+          "then": {
+            "properties": {
+              "product_kind": {"const": "bundle"},
+              "bundle": {"properties": {"scope": {"const": "cross_category"}}},
+              "analysis_eligibility": {
+                "properties": {
+                  "eligible": {"const": false},
+                  "reason": {"const": "cross_category_bundle"}
+                }
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "bundle": {
+                "type": "object",
+                "required": ["scope"],
+                "properties": {"scope": {"const": "cross_category"}}
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "category": {"properties": {"code": {"const": "cross_category_bundle"}}},
+              "analysis_eligibility": {
+                "properties": {
+                  "eligible": {"const": false},
+                  "reason": {"const": "cross_category_bundle"}
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "category": {
+      "description": "Stable Chengmu category identity backed by category-registry/v1. A category may be registry-only and have no specialized field profile; absence of a field profile does not invalidate this identity.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["category_id", "code", "name", "name_zh"],
+      "properties": {
+        "category_id": {"type": "string", "pattern": "^cat_[a-z0-9_]+$"},
+        "code": {"type": "string", "pattern": "^[a-z0-9_]+$"},
+        "name": {"type": "string", "minLength": 1},
+        "name_zh": {"type": "string", "minLength": 1}
+      }
+    },
+    "brand": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["brand_id", "canonical_name"],
+      "properties": {
+        "brand_id": {"type": "string", "pattern": "^brd_[0-9a-f]{20}$"},
+        "canonical_name": {"type": "string", "minLength": 1}
+      }
+    },
+    "voltagePlatform": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "voltage_platform_id", "brand_id", "canonical_voltage",
+        "voltage_value", "voltage_unit", "identity_version"
+      ],
+      "properties": {
+        "voltage_platform_id": {"type": "string", "pattern": "^vpf_[0-9a-f]{20}$"},
+        "brand_id": {"type": "string", "pattern": "^brd_[0-9a-f]{20}$"},
+        "canonical_voltage": {"type": "string", "pattern": "^[0-9]+(?:\\.[0-9]+)?V$"},
+        "voltage_value": {"type": "number", "exclusiveMinimum": 0},
+        "voltage_unit": {"const": "V"},
+        "identity_version": {"const": "brand-voltage/v1"}
+      }
+    },
+    "bundle": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["scope", "primary_model_id", "members"],
+      "properties": {
+        "scope": {"enum": ["same_category", "cross_category"]},
+        "primary_model_id": {
+          "type": ["string", "null"],
+          "pattern": "^pvr_[0-9a-f]{20}$"
+        },
+        "members": {
+          "type": "array",
+          "items": {"$ref": "#/$defs/bundleMember"}
+        }
+      }
+    },
+    "bundleMember": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "role", "member_model_id", "member_label", "resolution_status",
+        "quantity", "evidence"
+      ],
+      "properties": {
+        "role": {
+          "enum": ["primary_product", "included_product", "battery", "charger", "accessory", "other"]
+        },
+        "member_model_id": {
+          "type": ["string", "null"],
+          "pattern": "^pvr_[0-9a-f]{20}$"
+        },
+        "member_label": {"type": ["string", "null"]},
+        "resolution_status": {"enum": ["resolved", "unresolved"]},
+        "quantity": {"type": "integer", "minimum": 1},
+        "evidence": {"$ref": "#/$defs/evidence"}
+      },
+      "allOf": [
+        {
+          "if": {"properties": {"resolution_status": {"const": "resolved"}}},
+          "then": {
+            "properties": {
+              "member_model_id": {"type": "string", "pattern": "^pvr_[0-9a-f]{20}$"}
+            }
+          },
+          "else": {
+            "properties": {
+              "member_model_id": {"type": "null"},
+              "member_label": {"type": "string", "minLength": 1, "pattern": ".*\\S.*"}
+            }
+          }
+        }
+      ]
+    },
+    "evidence": {
+      "description": "Evidence keys are stable and required, but values are nullable in the generic contract shape. Chengmu's approved/published review gate requires complete source evidence where policy applies (including unresolved bundle members); resolved member links may rely on the referenced approved model. Consumers must not interpret null as verified evidence.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["source_url", "source_type", "source_snapshot_hash", "observed_at"],
+      "properties": {
+        "source_url": {"type": ["string", "null"]},
+        "source_type": {"type": ["string", "null"]},
+        "source_snapshot_hash": {"type": ["string", "null"]},
+        "observed_at": {"type": ["string", "null"], "format": "date-time"}
+      }
+    },
+    "analysisEligibility": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["eligible", "reason", "policy_version"],
+      "properties": {
+        "eligible": {"type": "boolean"},
+        "reason": {
+          "enum": [
+            "cross_category_bundle", "bundle_primary_unresolved",
+            "bundle_primary_category_mismatch", null
+          ]
+        },
+        "policy_version": {"const": "retail-analysis-eligibility/v1"}
+      },
+      "allOf": [
+        {
+          "if": {"properties": {"eligible": {"const": true}}},
+          "then": {"properties": {"reason": {"type": "null"}}},
+          "else": {
+            "properties": {
+              "reason": {
+                "enum": [
+                  "cross_category_bundle", "bundle_primary_unresolved",
+                  "bundle_primary_category_mismatch"
+                ]
+              }
+            }
+          }
+        }
+      ]
+    }
+  }
+}

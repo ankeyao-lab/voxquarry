@@ -1,0 +1,122 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://voxquarry.local/schemas/structured-refresh-history-repair-receipt-v1.schema.json",
+  "title": "VoxQuarry structured refresh history repair receipt v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "status",
+    "original_history_sha256",
+    "repaired_history_sha256",
+    "original_bytes",
+    "repaired_bytes",
+    "damaged_line_sha256",
+    "fragment_sha256",
+    "suffix_event_sha256",
+    "archive_path",
+    "evidence_path",
+    "live_history_verified",
+    "live_history_sha256",
+    "live_metadata",
+    "audit_failures",
+    "marker"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "voxquarry.structured-refresh-history-repair-receipt/v1"
+    },
+    "status": {
+      "enum": [
+        "dry_run",
+        "prepared",
+        "applied",
+        "applied_with_audit_failure"
+      ]
+    },
+    "original_history_sha256": { "$ref": "#/$defs/sha256" },
+    "repaired_history_sha256": { "$ref": "#/$defs/sha256" },
+    "original_bytes": { "type": "integer", "minimum": 0 },
+    "repaired_bytes": { "type": "integer", "minimum": 0 },
+    "damaged_line_sha256": { "$ref": "#/$defs/sha256" },
+    "fragment_sha256": { "$ref": "#/$defs/sha256" },
+    "suffix_event_sha256": { "$ref": "#/$defs/sha256" },
+    "archive_path": { "type": ["string", "null"] },
+    "evidence_path": { "type": ["string", "null"] },
+    "live_history_verified": { "type": ["boolean", "null"] },
+    "live_history_sha256": {
+      "oneOf": [
+        { "type": "null" },
+        { "$ref": "#/$defs/sha256" }
+      ]
+    },
+    "live_metadata": {
+      "oneOf": [
+        { "type": "null" },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["mode", "uid", "gid"],
+          "properties": {
+            "mode": { "type": "integer", "minimum": 0, "maximum": 4095 },
+            "uid": { "type": "integer", "minimum": 0 },
+            "gid": { "type": "integer", "minimum": 0 }
+          }
+        }
+      ]
+    },
+    "audit_failures": {
+      "type": "array",
+      "items": { "type": "string", "minLength": 1 }
+    },
+    "marker": { "type": "object" }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "status": { "enum": ["dry_run", "prepared"] }
+        }
+      },
+      "then": {
+        "properties": {
+          "live_history_verified": { "type": "null" },
+          "live_history_sha256": { "type": "null" },
+          "live_metadata": { "type": "null" },
+          "audit_failures": { "maxItems": 0 }
+        }
+      }
+    },
+    {
+      "if": { "properties": { "status": { "const": "applied" } } },
+      "then": {
+        "properties": {
+          "live_history_verified": { "const": true },
+          "live_history_sha256": { "$ref": "#/$defs/sha256" },
+          "live_metadata": { "type": "object" },
+          "audit_failures": { "maxItems": 0 }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "status": { "const": "applied_with_audit_failure" }
+        }
+      },
+      "then": {
+        "properties": {
+          "live_history_verified": { "type": "boolean" },
+          "live_metadata": { "type": "object" },
+          "audit_failures": { "minItems": 1 }
+        }
+      }
+    }
+  ],
+  "$defs": {
+    "sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    }
+  }
+}

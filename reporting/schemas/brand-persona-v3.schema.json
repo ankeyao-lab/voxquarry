@@ -1,0 +1,81 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://voxquarry.local/schemas/brand-persona-v3.schema.json",
+  "title": "VoxQuarry Brand Persona Workbench v3",
+  "type": "object",
+  "required": [
+    "schema_version", "method_version", "cache_version", "snapshot_id",
+    "analysis_id", "content_hash", "scope", "sample", "sample_composition",
+    "data_quality", "executive_readout", "dimensions", "decision_drivers",
+    "experience_systems", "lifecycle_stages", "cross_category_signals",
+    "cooccurrence_signals", "temporal_trends", "failure_chains",
+    "comparison_lenses", "task_context", "claim_pool", "personas",
+    "execution_ledger", "quality", "persona_narrative", "deterministic_report"
+  ],
+  "properties": {
+    "schema_version": {"const": "brand-persona-workbench/v3"},
+    "method_version": {"const": "brand-persona-deterministic/3.0.0"},
+    "cache_version": {"type": "string", "minLength": 1},
+    "snapshot_id": {"type": "string", "minLength": 1},
+    "analysis_id": {"type": "string", "pattern": "^bpa_[0-9a-f]{24}$"},
+    "content_hash": {"type": "string", "pattern": "^sha256:[0-9a-f]{64}$"},
+    "scope": {"type": "object"},
+    "sample": {"type": "object"},
+    "sample_composition": {"type": "object"},
+    "data_quality": {"type": "object"},
+    "executive_readout": {"type": "array", "items": {"type": "object"}},
+    "dimensions": {"type": "array", "items": {"type": "object"}},
+    "decision_drivers": {"type": "array", "items": {"type": "object"}},
+    "experience_systems": {"type": "array", "items": {"type": "object"}},
+    "lifecycle_stages": {"type": "array", "items": {"type": "object"}},
+    "cross_category_signals": {"type": "array", "items": {"type": "object"}},
+    "cooccurrence_signals": {"type": "array", "items": {"type": "object"}},
+    "temporal_trends": {"type": "object"},
+    "failure_chains": {"type": "array", "items": {"type": "object"}},
+    "comparison_lenses": {"type": "array", "items": {"type": "object"}},
+    "task_context": {"type": "array", "items": {"type": "object"}},
+    "claim_pool": {"type": "array", "items": {"type": "object"}},
+    "personas": {
+      "type": "array",
+      "maxItems": 8,
+      "items": {
+        "type": "object",
+        "properties": {
+          "image": {
+            "type": ["object", "null"],
+            "properties": {
+              "schema_version": {"const": "brand-persona-image/v1"},
+              "provider": {"type": "string"},
+              "model": {"type": "string"},
+              "asset_sha256": {"type": "string", "pattern": "^sha256:[0-9a-f]{64}$"},
+              "prompt_sha256": {"type": "string", "pattern": "^sha256:[0-9a-f]{64}$"},
+              "mime_type": {"enum": ["image/png", "image/jpeg", "image/webp", "image/avif"]},
+              "image_url": {"type": "string"},
+              "illustrative_only": {"const": true}
+            }
+          }
+        }
+      }
+    },
+    "execution_ledger": {"type": "object"},
+    "quality": {"type": "object"},
+    "deterministic_report": {
+      "type": "object",
+      "required": ["llm_used", "population", "chapters", "experience_risk_matrix", "battery_chain"],
+      "properties": {"llm_used": {"const": false}}
+    },
+    "persona_narrative": {
+      "type": "object",
+      "required": ["status", "schema_version", "policy_version", "llm_used"],
+      "properties": {
+        "schema_version": {"const": "brand-persona-narrative/v3"},
+        "policy_version": {"const": "persona-claim-lock/3.0.0"},
+        "llm_used": {"type": "boolean"},
+        "persona_image_count": {"type": "integer", "minimum": 0},
+        "persona_image_target": {"type": "integer", "minimum": 0},
+        "image_status": {"enum": ["ready", "partial", "unavailable", "unconfigured"]},
+        "image_providers": {"type": "array", "items": {"type": "string"}, "uniqueItems": true}
+      }
+    }
+  }
+}

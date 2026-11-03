@@ -1,0 +1,249 @@
+{
+  "brand": "Northstar Demo",
+  "model": "M40 (synthetic)",
+  "category": "Lawn Mower",
+  "language": "en",
+  "synthetic": true,
+  "reviews": [
+    {
+      "review_id": "synthetic-001",
+      "rating": 5,
+      "review_text": "The mower is quiet and easy to push. Battery life is enough for my small yard. Synthetic scenario 1.",
+      "submission_time": "2026-01-01"
+    },
+    {
+      "review_id": "synthetic-002",
+      "rating": 4,
+      "review_text": "I like the lightweight design and compact storage. The cut quality is excellent. Synthetic scenario 2.",
+      "submission_time": "2026-01-01"
+    },
+    {
+      "review_id": "synthetic-003",
+      "rating": 2,
+      "review_text": "The battery runs out too quickly on tall grass. I need a second battery to finish. Synthetic scenario 3.",
+      "submission_time": "2026-01-01"
+    },
+    {
+      "review_id": "synthetic-004",
+      "rating": 3,
+      "review_text": "The mower struggles with wet grass. The grass bag is hard to attach. Synthetic scenario 4.",
+      "submission_time": "2026-01-01"
+    },
+    {
+      "review_id": "synthetic-005",
+      "rating": 5,
+      "review_text": "Easy assembly and simple controls. The self propelled speed is comfortable. Synthetic scenario 5.",
+      "submission_time": "2026-01-01"
+    },
+    {
+      "review_id": "synthetic-006",
+      "rating": 4,
+      "review_text": "The mower feels durable and starts reliably. Charging takes longer than expected. Synthetic scenario 6.",
+      "submission_time": "2026-01-01"
+    },
+    {
+      "review_id": "synthetic-007",
+      "rating": 1,
+      "review_text": "The handle broke after a few uses. Customer service did not resolve the issue. Synthetic scenario 7.",
+      "submission_time": "2026-01-01"
+    },
+    {
+      "review_id": "synthetic-008",
+      "rating": 5,
+      "review_text": "A clean even cut with very little noise. It is easy to fold and store. Synthetic scenario 8.",
+      "submission_time": "2026-01-01"
+    },
+    {
+      "review_id": "synthetic-009",
+      "rating": 5,
+      "review_text": "The mower is quiet and easy to push. Battery life is enough for my small yard. Synthetic scenario 9.",
+      "submission_time": "2026-01-01"
+    },
+    {
+      "review_id": "synthetic-010",
+      "rating": 4,
+      "review_text": "I like the lightweight design and compact storage. The cut quality is excellent. Synthetic scenario 10.",
+      "submission_time": "2026-01-01"
+    },
+    {
+      "review_id": "synthetic-011",
+      "rating": 2,
+      "review_text": "The battery runs out too quickly on tall grass. I need a second battery to finish. Synthetic scenario 11.",
+      "submission_time": "2026-01-01"
+    },
+    {
+      "review_id": "synthetic-012",
+      "rating": 3,
+      "review_text": "The mower struggles with wet grass. The grass bag is hard to attach. Synthetic scenario 12.",
+      "submission_time": "2026-01-01"
+    },
+    {
+      "review_id": "synthetic-013",
+      "rating": 5,
+      "review_text": "Easy assembly and simple controls. The self propelled speed is comfortable. Synthetic scenario 13.",
+      "submission_time": "2026-01-01"
+    },
+    {
+      "review_id": "synthetic-014",
+      "rating": 4,
+      "review_text": "The mower feels durable and starts reliably. Charging takes longer than expected. Synthetic scenario 14.",
+      "submission_time": "2026-01-01"
+    },
+    {
+      "review_id": "synthetic-015",
+      "rating": 1,
+      "review_text": "The handle broke after a few uses. Customer service did not resolve the issue. Synthetic scenario 15.",
+      "submission_time": "2026-01-01"
+    },
+    {
+      "review_id": "synthetic-016",
+      "rating": 5,
+      "review_text": "A clean even cut with very little noise. It is easy to fold and store. Synthetic scenario 16.",
+      "submission_time": "2026-01-01"
+    },
+    {
+      "review_id": "synthetic-017",
+      "rating": 5,
+      "review_text": "The mower is quiet and easy to push. Battery life is enough for my small yard. Synthetic scenario 17.",
+      "submission_time": "2026-01-01"
+    },
+    {
+      "review_id": "synthetic-018",
+      "rating": 4,
+      "review_text": "I like the lightweight design and compact storage. The cut quality is excellent. Synthetic scenario 18.",
+      "submission_time": "2026-01-01"
+    },
+    {
+      "review_id": "synthetic-019",
+      "rating": 2,
+      "review_text": "The battery runs out too quickly on tall grass. I need a second battery to finish. Synthetic scenario 19.",
+      "submission_time": "2026-01-01"
+    },
+    {
+      "review_id": "synthetic-020",
+      "rating": 3,
+      "review_text": "The mower struggles with wet grass. The grass bag is hard to attach. Synthetic scenario 20.",
+      "submission_time": "2026-01-01"
+    },
+    {
+      "review_id": "synthetic-021",
+      "rating": 5,
+      "review_text": "Easy assembly and simple controls. The self propelled speed is comfortable. Synthetic scenario 21.",
+      "submission_time": "2026-01-01"
+    },
+    {
+      "review_id": "synthetic-022",
+      "rating": 4,
+      "review_text": "The mower feels durable and starts reliably. Charging takes longer than expected. Synthetic scenario 22.",
+      "submission_time": "2026-01-01"
+    },
+    {
+      "review_id": "synthetic-023",
+      "rating": 1,
+      "review_text": "The handle broke after a few uses. Customer service did not resolve the issue. Synthetic scenario 23.",
+      "submission_time": "2026-01-01"
+    },
+    {
+      "review_id": "synthetic-024",
+      "rating": 5,
+      "review_text": "A clean even cut with very little noise. It is easy to fold and store. Synthetic scenario 24.",
+      "submission_time": "2026-01-01"
+    },
+    {
+      "review_id": "synthetic-025",
+      "rating": 5,
+      "review_text": "The mower is quiet and easy to push. Battery life is enough for my small yard. Synthetic scenario 25.",
+      "submission_time": "2026-01-01"
+    },
+    {
+      "review_id": "synthetic-026",
+      "rating": 4,
+      "review_text": "I like the lightweight design and compact storage. The cut quality is excellent. Synthetic scenario 26.",
+      "submission_time": "2026-01-01"
+    },
+    {
+      "review_id": "synthetic-027",
+      "rating": 2,
+      "review_text": "The battery runs out too quickly on tall grass. I need a second battery to finish. Synthetic scenario 27.",
+      "submission_time": "2026-01-01"
+    },
+    {
+      "review_id": "synthetic-028",
+      "rating": 3,
+      "review_text": "The mower struggles with wet grass. The grass bag is hard to attach. Synthetic scenario 28.",
+      "submission_time": "2026-01-01"
+    },
+    {
+      "review_id": "synthetic-029",
+      "rating": 5,
+      "review_text": "Easy assembly and simple controls. The self propelled speed is comfortable. Synthetic scenario 29.",
+      "submission_time": "2026-01-01"
+    },
+    {
+      "review_id": "synthetic-030",
+      "rating": 4,
+      "review_text": "The mower feels durable and starts reliably. Charging takes longer than expected. Synthetic scenario 30.",
+      "submission_time": "2026-01-01"
+    },
+    {
+      "review_id": "synthetic-031",
+      "rating": 1,
+      "review_text": "The handle broke after a few uses. Customer service did not resolve the issue. Synthetic scenario 31.",
+      "submission_time": "2026-01-01"
+    },
+    {
+      "review_id": "synthetic-032",
+      "rating": 5,
+      "review_text": "A clean even cut with very little noise. It is easy to fold and store. Synthetic scenario 32.",
+      "submission_time": "2026-01-01"
+    },
+    {
+      "review_id": "synthetic-033",
+      "rating": 5,
+      "review_text": "The mower is quiet and easy to push. Battery life is enough for my small yard. Synthetic scenario 33.",
+      "submission_time": "2026-01-01"
+    },
+    {
+      "review_id": "synthetic-034",
+      "rating": 4,
+      "review_text": "I like the lightweight design and compact storage. The cut quality is excellent. Synthetic scenario 34.",
+      "submission_time": "2026-01-01"
+    },
+    {
+      "review_id": "synthetic-035",
+      "rating": 2,
+      "review_text": "The battery runs out too quickly on tall grass. I need a second battery to finish. Synthetic scenario 35.",
+      "submission_time": "2026-01-01"
+    },
+    {
+      "review_id": "synthetic-036",
+      "rating": 3,
+      "review_text": "The mower struggles with wet grass. The grass bag is hard to attach. Synthetic scenario 36.",
+      "submission_time": "2026-01-01"
+    },
+    {
+      "review_id": "synthetic-037",
+      "rating": 5,
+      "review_text": "Easy assembly and simple controls. The self propelled speed is comfortable. Synthetic scenario 37.",
+      "submission_time": "2026-01-01"
+    },
+    {
+      "review_id": "synthetic-038",
+      "rating": 4,
+      "review_text": "The mower feels durable and starts reliably. Charging takes longer than expected. Synthetic scenario 38.",
+      "submission_time": "2026-01-01"
+    },
+    {
+      "review_id": "synthetic-039",
+      "rating": 1,
+      "review_text": "The handle broke after a few uses. Customer service did not resolve the issue. Synthetic scenario 39.",
+      "submission_time": "2026-01-01"
+    },
+    {
+      "review_id": "synthetic-040",
+      "rating": 5,
+      "review_text": "A clean even cut with very little noise. It is easy to fold and store. Synthetic scenario 40.",
+      "submission_time": "2026-01-01"
+    }
+  ]
+}

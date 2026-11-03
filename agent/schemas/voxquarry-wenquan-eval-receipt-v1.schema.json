@@ -1,0 +1,173 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://voxquarry.local/schemas/voxquarry-wenquan-eval-receipt-v1.schema.json",
+  "title": "VoxQuarry Wenquan E0/E1 Evaluation Receipt v1",
+  "type": "object",
+  "required": [
+    "schema_version", "receipt_version", "evaluation_scope", "implementation_ref",
+    "repeat_count", "seed", "inputs", "summary", "metrics", "blockers", "attempts",
+    "hash_scope", "receipt_sha256"
+  ],
+  "properties": {
+    "schema_version": {"const": "voxquarry.wenquan-eval-receipt/v1"},
+    "receipt_version": {"const": "wenquan-e0-e1-receipt/1.0.0"},
+    "evaluation_scope": {"const": "synthetic_e0_e1_only"},
+    "implementation_ref": {"type": "string", "pattern": "^[0-9a-f]{40}$"},
+    "repeat_count": {"type": "integer", "minimum": 3},
+    "seed": {"type": "integer", "minimum": 0},
+    "inputs": {
+      "type": "object",
+      "required": [
+        "dataset_version", "dataset_sha256", "case_count", "registry_catalog_version",
+        "registry_sha256", "runner_version", "runner_sha256", "planner_version",
+        "prompt_version"
+      ],
+      "properties": {
+        "dataset_version": {"const": "wenquan-golden/v1"},
+        "dataset_sha256": {"$ref": "#/$defs/hash"},
+        "case_count": {"const": 40},
+        "registry_catalog_version": {"const": "wenquan-r1-core/1.0.0"},
+        "registry_sha256": {"$ref": "#/$defs/hash"},
+        "runner_version": {"const": "wenquan-e0-e1-runner/1.0.0"},
+        "runner_sha256": {"$ref": "#/$defs/hash"},
+        "planner_version": {"const": "not_implemented"},
+        "prompt_version": {"const": "not_implemented"}
+      },
+      "additionalProperties": false
+    },
+    "summary": {
+      "type": "object",
+      "required": [
+        "case_count", "attempt_count", "passed_attempts", "failed_attempts",
+        "blocked_attempts", "overall_status"
+      ],
+      "properties": {
+        "case_count": {"const": 40},
+        "attempt_count": {"type": "integer", "minimum": 120},
+        "passed_attempts": {"type": "integer", "minimum": 0},
+        "failed_attempts": {"type": "integer", "minimum": 0},
+        "blocked_attempts": {"type": "integer", "minimum": 0},
+        "overall_status": {"enum": ["passed", "blocked", "failed"]}
+      },
+      "additionalProperties": false
+    },
+    "metrics": {
+      "type": "object",
+      "required": [
+        "deterministic_contract_accuracy", "semantic_tool_sequence_accuracy",
+        "confirmation_gate_accuracy", "claim_citation_gate_accuracy",
+        "security_boundary_accuracy"
+      ],
+      "additionalProperties": {"$ref": "#/$defs/metric"}
+    },
+    "blockers": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["code", "status", "dependency_work_order"],
+        "properties": {
+          "code": {"type": "string", "minLength": 1},
+          "status": {"enum": ["not_implemented", "blocked"]},
+          "dependency_work_order": {"type": "string", "minLength": 1}
+        },
+        "additionalProperties": false
+      }
+    },
+    "attempts": {
+      "type": "array",
+      "minItems": 120,
+      "items": {"$ref": "#/$defs/attempt"}
+    },
+    "hash_scope": {"const": "canonical_json_without_receipt_sha256/v1"},
+    "receipt_sha256": {"$ref": "#/$defs/hash"}
+  },
+  "$defs": {
+    "hash": {"type": "string", "pattern": "^sha256:[0-9a-f]{64}$"},
+    "metric": {
+      "type": "object",
+      "required": ["numerator", "denominator", "accuracy", "threshold", "passed"],
+      "properties": {
+        "numerator": {"type": "integer", "minimum": 0},
+        "denominator": {"type": "integer", "minimum": 1},
+        "accuracy": {"type": "number", "minimum": 0, "maximum": 1},
+        "threshold": {"type": "number", "minimum": 0, "maximum": 1},
+        "passed": {"type": "boolean"}
+      },
+      "additionalProperties": false
+    },
+    "expectation": {
+      "type": "object",
+      "required": [
+        "tool_sequence", "confirmation_count", "answer_status",
+        "required_claim_triplet", "forbidden_capabilities"
+      ],
+      "properties": {
+        "tool_sequence": {"type": "array", "items": {"type": "string"}},
+        "confirmation_count": {"type": "integer", "minimum": 0, "maximum": 2},
+        "answer_status": {"type": "string"},
+        "required_claim_triplet": {"type": "boolean"},
+        "forbidden_capabilities": {
+          "type": "array", "items": {"type": "string"}, "uniqueItems": true
+        }
+      },
+      "additionalProperties": false
+    },
+    "actual": {
+      "type": "object",
+      "required": [
+        "tool_sequence", "confirmation_count", "answer_status",
+        "claim_triplet_present", "forbidden_capabilities_observed"
+      ],
+      "properties": {
+        "tool_sequence": {"type": "array", "items": {"type": "string"}},
+        "confirmation_count": {"type": "integer", "minimum": 0, "maximum": 2},
+        "answer_status": {"type": "string"},
+        "claim_triplet_present": {"type": "boolean"},
+        "forbidden_capabilities_observed": {
+          "type": "array", "items": {"type": "string"}, "uniqueItems": true
+        }
+      },
+      "additionalProperties": false
+    },
+    "checks": {
+      "type": "object",
+      "required": [
+        "tool_sequence_exact", "confirmation_exact", "answer_status_exact",
+        "claim_triplet_satisfied", "forbidden_capabilities_absent"
+      ],
+      "properties": {
+        "tool_sequence_exact": {"type": "boolean"},
+        "confirmation_exact": {"type": "boolean"},
+        "answer_status_exact": {"type": "boolean"},
+        "claim_triplet_satisfied": {"type": "boolean"},
+        "forbidden_capabilities_absent": {"type": "boolean"}
+      },
+      "additionalProperties": false
+    },
+    "attempt": {
+      "type": "object",
+      "required": [
+        "attempt_id", "case_id", "category", "repetition", "evaluation_layer",
+        "execution_mode", "status", "blocker_code", "expected", "actual", "checks"
+      ],
+      "properties": {
+        "attempt_id": {"type": "string", "pattern": "^WQ-EVAL-[0-9]{3}-R[0-9]+$"},
+        "case_id": {"type": "string", "pattern": "^WQ-EVAL-[0-9]{3}$"},
+        "category": {"type": "string"},
+        "repetition": {"type": "integer", "minimum": 1},
+        "evaluation_layer": {"enum": ["E0", "E1", "blocked"]},
+        "execution_mode": {
+          "enum": ["deterministic_contract", "synthetic_tool_transport", "not_implemented"]
+        },
+        "status": {"enum": ["passed", "failed", "blocked"]},
+        "blocker_code": {"type": ["string", "null"]},
+        "expected": {"$ref": "#/$defs/expectation"},
+        "actual": {"$ref": "#/$defs/actual"},
+        "checks": {"$ref": "#/$defs/checks"}
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}

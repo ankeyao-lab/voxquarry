@@ -1,0 +1,47 @@
+{
+  "schema_version": "local-fixture-identities/v1",
+  "environment": "local_dev_synthetic",
+  "auth_source": "local_fixture",
+  "non_production": true,
+  "principals": [
+    {
+      "fixture_id": "fixture_admin",
+      "principal_id": "prn_local_admin_0001",
+      "employee_id": "LOCAL-ADMIN-0001",
+      "display_name": "Local Fixture Admin",
+      "roles": ["admin"],
+      "status": "active"
+    },
+    {
+      "fixture_id": "fixture_user_alpha",
+      "principal_id": "prn_local_user_alpha",
+      "employee_id": "LOCAL-USER-ALPHA",
+      "display_name": "Local Fixture User Alpha",
+      "roles": ["user"],
+      "status": "active"
+    },
+    {
+      "fixture_id": "fixture_user_beta",
+      "principal_id": "prn_local_user_beta",
+      "employee_id": "LOCAL-USER-BETA",
+      "display_name": "Local Fixture User Beta",
+      "roles": ["user"],
+      "status": "active"
+    },
+    {
+      "fixture_id": "fixture_disabled",
+      "principal_id": "prn_local_disabled",
+      "employee_id": "LOCAL-DISABLED",
+      "display_name": "Local Fixture Disabled",
+      "roles": ["user"],
+      "status": "disabled"
+    }
+  ],
+  "wenquan_examples": {
+    "resource_types": ["session", "message", "memory", "decision", "tool_call"],
+    "alpha_owner_scope": "principal:prn_local_user_alpha",
+    "beta_owner_scope": "principal:prn_local_user_beta",
+    "admin_content_bypass": false,
+    "token_usage_dimension": "principal_id"
+  }
+}

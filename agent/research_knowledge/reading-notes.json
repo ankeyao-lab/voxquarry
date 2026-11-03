@@ -1,0 +1,14 @@
+{
+  "schema": "voxquarry.reference-notes/v1",
+  "common_notes": [
+    "Synthetic example only."
+  ],
+  "editions": {
+    "synthetic-study": {
+      "original_sha256": "2db05f77e98902cc5f18c255515bc6e49e7faf508e5c0d48951d8d1d20920486",
+      "notes": [
+        "This note belongs to this edition."
+      ]
+    }
+  }
+}

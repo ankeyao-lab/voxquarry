@@ -1,0 +1,19 @@
+{
+  "schema": "voxquarry.reference-library/v1",
+  "references": [
+    {
+      "reference_id": "synthetic-study",
+      "title": "Synthetic research example",
+      "original_sha256": "2db05f77e98902cc5f18c255515bc6e49e7faf508e5c0d48951d8d1d20920486",
+      "sections": [
+        {
+          "section_id": "home",
+          "title": "Method"
+        }
+      ],
+      "original_filename": "synthetic-study.md",
+      "scope": "Synthetic demonstration only; not market evidence.",
+      "edition_registered_at": "2026-11-03T00:00:00Z"
+    }
+  ]
+}

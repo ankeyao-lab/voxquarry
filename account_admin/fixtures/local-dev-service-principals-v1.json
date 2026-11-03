@@ -1,0 +1,13 @@
+{
+  "schema_version": "local-fixture-service-principals/v1",
+  "environment": "local_dev_synthetic",
+  "auth_source": "local_fixture",
+  "non_production": true,
+  "service_principals": [],
+  "credential_material": "not_in_fixture",
+  "rotation": {
+    "token_key_id_required": true,
+    "accept_current_and_previous_key": true,
+    "max_token_ttl_seconds": 300
+  }
+}

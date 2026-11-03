@@ -1,0 +1,81 @@
+# Same-version standard SDK. Official loop, tools, retries and compaction stay intact.
+- id: system-prompt
+  config:
+    personaPrefix: !!js process.env.DSH_SYSTEM_PROMPT
+    personaSuffix: Your working directory is {{cwd}}.
+# Provider capability remains factual. Working context is a separate native
+# compaction policy: at most 200k tokens by default, with a 40k recent tail for
+# the 1M DeepSeek route. The SDK keeps its transaction, summary and retry logic.
+- id: llm-deepseek
+  config:
+    defaultContextWindow: !!js Number(process.env.DSH_CONTEXT_WINDOW || 1000000)
+- id: compaction-basic
+  config:
+    thresholdRatio: !!js Math.min(0.8, Number(process.env.DSH_RESEARCH_CONTEXT_TOKENS || 200000) / Number(process.env.DSH_CONTEXT_WINDOW || 1000000))
+    retainRatio: !!js Math.min(0.8, Number(process.env.DSH_RESEARCH_CONTEXT_TOKENS || 200000) / Number(process.env.DSH_CONTEXT_WINDOW || 1000000)) * 0.2
+- id: skill-filesystem
+  config:
+    bundledSkillDir: /opt/voxquarry/skills
+- id: fs-sandbox
+  disabled: true
+- id: subprocess
+  disabled: true
+- id: bash-sandbox
+  disabled: true
+- insert:
+    - id: voxquarry-session-resume
+      name: /opt/voxquarry/session-resume.mjs
+      config:
+        requestPath: /run/voxquarry/request.json
+    - id: voxquarry-bash
+      name: '@deepseek-ai/dsh-bash-local'
+    - id: voxquarry-native-providers
+      name: /opt/voxquarry/native-providers.mjs
+      config:
+        tokenPath: /run/voxquarry/capability
+    - id: voxquarry-research-tools
+      name: /opt/voxquarry/research-tools.mjs
+      config:
+        catalogPath: /run/voxquarry/tools.json
+        requestPath: /run/voxquarry/request.json
+        tokenPath: /run/voxquarry/capability
+        brokerUrl: http://relay:9000/broker/
+    - id: voxquarry-native-web
+      name: /opt/voxquarry/native-web.mjs
+      config:
+        tokenPath: /run/voxquarry/capability
+        brokerUrl: http://relay:9000/broker/
+- id: session-telemetry-otel
+  disabled: true
+- id: tool-subagent
+  disabled: true
+- id: tool-subagent-fork
+  disabled: true
+- id: tool-subagent-control
+  disabled: true
+- id: tool-subagent-list-agents
+  disabled: true
+- id: tool-workflow
+  disabled: true
+- id: tool-ralph
+  disabled: true
+- id: tool-web
+  disabled: false
+- id: web
+  config:
+    searchProvider: voxquarry-public
+    fetchProvider: voxquarry-public
+- id: web-search-deepseek
+  disabled: true
+- id: web-fetch-http
+  disabled: true
+- id: tool-goal
+  disabled: true
+- id: goal-round-driver
+  disabled: true
+- id: plan-mode
+  disabled: true
+# Host permission presets apply to a local sandbox executor. The remote executor
+# is confined by the manager's container, with no host escalation path.
+- id: permission
+  disabled: true

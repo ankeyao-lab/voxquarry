@@ -1,0 +1,59 @@
+{
+  "schema_version": "research-plan/v1",
+  "id": "full-mower-research",
+  "version": "1.1.0",
+  "primary_direction": "product-opportunity",
+  "analysis_modules": [
+    "satisfaction-overview",
+    "pain-and-failure",
+    "product-attribute-performance",
+    "needs-and-use-cases",
+    "brand-product-comparison",
+    "channel-comparison",
+    "model-time-comparison",
+    "user-profile",
+    "smart-opportunity"
+  ],
+  "factors": [
+    "ratings",
+    "recommendation",
+    "written-coverage",
+    "attributes",
+    "pain-points",
+    "use-cases",
+    "explicit-age",
+    "user-traits",
+    "keyword-document-frequency",
+    "factor-cooccurrence",
+    "kano-candidates",
+    "product-opportunities",
+    "smart-signals"
+  ],
+  "population_unit": "review_entity",
+  "scope": {
+    "categories": ["割草机"],
+    "exclude_categories": ["骑乘割草机"],
+    "has_text": "any",
+    "syndicated": "include",
+    "fallback_source": "include"
+  },
+  "comparison": {
+    "minimum_n": 20,
+    "alpha": 0.05,
+    "effect_size": true
+  },
+  "quality_gates": {
+    "exclude_incomplete_collection": true,
+    "require_sample_sizes": true,
+    "suppress_directional_finding_below_n": 20
+  },
+  "outputs": [
+    "executive_summary",
+    "metrics",
+    "tables",
+    "charts",
+    "findings",
+    "evidence",
+    "limitations"
+  ]
+}

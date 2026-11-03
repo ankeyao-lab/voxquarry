@@ -1,0 +1,180 @@
+{
+  "description": "Invalid cross-field cases applied as deep patches to the v2 example record. Each case must fail both the JSON Schema and the runtime invariant guard.",
+  "cases": [
+    {
+      "name": "eligible_true_with_reason",
+      "patch": {
+        "analysis_eligibility": {
+          "eligible": true,
+          "reason": "cross_category_bundle",
+          "policy_version": "retail-analysis-eligibility/v1"
+        }
+      },
+      "expected_error": "eligible_reason_must_be_null"
+    },
+    {
+      "name": "ineligible_without_reason",
+      "patch": {
+        "analysis_eligibility": {
+          "eligible": false,
+          "reason": null,
+          "policy_version": "retail-analysis-eligibility/v1"
+        }
+      },
+      "expected_error": "ineligible_reason_required"
+    },
+    {
+      "name": "single_product_with_bundle",
+      "patch": {
+        "bundle": {
+          "scope": "same_category",
+          "primary_model_id": "pvr_84a652f682227528adc1",
+          "members": []
+        }
+      },
+      "expected_error": "single_product_bundle_must_be_null"
+    },
+    {
+      "name": "single_product_ineligible",
+      "patch": {
+        "analysis_eligibility": {
+          "eligible": false,
+          "reason": "bundle_primary_unresolved",
+          "policy_version": "retail-analysis-eligibility/v1"
+        }
+      },
+      "expected_error": "single_product_must_be_eligible"
+    },
+    {
+      "name": "cross_category_code_with_same_category_scope",
+      "patch": {
+        "product_kind": "bundle",
+        "category": {
+          "category_id": "cat_cross_category_bundle",
+          "code": "cross_category_bundle",
+          "name": "Cross-category Bundle",
+          "name_zh": "跨品类组套"
+        },
+        "bundle": {
+          "scope": "same_category",
+          "primary_model_id": "pvr_84a652f682227528adc1",
+          "members": []
+        }
+      },
+      "expected_error": "cross_category_scope_mismatch"
+    },
+    {
+      "name": "cross_category_scope_with_regular_category",
+      "patch": {
+        "product_kind": "bundle",
+        "bundle": {
+          "scope": "cross_category",
+          "primary_model_id": null,
+          "members": []
+        },
+        "analysis_eligibility": {
+          "eligible": false,
+          "reason": "cross_category_bundle",
+          "policy_version": "retail-analysis-eligibility/v1"
+        }
+      },
+      "expected_error": "cross_category_scope_mismatch"
+    },
+    {
+      "name": "cross_category_bundle_marked_eligible",
+      "patch": {
+        "product_kind": "bundle",
+        "category": {
+          "category_id": "cat_cross_category_bundle",
+          "code": "cross_category_bundle",
+          "name": "Cross-category Bundle",
+          "name_zh": "跨品类组套"
+        },
+        "bundle": {
+          "scope": "cross_category",
+          "primary_model_id": null,
+          "members": []
+        }
+      },
+      "expected_error": "cross_category_must_be_ineligible"
+    },
+    {
+      "name": "resolved_member_without_model_id",
+      "patch": {
+        "product_kind": "bundle",
+        "bundle": {
+          "scope": "same_category",
+          "primary_model_id": null,
+          "members": [
+            {
+              "role": "included_product",
+              "member_model_id": null,
+              "member_label": "Known member",
+              "resolution_status": "resolved",
+              "quantity": 1,
+              "evidence": {
+                "source_url": null,
+                "source_type": null,
+                "source_snapshot_hash": null,
+                "observed_at": null
+              }
+            }
+          ]
+        }
+      },
+      "expected_error": "resolved_member_model_id_required"
+    },
+    {
+      "name": "unresolved_member_with_model_id",
+      "patch": {
+        "product_kind": "bundle",
+        "bundle": {
+          "scope": "same_category",
+          "primary_model_id": null,
+          "members": [
+            {
+              "role": "accessory",
+              "member_model_id": "pvr_84a652f682227528adc1",
+              "member_label": "Crevice tool",
+              "resolution_status": "unresolved",
+              "quantity": 1,
+              "evidence": {
+                "source_url": null,
+                "source_type": null,
+                "source_snapshot_hash": null,
+                "observed_at": null
+              }
+            }
+          ]
+        }
+      },
+      "expected_error": "unresolved_member_model_id_must_be_null"
+    },
+    {
+      "name": "unresolved_member_without_label",
+      "patch": {
+        "product_kind": "bundle",
+        "bundle": {
+          "scope": "same_category",
+          "primary_model_id": null,
+          "members": [
+            {
+              "role": "accessory",
+              "member_model_id": null,
+              "member_label": "   ",
+              "resolution_status": "unresolved",
+              "quantity": 1,
+              "evidence": {
+                "source_url": null,
+                "source_type": null,
+                "source_snapshot_hash": null,
+                "observed_at": null
+              }
+            }
+          ]
+        }
+      },
+      "expected_error": "unresolved_member_label_required"
+    }
+  ]
+}

@@ -1,0 +1,166 @@
+{
+  "schema_version": "factor-dictionary/v1",
+  "id": "voxquarry-review-factors",
+  "version": "1.2.0",
+  "language": "en",
+  "attributes": [
+    {"id": "runtime", "label": "续航与电池容量", "terms": ["runtime", "run time", "battery life", "battery lasted", "charge lasts", "acre per charge"]},
+    {"id": "power", "label": "动力与负载能力", "terms": ["power", "powerful", "torque", "bog down", "bogged down", "stall", "thick grass", "tall grass"]},
+    {"id": "cut_quality", "label": "切割质量", "terms": ["cut quality", "cuts well", "clean cut", "uneven cut", "missed grass", "stragglers", "scalping"]},
+    {"id": "self_propel", "label": "自走与速度控制", "terms": ["self propelled", "self-propelled", "self propel", "speed control", "pace", "drive system"]},
+    {"id": "handling", "label": "重量与操控", "terms": ["lightweight", "light weight", "heavy", "weight", "maneuver", "manoeuver", "easy to push", "hard to push"]},
+    {"id": "noise", "label": "噪音与振动", "terms": ["quiet", "noise", "noisy", "vibration", "vibrate"]},
+    {"id": "starting", "label": "启动与易用性", "terms": ["easy to start", "push button", "starts right", "won't start", "would not start", "starting", "startup"]},
+    {"id": "bagging", "label": "集草、碎草与排屑", "terms": ["bagging", "grass bag", "bagger", "mulch", "mulching", "side discharge", "discharge", "clog"]},
+    {"id": "height_adjustment", "label": "割高与甲板调节", "terms": ["height adjustment", "cutting height", "deck height", "height lever", "adjust height"]},
+    {"id": "charging", "label": "充电速度与充电器", "terms": ["charger", "charging", "charge time", "fast charge", "rapid charger"]},
+    {"id": "durability", "label": "耐久性与可靠性", "terms": ["durable", "durability", "reliable", "reliability", "broke", "broken", "failed", "failure", "stopped working"]},
+    {"id": "assembly", "label": "装配与折叠收纳", "terms": ["assembly", "assemble", "fold", "folding", "storage", "handle setup"]},
+    {"id": "maintenance", "label": "维护保养", "terms": ["maintenance", "maintain", "blade sharpening", "replace blade", "cleaning", "winter storage"]},
+    {"id": "service", "label": "售后、保修与配件", "terms": ["customer service", "support", "warranty", "repair", "replacement", "parts"]},
+    {"id": "value", "label": "价格与价值", "terms": ["price", "expensive", "cost", "value", "worth", "overpriced"]},
+    {"id": "ecosystem", "label": "电池生态兼容", "terms": ["same battery", "battery compatible", "interchangeable", "ecosystem", "other tools", "power+ tools"]},
+    {"id": "safety", "label": "安全与控制", "terms": ["safety", "blade stop", "emergency stop", "shut off", "obstacle", "guard"]},
+    {"id": "smart_connectivity", "label": "智能与连接体验", "terms": ["app", "bluetooth", "wi-fi", "wifi", "connected", "smart feature", "firmware", "software"]}
+  ],
+  "pain_points": [
+    {"id": "battery_depletion", "label": "电量不足或续航不达预期", "terms": ["battery died", "battery runs out", "ran out of battery", "not enough battery", "short runtime", "poor battery life", "battery doesn't last", "battery does not last"]},
+    {"id": "battery_failure", "label": "电池故障或衰减", "terms": ["bad battery", "battery failed", "battery failure", "battery defective", "battery overheated", "battery dead"]},
+    {"id": "charger_failure", "label": "充电器或充电异常", "terms": ["charger failed", "charger stopped", "won't charge", "would not charge", "not charging", "charging error"]},
+    {"id": "drive_failure", "label": "自走系统故障或难控", "terms": ["self propel stopped", "self propelled stopped", "drive failed", "drive wheel", "speed is too fast", "jerky"]},
+    {"id": "poor_cut", "label": "漏割、割不齐或需要复割", "terms": ["uneven cut", "missed grass", "leaves stragglers", "doesn't cut", "does not cut", "poor cut", "cut twice", "multiple passes"]},
+    {"id": "clogging", "label": "堵塞、排屑或集草问题", "terms": ["clog", "clogged", "bag doesn't fill", "bag does not fill", "poor bagging", "discharge blocked"]},
+    {"id": "starting_failure", "label": "无法启动或间歇停机", "terms": ["won't start", "would not start", "doesn't start", "does not start", "stopped working", "shuts off", "keeps stopping"]},
+    {"id": "height_failure", "label": "割高或甲板调节失效", "terms": ["height lever broke", "height adjustment broke", "deck drops", "height won't stay", "height does not stay"]},
+    {"id": "wheel_handle_failure", "label": "轮组、把手或控制件问题", "terms": ["wheel broke", "wheel fell", "handle broke", "handle cracked", "control broke", "trigger broke"]},
+    {"id": "overheating", "label": "过热或高负载保护", "terms": ["overheat", "overheated", "thermal", "too hot", "heat shutdown"]},
+    {"id": "weight_effort", "label": "重量、推行或坡地负担", "terms": ["too heavy", "hard to push", "difficult to maneuver", "difficult to manoeuver", "struggles on hill", "hard on hills"]},
+    {"id": "service_delay", "label": "售后、保修或配件等待", "terms": ["customer service", "warranty claim", "waiting for parts", "no parts", "repair center", "service center", "replacement took"]}
+  ],
+  "use_cases": [
+    {"id": "large_yard", "label": "大草坪或长时间作业", "terms": ["large yard", "big yard", "half acre", "1/2 acre", "acre", "acres"]},
+    {"id": "small_yard", "label": "小草坪与城市住宅", "terms": ["small yard", "small lawn", "townhouse", "city lot", "quarter acre", "1/4 acre"]},
+    {"id": "hills_slopes", "label": "坡地与不平整地形", "terms": ["hill", "hills", "slope", "slopes", "incline", "uneven ground"]},
+    {"id": "thick_tall_grass", "label": "高草、厚草与高负载", "terms": ["thick grass", "tall grass", "overgrown", "dense grass", "heavy grass"]},
+    {"id": "wet_grass", "label": "潮湿草地", "terms": ["wet grass", "damp grass", "after rain", "moist grass"]},
+    {"id": "leaves_mulching", "label": "落叶与碎草覆盖", "terms": ["leaves", "leaf", "mulching leaves", "mulch the leaves"]},
+    {"id": "tight_spaces", "label": "狭窄空间与边角", "terms": ["tight spaces", "narrow", "around trees", "flower beds", "tight corners"]},
+    {"id": "gas_replacement", "label": "燃油设备替换", "terms": ["gas mower", "petrol mower", "no gas", "replace my gas", "replaced my gas", "switch from gas"]},
+    {"id": "physical_limit", "label": "年长或体力受限使用", "terms": ["senior", "older person", "bad back", "arthritis", "disabled", "limited mobility", "can't pull a cord", "cannot pull a cord"]},
+    {"id": "professional_use", "label": "专业或高频养护", "terms": ["landscaper", "landscaping business", "commercial", "professional use", "multiple lawns"]}
+  ],
+  "user_traits": [
+    {"id": "senior_or_limited", "label": "年长或体力受限用户", "terms": ["senior", "i am 60", "i am 65", "i am 70", "i am 75", "bad back", "arthritis", "disabled", "limited mobility"]},
+    {"id": "gas_switcher", "label": "燃油转电动用户", "terms": ["gas mower", "replace my gas", "replaced my gas", "switch from gas", "no more gas", "tired of gas"]},
+    {"id": "ecosystem_owner", "label": "同电池生态用户", "terms": ["same battery", "other ego tools", "other ryobi tools", "battery compatible", "interchangeable batteries", "already own"]},
+    {"id": "first_electric", "label": "首次电动割草机用户", "terms": ["first electric mower", "first battery mower", "never used electric", "new to battery mower"]},
+    {"id": "large_yard_owner", "label": "大草坪高负荷用户", "terms": ["large yard", "big yard", "half acre", "1/2 acre", "acre", "acres"]},
+    {"id": "professional", "label": "专业或多草坪用户", "terms": ["landscaper", "commercial", "professional use", "multiple lawns"]}
+  ],
+  "smart_signals": [
+    {
+      "id": "personalized_mode",
+      "label": "个性化作业模式",
+      "framework": "A8",
+      "terms": ["custom mode", "personalized", "remember my setting", "user profile", "custom speed"],
+      "trigger": "用户、地形或历史设置可被明确识别",
+      "candidate_action": "保存并调用速度、动力或割高偏好",
+      "feedback": "模式、参数和变更原因可见",
+      "user_value": "减少重复设置并适配个人操控习惯",
+      "risk": "错误画像或自动切换造成操控不确定性"
+    },
+    {
+      "id": "connected_control",
+      "label": "连接、状态与远程控制",
+      "framework": "A2",
+      "terms": ["mobile app", "phone app", "bluetooth", "wi-fi", "wifi", "remote control", "connected mower"],
+      "trigger": "设备状态或用户远程请求",
+      "candidate_action": "同步设备状态、设置与诊断信息",
+      "feedback": "连接状态、权限和动作结果可见",
+      "user_value": "集中查看设备并缩短状态确认路径",
+      "risk": "连接失败、隐私和误操作"
+    },
+    {
+      "id": "runtime_guidance",
+      "label": "剩余续航与作业范围提示",
+      "framework": "A3",
+      "terms": ["battery indicator", "battery gauge", "remaining runtime", "remaining time", "percent remaining", "how much battery"],
+      "trigger": "电量、负载与作业进度变化",
+      "candidate_action": "估算剩余时间、可覆盖面积和充电建议",
+      "feedback": "显示估算值、范围和不确定性",
+      "user_value": "降低中途断电和作业计划不确定性",
+      "risk": "估算误差导致错误作业承诺"
+    },
+    {
+      "id": "adaptive_load",
+      "label": "负载感知与动力自适应",
+      "framework": "A4",
+      "terms": ["automatically adjusts", "sense the grass", "load sensing", "auto adjust", "adaptive power"],
+      "trigger": "草况、负载或行进阻力变化",
+      "candidate_action": "在规则边界内调节动力、速度或刀盘",
+      "feedback": "显示当前自适应状态并允许退出",
+      "user_value": "在切割质量、续航和操控之间动态平衡",
+      "risk": "误判草况导致停机、漏割或能耗增加"
+    },
+    {
+      "id": "guided_setup",
+      "label": "引导式设置与使用建议",
+      "framework": "A4",
+      "terms": ["setup guide", "guided setup", "app instructions", "how to set", "recommended setting"],
+      "trigger": "首次使用、场景变化或错误设置",
+      "candidate_action": "按草况和任务提供可解释的设置步骤",
+      "feedback": "展示建议依据并由用户确认",
+      "user_value": "降低学习成本和错误配置",
+      "risk": "通用建议不适配现场环境"
+    },
+    {
+      "id": "predictive_service",
+      "label": "异常趋势与预测性服务",
+      "framework": "A1",
+      "terms": ["predictive maintenance", "failure warning", "early warning", "health status", "battery health", "service prediction"],
+      "trigger": "温度、循环、错误码或性能趋势异常",
+      "candidate_action": "在故障前提示检查、保养或更换",
+      "feedback": "展示触发证据、紧急程度和处理结果",
+      "user_value": "降低意外停机并改善维修准备",
+      "risk": "误报、漏报和不必要更换"
+    },
+    {
+      "id": "obstacle_safety",
+      "label": "障碍识别与安全停机",
+      "framework": "A1",
+      "terms": ["obstacle detection", "detect obstacle", "automatic stop", "auto stop", "safety sensor"],
+      "trigger": "检测到障碍、危险接近或异常姿态",
+      "candidate_action": "告警、降速或安全停机",
+      "feedback": "明确危险来源、系统动作和恢复条件",
+      "user_value": "降低人身、宠物和设备风险",
+      "risk": "漏检是安全风险，误停影响可用性"
+    },
+    {
+      "id": "diagnostic_recovery",
+      "label": "异常解读与恢复",
+      "framework": "A1",
+      "terms": ["diagnostic", "error code", "fault code", "troubleshoot", "what does the code mean"],
+      "trigger": "出现错误码、异常状态或任务中断",
+      "candidate_action": "解释状态、给出安全恢复步骤并识别需要人工服务的边界",
+      "feedback": "显示判断依据、不确定性和恢复结果",
+      "user_value": "补足用户来不及判断或无法理解机器状态的盲区",
+      "risk": "误诊、漏诊或把高风险维修错误交给用户"
+    },
+    {
+      "id": "maintenance_guidance",
+      "label": "生命周期维护与提醒",
+      "framework": "A8",
+      "terms": ["maintenance reminder", "blade reminder", "service reminder", "maintenance schedule"],
+      "trigger": "使用时长、季节或维护周期到达",
+      "candidate_action": "串联维护步骤、记录和服务入口",
+      "feedback": "记录处理状态与后续观察结果",
+      "user_value": "让工具沿跨季节生命周期逐步进化为管家",
+      "risk": "过度提醒、记录不透明或把建议伪装成必要维修"
+    }
+  ],
+  "sentiment": {
+    "positive_terms": ["excellent", "great", "love", "perfect", "easy", "quiet", "powerful", "impressed", "recommend", "works well"],
+    "negative_terms": ["terrible", "poor", "bad", "hate", "difficult", "disappointed", "problem", "issue", "failed", "broken", "return"]
+  },
+  "need_cues": ["wish", "need", "needs", "should", "would like", "if only", "could use", "would be better", "hope they", "please add"]
+}

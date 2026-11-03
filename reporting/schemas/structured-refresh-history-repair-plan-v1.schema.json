@@ -1,0 +1,39 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://voxquarry.local/schemas/structured-refresh-history-repair-plan-v1.schema.json",
+  "title": "VoxQuarry structured refresh history repair plan v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "history_sha256",
+    "damaged_line_number",
+    "damaged_line_sha256",
+    "fragment_sha256",
+    "suffix_event_sha256",
+    "fragment_classification",
+    "incident_evidence_sha256",
+    "observed_at",
+    "trigger"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "voxquarry.structured-refresh-history-repair-plan/v1"
+    },
+    "history_sha256": { "$ref": "#/$defs/sha256" },
+    "damaged_line_number": { "type": "integer", "minimum": 1 },
+    "damaged_line_sha256": { "$ref": "#/$defs/sha256" },
+    "fragment_sha256": { "$ref": "#/$defs/sha256" },
+    "suffix_event_sha256": { "$ref": "#/$defs/sha256" },
+    "fragment_classification": { "const": "failed_event_fragment" },
+    "incident_evidence_sha256": { "$ref": "#/$defs/sha256" },
+    "observed_at": { "type": "string", "format": "date-time" },
+    "trigger": { "enum": ["event_poll", "daily_fallback", "manual"] }
+  },
+  "$defs": {
+    "sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    }
+  }
+}
